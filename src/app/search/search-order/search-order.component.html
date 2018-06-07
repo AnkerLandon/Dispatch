@@ -1,1 +1,17 @@
-<h1>test</h1>
+<div class="test" layout="vertical">
+  <mat-card>
+    <label for="Search">Search Orders</label>
+    <mat-form-field class="test">
+      <input matInput type="text" placeholder="Customer Name" >
+    </mat-form-field>
+      <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          (click)="onSearchOrder()" >Search</button>
+  </mat-card>
+
+  <p>{{ newSearch }}</p>
+
+</div>
+
