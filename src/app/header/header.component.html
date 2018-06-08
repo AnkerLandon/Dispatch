@@ -3,13 +3,18 @@
     <button mat-icon-button (click)="drawer.toggle()"><mat-icon>menu</mat-icon></button>
     <h1 class="Dispatch">Dispatch App</h1>
   </mat-toolbar>
+</div>
 
- <mat-drawer-container class="test" hasBackdrop="true" >
+<body class="mat-app-background">
+  <main>
+    <app-data-view></app-data-view>
+  </main>
+</body>
+
+<mat-drawer-container class="test" hasBackdrop="true" >
    <mat-drawer #drawer mode="over">testdrower</mat-drawer>
    <mat-drawer-content >
-    <main>
-      <app-search-order></app-search-order>
-    </main>
+
    </mat-drawer-content>
  </mat-drawer-container>
 

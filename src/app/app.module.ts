@@ -10,12 +10,17 @@ import {
   MatMenuModule,
   MatSidenavModule,
   MatIconModule,
-  MatListModule
+  MatListModule,
+  MatExpansionModule,
+  MatSortModule,
+  MatTableModule,
+  MatTooltipModule
 } from '@angular/material';
 import { AppComponent } from './app.component';
 import { SearchOrderComponent } from './search/search-order/search-order.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
+import { DataViewComponent } from './data-view/data-view.component';
 
 
 
@@ -23,7 +28,8 @@ import { HeaderComponent } from './header/header.component';
   declarations: [
     AppComponent,
     SearchOrderComponent,
-    HeaderComponent
+    HeaderComponent,
+    DataViewComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +42,10 @@ import { HeaderComponent } from './header/header.component';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
+    MatExpansionModule,
+    MatSortModule,
+    MatTableModule,
+    MatTooltipModule,
     BrowserAnimationsModule
   ],
   providers: [],

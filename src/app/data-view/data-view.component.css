@@ -1,0 +1,15 @@
+
+:host{
+  display: block;
+  margin-top: 1rem;
+}
+
+table {
+  width: 100%;
+}
+
+.onSeam{
+  position: relative;
+  bottom: -0px;
+}
+
