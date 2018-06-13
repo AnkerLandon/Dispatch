@@ -10,3 +10,6 @@ body { margin: 0; }
   height: 100%;
 }
 
+.basic-container {
+  padding: 30px;
+}
