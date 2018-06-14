@@ -1,0 +1,14 @@
+form {
+  height: auto;
+  margin: 10px;
+  padding-bottom: 25px;
+}
+
+.item {
+  margin: auto;
+  width: 80%;
+}
+
+.inputs {
+  width: 100%;
+}

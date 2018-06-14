@@ -1,55 +1,71 @@
-import {Component, Inject, EventEmitter, Output } from '@angular/core';
+import {Component, Inject, EventEmitter, Output, Input } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import { Customer } from './customers-data.model';
+import { Customer } from '../../customers-data.model';
+import { NgForm } from '@angular/forms';
 
 
-/**
- * @title Injecting data when opening a dialog
- */
 @Component({
   selector: 'app-dialog-box',
   templateUrl: './dialog-box.component.html',
   styleUrls: ['./dialog-box.component.css']
 })
 export class DialogBoxComponent {
-  customer: Customer;
-  no: number;
-  name: string;
+
+  constructor(public dialog: MatDialog) { }
+
+  @Input() myCustomer: Customer;
+
+  test = DialogBoxAddComponent;
+
 
   @Output('customerAdded') customerAdded = new EventEmitter();
 
-  constructor(public dialog: MatDialog) {}
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(DialogBoxEditComponent, {
-      data: {test: {no: this.no, name: this.name}}
+  openDialog(cust: Customer): void {
+    this.myCustomer = cust;
+    const dialogRef = this.dialog.open(this.test, {
+      maxWidth: '50vw',
+      data: this.myCustomer});
+    const sub = dialogRef.componentInstance.newCustomer.subscribe((newData: any) => {
+      this.customerAdded.emit(newData);
     });
+
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.no = result.no;
-      this.name = result.name;
-      this.customer = new Customer(result.no, result.name);
-      console.log(this.customer);
-      this.customerAdded.emit(this.customer);
     });
   }
 }
 
 @Component({
-  selector: 'app-dialog-edit',
-  templateUrl: './dialog-edit.component.html',
+  selector: 'app-dialog-add',
+  templateUrl: './dialog-add.component.html',
+  styleUrls: ['./dialog-content.component.css']
 })
-export class DialogBoxEditComponent {
+export class DialogBoxAddComponent {
+  myKeys = this.getMyKeys(this.data);
 
-  @Output() editMode = new EventEmitter();
+  @Output() newCustomer = new EventEmitter();
 
   constructor(
-    public dialogRef: MatDialogRef<DialogBoxEditComponent>,
+    public dialogRef: MatDialogRef<DialogBoxAddComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   onNoClick(): void {
     this.dialogRef.close();
   }
+  getMyKeys(myData) {
+    return Object.keys(myData);
+  }
+  getType(myIn) {
+    return typeof this.data[myIn];
+  }
+  saveCustomer(formData: NgForm) {
+    if (formData.invalid) {
+      return;
+    }
+    this.newCustomer.emit(formData.value);
+    this.dialogRef.close();
+  }
+
 
 }
+
 

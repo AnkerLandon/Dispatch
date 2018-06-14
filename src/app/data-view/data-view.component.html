@@ -4,13 +4,14 @@
 
 
 
-  <table mat-table [dataSource]="dataSource" matSort class="mat-z8">
+  <table mat-table #table [dataSource]="dataSource" matSort class="mat-z8">
 
       <ng-container matColumnDef="edit">
           <th mat-header-cell *matHeaderCellDef >
             <div class="onSeam">
               <app-dialog-box
                 (customerAdded)="addCustomer($event)"
+                [myCustomer]="blankCustomer"
               >
               </app-dialog-box>
             </div>

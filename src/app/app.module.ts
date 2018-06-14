@@ -14,6 +14,7 @@ import {
   MatExpansionModule,
   MatSortModule,
   MatTableModule,
+  MatTable,
   MatTooltipModule,
   MatDialogModule
 } from '@angular/material';
@@ -22,20 +23,20 @@ import { SearchOrderComponent } from './search/search-order/search-order.compone
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
 import { DataViewComponent } from './data-view/data-view.component';
-import { DialogBoxComponent, DialogBoxEditComponent } from './Dialog/Box/dialog-box.component';
+import { DialogBoxComponent, DialogBoxAddComponent} from './Dialog/Box/dialog-box.component';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
   entryComponents: [
     DialogBoxComponent,
-    DialogBoxEditComponent
+    DialogBoxAddComponent
   ],
   declarations: [
     AppComponent,
     SearchOrderComponent,
     HeaderComponent,
     DialogBoxComponent,
-    DialogBoxEditComponent,
+    DialogBoxAddComponent,
     DataViewComponent
   ],
   imports: [

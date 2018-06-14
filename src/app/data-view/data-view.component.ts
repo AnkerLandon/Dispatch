@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild, Input } from '@angular/core';
-import {MatSort, MatTableDataSource} from '@angular/material';
-import { Customer } from './customers-data.model';
+import {MatSort, MatTableDataSource, MatTable} from '@angular/material';
+import { Customer } from '../customers-data.model';
 
 
 @Component({
@@ -10,26 +10,40 @@ import { Customer } from './customers-data.model';
 })
 
 export class DataViewComponent implements OnInit {
-   customers: Customer[] = [new Customer(1456, 'Hydrogen', 1.0079, 'f')];
-   myCustomer: Customer;
+   customers: Customer[] = [];
+   blankCustomer: Customer;
 
-  @Input() customerAdded: Customer;
+  // @Input() customerAdded: Customer;
 
-  // this.customers.push(this.customerAdded);
+  constructor() { this.setUp(); }
 
-  displayedColumns = [ 'edit', 'position', 'name', 'weight', 'symbol'];
+  displayedColumns = [ 'edit', 'id', 'name', 'address', 'city', 'payment'];
   // displayedColumns = this.customer.names;
   dataSource = new MatTableDataSource(this.customers);
 
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('table') table: MatTable<Customer>;
 
-   ngOnInit() {
+  ngOnInit() {
     this.dataSource.sort = this.sort;
   }
 
   addCustomer(nCust) {
-    this.customers.push(nCust);
-    console.log(this.customers);
+    // this.customers.push(nCust);
+    this.dataSource.data.push(nCust);
+    // this.dataSource = this.customers;
+    this.table.renderRows();
+    console.log(this.dataSource);
+  }
+
+  setUp() {
+    this.blankCustomer = {
+      id: 0,
+      name: '',
+      address: '',
+      city: '',
+      payment: null
+    };
   }
 
 }
