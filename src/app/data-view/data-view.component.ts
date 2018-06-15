@@ -1,7 +1,9 @@
-import {Component, OnInit, ViewChild, Input } from '@angular/core';
+import {Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
 import {MatSort, MatTableDataSource, MatTable} from '@angular/material';
 import { Customer } from '../customers-data.model';
-
+import { DialogBoxAddComponent } from '../Dialog/Box/dialog-box.component';
+import { RecordService } from './record.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-data-view',
@@ -9,32 +11,33 @@ import { Customer } from '../customers-data.model';
   styleUrls: ['data-view.component.css']
 })
 
-export class DataViewComponent implements OnInit {
-   customers: Customer[] = [];
-   blankCustomer: Customer;
+export class DataViewComponent implements OnInit, OnDestroy {
+  private customers: Customer[] = [];
+  blankCustomer: Customer;
+  private customerSubbscription: Subscription;
 
-  // @Input() customerAdded: Customer;
-
-  constructor() { this.setUp(); }
+  constructor(public recordService: RecordService) {}
 
   displayedColumns = [ 'edit', 'id', 'name', 'address', 'city', 'payment'];
-  // displayedColumns = this.customer.names;
   dataSource = new MatTableDataSource(this.customers);
 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('table') table: MatTable<Customer>;
+  @ViewChild(MatTable) table: MatTable<any>;
 
   ngOnInit() {
     this.dataSource.sort = this.sort;
+    this.setUp();
+    this.customers = this.recordService.getCustomers();
+    this.customerSubbscription = this.recordService.getDataUpdateListener()
+      .subscribe((customers: Customer[]) => {
+        this.dataSource.data = customers;
+      });
   }
 
-  addCustomer(nCust) {
-    // this.customers.push(nCust);
-    this.dataSource.data.push(nCust);
-    // this.dataSource = this.customers;
-    this.table.renderRows();
-    console.log(this.dataSource);
+  ngOnDestroy() {
+    this.customerSubbscription.unsubscribe();
   }
+
 
   setUp() {
     this.blankCustomer = {
@@ -48,18 +51,5 @@ export class DataViewComponent implements OnInit {
 
 }
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
- const ELEMENT_DATA: PeriodicElement[] = [
-   {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-
- ];
-
-// const ELEMENT_DATA: PeriodicElement[] = [];
 
 

@@ -16,7 +16,8 @@ import {
   MatTableModule,
   MatTable,
   MatTooltipModule,
-  MatDialogModule
+  MatDialogModule,
+  MatSelectModule
 } from '@angular/material';
 import { AppComponent } from './app.component';
 import { SearchOrderComponent } from './search/search-order/search-order.component';
@@ -25,6 +26,8 @@ import { HeaderComponent } from './header/header.component';
 import { DataViewComponent } from './data-view/data-view.component';
 import { DialogBoxComponent, DialogBoxAddComponent} from './Dialog/Box/dialog-box.component';
 import { CommonModule } from '@angular/common';
+import { RecordService } from './data-view/record.service';
+
 
 @NgModule({
   entryComponents: [
@@ -56,9 +59,10 @@ import { CommonModule } from '@angular/common';
     MatTooltipModule,
     MatDialogModule,
     CommonModule,
+    MatSelectModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [RecordService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

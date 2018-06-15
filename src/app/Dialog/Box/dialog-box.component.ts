@@ -2,6 +2,7 @@ import {Component, Inject, EventEmitter, Output, Input } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { Customer } from '../../customers-data.model';
 import { NgForm } from '@angular/forms';
+import { RecordService } from '../../data-view/record.service';
 
 
 @Component({
@@ -9,24 +10,22 @@ import { NgForm } from '@angular/forms';
   templateUrl: './dialog-box.component.html',
   styleUrls: ['./dialog-box.component.css']
 })
-export class DialogBoxComponent {
-
-  constructor(public dialog: MatDialog) { }
+export class DialogBoxComponent  {
+  constructor(
+    public dialog: MatDialog,
+    public recordService: RecordService
+  ) {}
 
   @Input() myCustomer: Customer;
 
-  test = DialogBoxAddComponent;
-
-
-  @Output('customerAdded') customerAdded = new EventEmitter();
-
   openDialog(cust: Customer): void {
     this.myCustomer = cust;
-    const dialogRef = this.dialog.open(this.test, {
+    const dialogRef = this.dialog.open(DialogBoxAddComponent, {
       maxWidth: '50vw',
-      data: this.myCustomer});
-    const sub = dialogRef.componentInstance.newCustomer.subscribe((newData: any) => {
-      this.customerAdded.emit(newData);
+      data:  this.myCustomer});
+
+      const sub = dialogRef.componentInstance.newCustomer.subscribe((newData: any) => {
+      this.recordService.addCustomer(newData);
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -67,5 +66,6 @@ export class DialogBoxAddComponent {
 
 
 }
+
 
 
