@@ -1,7 +1,15 @@
 
 .input {
-  width: 100%;
+  width: 85%;
   height: 100%;
+  justify-content: left;
 }
 
+.main {
+  width: 100%;
+}
 
+button {
+  float: right;
+  margin-top: 12px;
+}

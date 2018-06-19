@@ -1,17 +1,18 @@
 
+<div class="main">
+  <mat-form-field class="input">
+    <input matInput id="Search" type="text" placeholder="Customer Name" >
+  </mat-form-field>
 
-<label for="Search">Search Orders</label>
-<mat-form-field class="input">
-  <input matInput type="text" placeholder="Customer Name" >
-</mat-form-field>
   <button
       mat-raised-button
       color="primary"
       type="submit"
-      (click)="onSearchOrder()" >Search</button>
+      (click)="onSearchOrder()"
+      >Search</button>
+  <p>{{ newSearch }}</p>
+</div>
 
-
-<p>{{ newSearch }}</p>
 
 
 
