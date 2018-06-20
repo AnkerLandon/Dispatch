@@ -41,7 +41,7 @@ export class CustomerViewComponent implements OnInit, OnDestroy {
 
 
   setUp() {
-    this.view = {type: 'customer', id: '', name: '', address: '', city: '', payment: null};
+    this.view = { id: '', name: '', address: '', city: '', payment: null};
     this.displayedColumns = this.displayedColumns.concat(Object.keys(this.view));
     this.displayedColumns.splice(this.displayedColumns.indexOf('id'), 1);
   }

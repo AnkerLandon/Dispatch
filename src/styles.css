@@ -8,8 +8,20 @@ body { margin: 0; }
   max-width: 1000px;
   margin: auto;
   height: 100%;
+  float: center;
 }
 
 .basic-container {
   padding: 30px;
 }
+
+.test{
+
+}
+
+
+.test2{
+
+}
+
+

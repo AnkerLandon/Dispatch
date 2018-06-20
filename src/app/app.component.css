@@ -10,12 +10,13 @@ html {
 body {
   font-family: Roboto, Arial, sans-serif;
   min-height: 100vh;
-  padding-top: 1rem;
+
+
 }
 
-mat-card{
-  width: 80%;
-  margin: auto;
-  height: 100%;
+#myhead{
+  position: fixed;
+  top: 0px;
+  z-index: 3;
 }
 

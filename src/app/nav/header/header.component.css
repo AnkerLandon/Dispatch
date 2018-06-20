@@ -1,0 +1,15 @@
+
+#header {
+
+  padding-bottom: 1rem;
+  width: 100vw;
+}
+
+.example-toolbar{
+  width: 100%;
+}
+
+html {
+  width: 100%;
+  background-color: brown;
+}
