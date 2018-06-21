@@ -33,4 +33,19 @@ router.delete("/:id", (req, res, next) => {
   res.status(200).json({message: "post deleted"});
 });
 
+router.put("/:id",(req, res, next) => {
+  const cust = new Customer ({
+    _id: req.params.id,
+    name: req.body.name,
+    address: req.body.address,
+    city: req.body.city,
+    payment: req.body.payment
+  });
+  Customer.updateOne({_id: req.params.id}, cust)
+    .then(result => {
+      console.log(result);
+      res.status(200).json({message: "update success"})
+    })
+});
+
 module.exports = router;

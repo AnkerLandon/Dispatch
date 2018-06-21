@@ -61,4 +61,9 @@ export class CustomerService {
       });
   }
 
+  editCustomer(id: string, editedCustomer: Customer) {
+    this.http.put('http://localhost:3000/api/customers/' + id, editedCustomer)
+    .subscribe(response => console.log(response));
+  }
+
 }

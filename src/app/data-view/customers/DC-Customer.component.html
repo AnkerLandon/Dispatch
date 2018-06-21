@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add Customer </h1>
+<h1 mat-dialog-title>{{title}} Customer </h1>
 <div mat-dialog-content>
 
   <form (submit)="saveCustomer(formData)" #formData="ngForm">
@@ -8,7 +8,7 @@
         type='string'
         name='name'
         placeholder=Name
-        ngModel
+        [ngModel]="data.name"
         required
       >
     </mat-form-field>
@@ -18,7 +18,7 @@
         type='string'
         name='address'
         placeholder=Address
-        ngModel
+        [ngModel]="data.address"
         required
       >
     </mat-form-field>
@@ -28,7 +28,7 @@
         type='string'
         name='city'
         placeholder=City
-        ngModel
+        [ngModel]="data.city"
         required
       >
     </mat-form-field>
@@ -37,7 +37,7 @@
         class="inputs"
         placeholder='Payment'
         name='payment'
-        ngModel
+        [ngModel]="data.payment"
         required
         >
           <mat-option value="Subscription">subscription</mat-option>

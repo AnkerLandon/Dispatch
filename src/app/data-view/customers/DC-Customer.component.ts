@@ -8,7 +8,6 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['../DC.component.css']
 })
 export class DCCustomerComponent {
-  myKeys = this.getMyKeys(this.data);
 
   @Output() newRecord = new EventEmitter();
 
@@ -18,12 +17,6 @@ export class DCCustomerComponent {
 
   onNoClick(): void {
     this.dialogRef.close();
-  }
-  getMyKeys(myData) {
-    return Object.keys(myData);
-  }
-  getType(myIn) {
-    return typeof this.data[myIn];
   }
   saveCustomer(formData: NgForm) {
     console.log(formData.value);

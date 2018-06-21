@@ -1,36 +1,65 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import { CustomerService } from './customer.service';
 import { DCCustomerComponent } from './DC-Customer.component';
+import { ActivatedRoute } from '@angular/router';
+import { CustomerViewComponent } from '../customers/customer-view.component';
 
 
 @Component({
   selector: 'app-db-customer',
   template: `
-    <button mat-mini-fab >
-    <mat-icon
-      aria-label="icon-button with an add icon"
-      (click)=openCustomerDialog(myForm) >add</mat-icon>
-    </button>
+    <div *ngIf="(myForm)">
+      <mat-icon
+        aria-label="icon-button with an add icon"
+        (click)=openCustomerDialog(myForm) >{{title}}
+      </mat-icon>
+    </div>
     `,
   styleUrls: ['../dialog-box.component.css']
 })
-export class DBCustomerComponent  {
-  constructor(
-    public dialog: MatDialog,
-    public customerService: CustomerService
-  ) {}
+export class DBCustomerComponent implements OnInit {
 
-
+  title = 'edit';
   @Input() myForm: any;
 
-  openCustomerDialog(dialogRequest: any): void {
+  constructor(
+    public dialog: MatDialog,
+    public customerService: CustomerService,
+    public route: ActivatedRoute
+  ) {}
+
+  ngOnInit() {
+    if (this.route.component === CustomerViewComponent) {
+      this.title = 'add';
+    }
+  }
+
+  openCustomerDialog(data: any) {
+    if (data.name) {
+      this.openDialogEdit(data);
+    } else {
+      this.openDialogAdd(data);
+    }
+  }
+
+  openDialogAdd(test: any): void {
     const dialogRef = this.dialog.open(DCCustomerComponent, {
       maxWidth: '50vw',
-      data:  this.myForm});
+      data:  test});
 
       dialogRef.componentInstance.newRecord.subscribe((newData: any) => {
       this.customerService.addCustomer(newData);
+    });
+  }
+
+  openDialogEdit(test: any): void {
+    const dialogRef = this.dialog.open(DCCustomerComponent, {
+      maxWidth: '50vw',
+      data:  test});
+
+      dialogRef.componentInstance.newRecord.subscribe((newData: any) => {
+      this.customerService.editCustomer(test.id, newData);
     });
   }
 }

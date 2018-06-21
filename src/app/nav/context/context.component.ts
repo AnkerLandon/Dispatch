@@ -3,6 +3,8 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Customer } from '../../models/customers-data.model';
 import { CustomerService } from '../../data-view/customers/customer.service';
+import { DBCustomerComponent } from '../../data-view/customers/DB-Customer.component';
+
 
 
 @Component ({
@@ -10,10 +12,18 @@ import { CustomerService } from '../../data-view/customers/customer.service';
   template: `
   <mat-card id='side' >
     <div *ngIf="customer.name" >
-      <div id='bold' >{{customer.name}}</div>
-      <div>{{customer.address}}</div>
-      <div>{{customer.city}}</div>
+      <div id='bold' >
+        {{customer.name}}
+        <button mat-icon-button matTooltip="edit Customer" id="button" >
+          <app-db-customer
+            [myForm]="customer">
+          </app-db-customer>
+        </button>
+      </div>
     </div>
+      <div fxHide.lt-md="true" fxHide="false">{{customer.address}}</div>
+      <div fxHide.lt-md="true" fxHide="false">{{customer.city}}</div>
+    <div></div>
   </mat-card>
   `,
   styles: [`
@@ -22,6 +32,9 @@ import { CustomerService } from '../../data-view/customers/customer.service';
   }
   #bold{
     font-weight: bold;
+  }
+  #button{
+    float: right;
   }
   `]
 })

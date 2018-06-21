@@ -14,9 +14,11 @@
           <ng-container matColumnDef="edit">
               <th mat-header-cell *matHeaderCellDef >
                 <div class="onSeam">
-                  <app-db-customer
-                    [myForm]="view">
-                  </app-db-customer>
+                  <button mat-mini-fab matTooltip="new Customer">
+                    <app-db-customer
+                      [myForm]="view">
+                    </app-db-customer>
+                  </button>
                 </div>
 
               </th>
