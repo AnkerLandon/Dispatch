@@ -1,5 +1,12 @@
-<mat-card class="norm">
+<div fxLayout="row" fxLayout.lt-md="column" >
+    <div fxFlex="10%" fxFlex.lt-lg="5%" fxFlex.lt-md="0px"></div>
+    <div fxFlex="200px" fxFlex.lt-md="100%" class='test'>
+      <app-context-nav></app-context-nav>
+    </div>
+    <div fxFlex="8px"></div>
+    <div fxFlex='70%' class='test2'>
 
+  <mat-card>
   <app-search-order></app-search-order>
 
   <table mat-table #table [dataSource]="dataSource" matSort class="mat-z8">
@@ -43,5 +50,9 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   </table>
-
 </mat-card>
+</div>
+
+
+
+

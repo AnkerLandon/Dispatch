@@ -33,7 +33,7 @@ export class CustomerService {
       });
   }
 
-  getCustomer(id: string) {
+  getCustomer(id: string): Customer {
     return {...this.customers.find(c => c.id === id)};
   }
 

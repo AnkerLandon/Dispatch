@@ -1,6 +1,8 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { NavService } from '../nav.service';
 import { Subscription } from 'rxjs';
+import { CustomerService } from '../../data-view/customers/customer.service';
+import { Customer } from '../../models/customers-data.model';
 
 
 @Component({
@@ -10,13 +12,13 @@ import { Subscription } from 'rxjs';
 
   <mat-sidenav-container class="example-container" >
       <mat-sidenav #sidenav [(opened)]="status" mode="side">
-        test
+        {{customer}} tesatasheosesutaeo
     </mat-sidenav>
     <mat-sidenav-content>
     <main >
         <body>
             <div >
-              <router-outlet></router-outlet>
+              <router-outlet ></router-outlet>
             </div>
         </body>
       </main>
@@ -35,19 +37,22 @@ import { Subscription } from 'rxjs';
 
   `],
 })
-export class SideBarComponent implements OnInit {
+export class SideBarComponent implements OnInit, OnDestroy {
   statusSub: Subscription;
   sizeSub: Subscription;
+  customerSub: Subscription;
   status = false;
   size: string;
+  customer: Customer;
 
   constructor(
-    public navService: NavService) {}
+    public navService: NavService ,
+    public customerService: CustomerService ) {}
 
    ngOnInit() {
-      this.statusSub = this.navService.get()
-        .subscribe((record: any) => {
-        this.status = record;
+    this.statusSub = this.navService.get()
+      .subscribe((record: any) => {
+      this.status = record;
     });
     this.sizeSub = this.navService.onResize$
     .subscribe((newsize: any) => {
@@ -58,7 +63,13 @@ export class SideBarComponent implements OnInit {
         this.status = false;
       }
     });
-    }
+  }
+
+  ngOnDestroy() {
+    this.statusSub.unsubscribe();
+    this.sizeSub.unsubscribe();
+    this.customerSub.unsubscribe();
+  }
 
 
 

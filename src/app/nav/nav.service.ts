@@ -40,6 +40,6 @@ export class NavService  {
   private onResize(event: UIEvent) {
       this.resizeSubject.next(<Window>event.target);
     }
-  }
-
 }
+
+

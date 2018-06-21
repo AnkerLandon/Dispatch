@@ -36,6 +36,7 @@ import { InvoiceService } from './data-view/invoices/invoice.service';
 import { DBInvoiceComponent } from './data-view/invoices/DB-Invoices.component';
 import { SideBarComponent } from './nav/side-bar/side-bar.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ContextComponent } from './nav/context/context.component';
 
 
 
@@ -56,6 +57,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     DCInvoiceComponent,
     CustomerViewComponent,
     SideBarComponent,
+    ContextComponent,
     InvoiceViewComponent
   ],
   imports: [

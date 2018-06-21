@@ -1,7 +1,11 @@
 <body class="mat-app-background">
 
-  <app-header id="myhead"></app-header>
-  <app-side-bar></app-side-bar>
+  <div fxLayout="column">
+    <div fxFlex="80px"><app-header id="myhead"></app-header></div>
+    <div><router-outlet></router-outlet></div>
+  </div>
+
+
 
 
 </body>
