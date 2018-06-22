@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>{{title}} Customer </h1>
+<h1 mat-dialog-title>test Customer </h1>
 <div mat-dialog-content>
 
   <form (submit)="saveCustomer(formData)" #formData="ngForm">
@@ -47,7 +47,26 @@
 
     <div mat-dialog-actions>
       <button mat-button (click)="onNoClick()">Cancel</button>
-      <button mat-button type="submit" cdkFocusInitial>Submit</button>
+      <button
+        mat-button
+        *ngIf="!data.id"
+        type="submit"
+        cdkFocusInitial
+        >Submit</button>
+      <button
+        mat-button
+        *ngIf="data.id"
+        (click)="editCustomer(formData)"
+        cdkFocusInitial
+        >Edit</button>
+      <button
+        mat-button
+        *ngIf="data.id"
+        id="delete"
+        color="warn"
+        (click)="onDelete(formData)"
+        >Delete
+      </button>
     </div>
   </form>
 

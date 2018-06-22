@@ -52,12 +52,12 @@ addInvoice(newRequest: Request) {
     });
 }
 
-deleteInvoice(invoiceId: string) {
-  this.http.delete('http://localhost:3000/api/invoice/' + invoiceId )
+deleteInvoices(accountId: string) {
+  this.http.delete('http://localhost:3000/api/invoice/' + accountId )
     .subscribe(() => {
-      const updatedInvoices = this.invoices.filter(invoice => invoice.id !== invoiceId);
-      this.invoices = updatedInvoices;
-      this.invoiceUpdate.next([...this.invoices]);
+       const updatedInvoices = this.invoices.filter(invoices => invoices.accountId !== accountId);
+       this.invoices = updatedInvoices;
+       this.invoiceUpdate.next([...this.invoices]);
     });
 }
 

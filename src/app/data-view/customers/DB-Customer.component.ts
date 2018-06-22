@@ -46,20 +46,14 @@ export class DBCustomerComponent implements OnInit {
   openDialogAdd(test: any): void {
     const dialogRef = this.dialog.open(DCCustomerComponent, {
       maxWidth: '50vw',
-      data:  test});
-
-      dialogRef.componentInstance.newRecord.subscribe((newData: any) => {
-      this.customerService.addCustomer(newData);
+      data:  test
     });
   }
 
   openDialogEdit(test: any): void {
     const dialogRef = this.dialog.open(DCCustomerComponent, {
       maxWidth: '50vw',
-      data:  test});
-
-      dialogRef.componentInstance.newRecord.subscribe((newData: any) => {
-      this.customerService.editCustomer(test.id, newData);
+      data:  test
     });
   }
 }

@@ -12,3 +12,7 @@ form {
 .inputs {
   width: 100%;
 }
+
+#delete {
+  float: right;
+}

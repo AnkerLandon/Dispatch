@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Customer } from '../../models/customers-data.model';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
+import {  InvoiceService } from '../invoices/invoice.service';
 
 @Injectable({providedIn: 'root'})
 export class CustomerService {
@@ -10,7 +11,7 @@ export class CustomerService {
 
   private dataUpdate = new Subject<any[]>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, public invoiceService: InvoiceService, ) {}
 
   getCustomers() {
     this.http.get
@@ -54,16 +55,19 @@ export class CustomerService {
 
   deleteCustomer(customerId: string) {
     this.http.delete('http://localhost:3000/api/customers/' + customerId )
-      .subscribe(() => {
-        const updatedCustomers = this.customers.filter(customer => customer.id !== customerId);
-        this.customers = updatedCustomers;
-        this.dataUpdate.next([...this.customers]);
+      .subscribe((response) => {
+        console.log(response);
+        console.log(this.customers);
+        this.getCustomers();
       });
   }
 
   editCustomer(id: string, editedCustomer: Customer) {
     this.http.put('http://localhost:3000/api/customers/' + id, editedCustomer)
-    .subscribe(response => console.log(response));
+    .subscribe((response) => {
+      console.log(response);
+      this.getCustomers();
+    });
   }
 
 }

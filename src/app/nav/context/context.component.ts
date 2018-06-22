@@ -24,17 +24,39 @@ import { DBCustomerComponent } from '../../data-view/customers/DB-Customer.compo
       <div fxHide.lt-md="true" fxHide="false">{{customer.address}}</div>
       <div fxHide.lt-md="true" fxHide="false">{{customer.city}}</div>
     <div></div>
+
+    <mat-button-toggle-group value="bold"
+      id="toggle"
+      name="Nav"
+      aria-label="Navigation"
+      fxLayout="column"
+      fxLayout.lt-md="row">
+      <mat-button-toggle value="bold">Bold</mat-button-toggle>
+      <mat-button-toggle value="italic">Italic</mat-button-toggle>
+      <mat-button-toggle value="underline">Underline</mat-button-toggle>
+    </mat-button-toggle-group>
+
   </mat-card>
   `,
   styles: [`
+  #toggle{
+    margin-top: 34px !important;
+    margin-left: -25px !important;
+    margin-bottom: -25px !important;
+    width: 200px;
+  }
   #side{
-
   }
   #bold{
     font-weight: bold;
   }
   #button{
     float: right;
+  }
+  #splitter{
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 2rem !important;
   }
   `]
 })
@@ -55,6 +77,7 @@ export class ContextComponent implements OnInit  {
       if (paramMap.has('customerId')) {
         this.customerId = paramMap.get('customerId');
         this.customer = this.customerService.getCustomer(this.customerId);
+        this.customer.id = this.customerId;
       } else {
         this.customer = {
           id: '',

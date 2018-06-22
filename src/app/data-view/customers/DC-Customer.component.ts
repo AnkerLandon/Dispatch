@@ -1,6 +1,8 @@
 import { Component, Inject, EventEmitter, Output} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatInputModule} from '@angular/material';
 import { NgForm } from '@angular/forms';
+import { CustomerService } from './customer.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dialog-add',
@@ -13,18 +15,36 @@ export class DCCustomerComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DCCustomerComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {}
+    public customerService: CustomerService,
+    public router: Router,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+      console.log(data);
+    }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
   saveCustomer(formData: NgForm) {
-    console.log(formData.value);
     if (formData.invalid) {
       return;
     }
-    this.newRecord.emit(formData.value);
+    this.customerService.addCustomer(formData.value);
     this.dialogRef.close();
+  }
+
+  editCustomer(formData: NgForm) {
+    console.log(this.data.id, formData.value);
+    if (formData.invalid) {
+      return;
+    }
+
+    this.customerService.editCustomer(this.data.id, formData.value);
+    this.dialogRef.close();
+  }
+
+  onDelete() {
+    this.customerService.deleteCustomer(this.data.id);
+    this.router.navigate(['']);
   }
 
 }

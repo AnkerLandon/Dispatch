@@ -21,9 +21,11 @@ router.post("", (req, res, next) => {
   const invoice = new Invoice({
     accountId: req.body.accountId,
     date: datestring,
-    requests: [request],
+    requests: [],
     total: 0
   });
+
+  invoice.requests.push(request);
 
   /*
   if(invoice.requests){
@@ -49,10 +51,11 @@ router.get("/:id",(req, res, next) => {
 });
 
 router.delete("/:id", (req, res, next) => {
-  Invoice.deleteOne({_id: req.params.id}).then(result => {
+  Invoice.deleteMany({accountId: /req.params.id/}).then(result => {
     console.log(result);
+    res.status(200).json({message: "post deleted"});
   });
-  res.status(200).json({message: "post deleted"});
+
 });
 
 module.exports = router;

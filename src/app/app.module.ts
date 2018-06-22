@@ -37,6 +37,7 @@ import { DBInvoiceComponent } from './data-view/invoices/DB-Invoices.component';
 import { SideBarComponent } from './nav/side-bar/side-bar.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ContextComponent } from './nav/context/context.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 
 
@@ -77,6 +78,7 @@ import { ContextComponent } from './nav/context/context.component';
     MatTableModule,
     MatTooltipModule,
     MatDialogModule,
+    MatButtonToggleModule,
     CommonModule,
     MatSelectModule,
     HttpClientModule,
