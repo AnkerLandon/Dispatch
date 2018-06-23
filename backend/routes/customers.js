@@ -32,10 +32,9 @@ router.get("",(req, res, next) => {
 
 });
 
-router.delete("/:name", (req, res, next) => {
-  console.log(req.params);
-  Customer.deleteOne({ name: req.params.name}).then(result => {
-    // console.log(result);
+router.delete("/:id", (req, res, next) => {
+  Customer.deleteOne({ _id: req.params.id}).then(result => {
+    console.log(result);
     res.status(200).json({ message: "Post deleted!" });
   });
 });
@@ -43,15 +42,14 @@ router.delete("/:name", (req, res, next) => {
 
 
 router.put("/:id",(req, res, next) => {
-  var id = mongoose.Types.ObjectId(req.params.id);
   const cust = new Customer ({
-    _id: id,
+    _id: req.params.id,
     name: req.body.name,
     address: req.body.address,
     city: req.body.city,
     payment: req.body.payment
   });
-  Customer.updateOne({_id: id}, cust)
+  Customer.updateOne({_id: req.params.id}, cust)
     .exec()
     .then(result => {
       console.log(result);

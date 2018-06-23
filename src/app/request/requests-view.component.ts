@@ -31,7 +31,6 @@ export class RequestsViewComponent implements OnInit, OnDestroy {
       .subscribe((inInvoice: Invoice) => {
         this.dataSource.data = inInvoice.requests;
         this.invoice = inInvoice;
-        console.log(this.invoice);
       });
   }
 

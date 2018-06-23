@@ -57,7 +57,7 @@ router.put("/:id",(req, res, next) => {
     { _id: req.body.id },
     { $push: { requests: newRequest } })
     .then(result => {
-      res.status(200).json({ message: "Update successful!" });
+      res.status(200).json({ message: "Update successful!" , data: newRequest});
   });
 
 });
@@ -69,11 +69,19 @@ router.get("/:id",(req, res, next) => {
 
 });
 
-router.delete("/:id", (req, res, next) => {
-  Invoice.deleteMany({accountId: /req.params.id/}).then(result => {
-    console.log(result);
-    res.status(200).json({message: "post deleted"});
-  });
+router.delete("/destroy/:accountId", (req, res, next) => {
+  Invoice.deleteMany({accountId: req.params.accountId})
+  .exec()
+    .then(result => {
+      console.log(result);
+      res.status(200).json({message: "deleted all invoices pertaining to customer"})
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      })
+    });
 
 });
 

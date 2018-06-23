@@ -45,7 +45,6 @@ setRequest(newId: string) {
   const myInvoice = this.getInvoice(newId);
   this.invoice = myInvoice;
   this.requestUpdate.next(this.invoice);
-  console.log(this.invoice);
 }
 
 getCurrentInvoice() {
@@ -65,9 +64,10 @@ getInvoicesUpdateListener() {
 addRequest(newRequest: any) {
   console.log(newRequest);
   this.http.put('http://localhost:3000/api/invoice/' + newRequest.id, newRequest)
-    .subscribe((response) => {
-      console.log(response);
-
+    .subscribe((response: any) => {
+      console.log(response.message);
+      this.invoice.requests.push(response.data);
+      this.requestUpdate.next(this.invoice);
     });
 }
 
@@ -81,11 +81,12 @@ addInvoice(newRequest: Request) {
 }
 
 deleteInvoices(accountId: string) {
-  this.http.delete('http://localhost:3000/api/invoice/' + accountId )
-    .subscribe(() => {
+  this.http.delete('http://localhost:3000/api/invoice/destroy/' + accountId )
+    .subscribe((result) => {
+      console.log(result); /*
        const updatedInvoices = this.invoices.filter(invoices => invoices.accountId !== accountId);
        this.invoices = updatedInvoices;
-       this.invoiceUpdate.next([...this.invoices]);
+       this.invoiceUpdate.next([...this.invoices]);*/
     });
 }
 

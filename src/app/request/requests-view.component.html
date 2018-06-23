@@ -1,7 +1,7 @@
 
 <mat-card>
 
-  <h2>Invoice Requests</h2>
+  <mat-card-title>Invoice Requests</mat-card-title>
   <table mat-table #table [dataSource]="dataSource" matSort class="mat-z8">
 
       <ng-container matColumnDef="edit">
@@ -17,7 +17,7 @@
             <button mat-icon-button matTooltip="open in new">
               <mat-icon
               aria-label="expand icon"
-              >launch</mat-icon>
+              >edit</mat-icon>
             </button>
           </td>
         </ng-container>

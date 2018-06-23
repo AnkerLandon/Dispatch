@@ -16,3 +16,6 @@ form {
 #delete {
   float: right;
 }
+#buttons {
+  width: 100%;
+}

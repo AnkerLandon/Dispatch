@@ -1,46 +1,38 @@
 <div fxLayout="row" fxLayout.lt-md="column" >
-  <div fxFlex="10%" fxFlex.lt-lg="5%" fxFlex.lt-md="0px"></div>
-  <div fxFlex="200px" fxFlex.lt-md="100%" class='test'>
-    <app-context-nav></app-context-nav>
-  </div>
-  <div fxFlex="8px"></div>
-  <div fxFlex='70%' class='test2'>
-    <mat-card  >
-
-      <app-search-order></app-search-order>
-
-      <table mat-table #table [dataSource]="dataSource" matSort class="mat-z8">
-
+    <div fxFlex="10%" fxFlex.lt-lg="5%" fxFlex.lt-md="0px"></div>
+    <div fxFlex="200px" fxFlex.lt-md="100%" class='test'>
+      <app-context-nav></app-context-nav>
+    </div>
+    <div fxFlex="8px"></div>
+    <div fxFlex='70%' class='test2'>
+      <mat-card  >
+        <mat-card-title>Customer</mat-card-title>
+        <table mat-table #table [dataSource]="dataSource" matSort class="mat-z8">
           <ng-container matColumnDef="edit">
-              <th mat-header-cell *matHeaderCellDef >
-                <div class="onSeam">
-                  <button mat-mini-fab matTooltip="new Customer">
-                    <app-db-customer
-                      [myForm]="view">
-                    </app-db-customer>
-                  </button>
-                </div>
-
-              </th>
-              <td mat-cell *matCellDef="let element">
-                <button mat-icon-button matTooltip="open in new">
-                  <mat-icon
-                  aria-label="expand icon"
-                  routerLink='invoices/{{element.id}}'
-                  >launch</mat-icon>
+            <th mat-header-cell *matHeaderCellDef >
+              <div class="onSeam">
+                <button mat-mini-fab matTooltip="new Customer">
+                  <app-db-customer
+                        [myForm]="view"></app-db-customer>
                 </button>
-              </td>
-            </ng-container>
-
-        <ng-container *ngFor="let col of displayedColumns | slice:1" matColumnDef= {{col}}>
-          <th mat-header-cell *matHeaderCellDef mat-sort-header > {{ col }} </th>
-          <td  mat-cell *matCellDef="let row"> {{row[col]}} </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-      </table>
-    </mat-card>
-</div>
-
+              </div>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button matTooltip="open in new">
+                <mat-icon
+                    aria-label="expand icon"
+                    routerLink='invoices/{{element.id}}'
+                    >launch</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <ng-container *ngFor="let col of displayedColumns | slice:1" matColumnDef= {{col}}>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > {{ col }} </th>
+            <td  mat-cell *matCellDef="let row"> {{row[col]}} </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </mat-card>
+    </div>
+  </div>

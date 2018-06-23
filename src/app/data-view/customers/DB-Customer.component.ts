@@ -12,7 +12,7 @@ import { CustomerViewComponent } from '../customers/customer-view.component';
     <div *ngIf="(myForm)">
       <mat-icon
         aria-label="icon-button with an add icon"
-        (click)=openCustomerDialog(myForm) >{{title}}
+        (click)='openDialog(myForm)' >{{title}}
       </mat-icon>
     </div>
     `,
@@ -35,25 +35,10 @@ export class DBCustomerComponent implements OnInit {
     }
   }
 
-  openCustomerDialog(data: any) {
-    if (this.title === 'edit') {
-      this.openDialogEdit(data);
-    } else {
-      this.openDialogAdd(data);
-    }
-  }
-
-  openDialogAdd(test: any): void {
+  openDialog(form: any): void {
     const dialogRef = this.dialog.open(DCCustomerComponent, {
       maxWidth: '50vw',
-      data:  test
-    });
-  }
-
-  openDialogEdit(test: any): void {
-    const dialogRef = this.dialog.open(DCCustomerComponent, {
-      maxWidth: '50vw',
-      data:  test
+      data:  form
     });
   }
 }

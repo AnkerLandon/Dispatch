@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>test Customer </h1>
+<h1 mat-dialog-title> Customer </h1>
 <div mat-dialog-content>
 
   <form  #formData="ngForm">
@@ -45,7 +45,7 @@
       </mat-select>
     </mat-form-field>
 
-    <div mat-dialog-actions>
+    <div mat-dialog-actions id="buttons">
       <button mat-button (click)="onNoClick()">Cancel</button>
       <button
         mat-button
@@ -61,11 +61,19 @@
         >Edit</button>
       <button
         mat-button
-        *ngIf="data.id"
+        *ngIf="data.id && !confirmDelete"
         id="delete"
         color="warn"
-        (click)="onDelete(formData)"
+        (click)="checkDelete()"
         >Delete
+      </button>
+      <button
+        mat-button
+        *ngIf="confirmDelete"
+        id="delete"
+        color="warn"
+        (click)="deleteCustomer(formData)"
+        >Delete cannot be undone
       </button>
     </div>
   </form>

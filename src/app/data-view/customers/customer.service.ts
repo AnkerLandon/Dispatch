@@ -8,8 +8,10 @@ import {  InvoiceService } from '../invoices/invoice.service';
 @Injectable({providedIn: 'root'})
 export class CustomerService {
   private customers: Customer[] = [];
+  private customer: Customer;
 
   private dataUpdate = new Subject<any[]>();
+  private currentCustomerUpdate = new Subject<Customer>();
 
   constructor(private http: HttpClient, public invoiceService: InvoiceService, ) {}
 
@@ -34,8 +36,21 @@ export class CustomerService {
       });
   }
 
-  getCustomer(id: string): Customer {
-    return {...this.customers.find(c => c.id === id)};
+  getCustomer(id: string) {
+    return this.customers.find(c => c.id === id);
+  }
+
+  setCurrentCustomer(id: string) {
+    this.customer = this.customers.find(c => c.id === id);
+    this.currentCustomerUpdate.next(this.customer);
+  }
+
+  getCurrentCustomer() {
+    return this.customer;
+  }
+
+  test() {
+    return this.currentCustomerUpdate.asObservable();
   }
 
   getDataUpdateListener() {
@@ -53,18 +68,21 @@ export class CustomerService {
       });
   }
 
-  deleteCustomer(customerName: string) {
-    this.http.delete('http://localhost:3000/api/customers/' + customerName)
+  deleteCustomer(customerId: string) {
+    this.invoiceService.deleteInvoices(customerId);
+    this.http.delete('http://localhost:3000/api/customers/' + customerId)
       .subscribe((response) => {
       this.getCustomers();
       });
   }
 
   editCustomer(id: string, editedCustomer: Customer) {
-    this.http.put('http://localhost:3000/api/customers/' + name, editedCustomer)
+    this.http.put('http://localhost:3000/api/customers/' + id, editedCustomer)
     .subscribe((response) => {
       console.log(response);
       this.getCustomers();
+      this.customer = editedCustomer;
+      this.currentCustomerUpdate.next(this.customer);
     });
   }
 

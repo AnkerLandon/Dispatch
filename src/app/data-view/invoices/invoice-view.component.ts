@@ -21,7 +21,6 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
   flag = false;
   view: any;
-  customer: Customer;
   displayedColumns = [ 'edit', 'date', 'total', 'requests'];
   dataSource = new MatTableDataSource(this.records);
 
@@ -35,11 +34,9 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
-      if (paramMap.has('customerId')) {
         this.customerId = paramMap.get('customerId');
-        this.customer = this.customerService.getCustomer(this.customerId);
-      }
     });
+    this.customerService.setCurrentCustomer(this.customerId);
     this.invoiceService.getInvoices(this.customerId);
     this.setUp();
     this.dataSource.sort = this.sort;

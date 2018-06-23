@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 })
 export class DCCustomerComponent {
 
+  confirmDelete = false;
+
   @Output() newRecord = new EventEmitter();
 
   constructor(
@@ -42,11 +44,14 @@ export class DCCustomerComponent {
     this.dialogRef.close();
   }
 
-  onDelete() {
-    console.log(this.data.id);
-    this.customerService.deleteCustomer(this.data.name);
+  deleteCustomer() {
+    this.customerService.deleteCustomer(this.data.id);
     this.router.navigate(['']);
     this.dialogRef.close();
+  }
+
+  checkDelete() {
+    this.confirmDelete = true;
   }
 
 }
