@@ -43,8 +43,10 @@ export class DCCustomerComponent {
   }
 
   onDelete() {
-    this.customerService.deleteCustomer(this.data.id);
+    console.log(this.data.id);
+    this.customerService.deleteCustomer(this.data.name);
     this.router.navigate(['']);
+    this.dialogRef.close();
   }
 
 }

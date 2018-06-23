@@ -5,11 +5,13 @@ import { map } from 'rxjs/operators';
 import { Invoice } from '../../models/invoice-data.model';
 import { Request } from '../../models/invoice-data.model';
 
+
 @Injectable({providedIn: 'root'})
 export class InvoiceService {
   private invoices: Invoice[] = [];
-
+  private invoice: Invoice;
   private invoiceUpdate = new Subject<Invoice[]>();
+  private requestUpdate = new Subject<Invoice>();
 
   constructor(private http: HttpClient) {}
 
@@ -39,8 +41,34 @@ getInvoice(id: string) {
   return {...this.invoices.find(i => i.id === id)};
 }
 
+setRequest(newId: string) {
+  const myInvoice = this.getInvoice(newId);
+  this.invoice = myInvoice;
+  this.requestUpdate.next(this.invoice);
+  console.log(this.invoice);
+}
+
+getCurrentInvoice() {
+  return this.invoice;
+}
+
+viewRequestUpdate() {
+  return this.requestUpdate.asObservable();
+}
+
+
+
 getInvoicesUpdateListener() {
   return this.invoiceUpdate.asObservable();
+}
+
+addRequest(newRequest: any) {
+  console.log(newRequest);
+  this.http.put('http://localhost:3000/api/invoice/' + newRequest.id, newRequest)
+    .subscribe((response) => {
+      console.log(response);
+
+    });
 }
 
 addInvoice(newRequest: Request) {

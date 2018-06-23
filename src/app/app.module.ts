@@ -38,6 +38,8 @@ import { SideBarComponent } from './nav/side-bar/side-bar.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ContextComponent } from './nav/context/context.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { RequestsViewComponent } from './request/requests-view.component';
+import { DBRequestComponent } from './request/DB-Request.component';
 
 
 
@@ -46,14 +48,17 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     DBCustomerComponent,
     DBInvoiceComponent,
     DCCustomerComponent,
-    DCInvoiceComponent
+    DCInvoiceComponent,
+    DBRequestComponent,
   ],
   declarations: [
     AppComponent,
     SearchOrderComponent,
     HeaderComponent,
+    RequestsViewComponent,
     DBCustomerComponent,
     DBInvoiceComponent,
+    DBRequestComponent,
     DCCustomerComponent,
     DCInvoiceComponent,
     CustomerViewComponent,

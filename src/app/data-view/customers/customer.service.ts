@@ -44,7 +44,7 @@ export class CustomerService {
 
   addCustomer(newCustomer: Customer) {
     this.http.post<{message: string, custId: string}>
-      ('http://localhost:3000/api/customers', newCustomer)
+      ('http://localhost:3000/api/customers/new', newCustomer)
       .subscribe((responceData) => {
         const myCustId = responceData.custId;
         newCustomer.id = myCustId;
@@ -53,17 +53,15 @@ export class CustomerService {
       });
   }
 
-  deleteCustomer(customerId: string) {
-    this.http.delete('http://localhost:3000/api/customers/' + customerId )
+  deleteCustomer(customerName: string) {
+    this.http.delete('http://localhost:3000/api/customers/' + customerName)
       .subscribe((response) => {
-        console.log(response);
-        console.log(this.customers);
-        this.getCustomers();
+      this.getCustomers();
       });
   }
 
   editCustomer(id: string, editedCustomer: Customer) {
-    this.http.put('http://localhost:3000/api/customers/' + id, editedCustomer)
+    this.http.put('http://localhost:3000/api/customers/' + name, editedCustomer)
     .subscribe((response) => {
       console.log(response);
       this.getCustomers();

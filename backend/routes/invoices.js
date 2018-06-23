@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post("", (req, res, next) => {
 
-  const request = new Request({
+  var request = new Request({
     number: req.body.number,
     animal: req.body.animal,
     other: req.body.other,
@@ -18,7 +18,7 @@ router.post("", (req, res, next) => {
   var d = new Date();
   var datestring = (d.getMonth()+1) + "-" + d.getDate() + "-" + d.getFullYear();
 
-  const invoice = new Invoice({
+  var invoice = new Invoice({
     accountId: req.body.accountId,
     date: datestring,
     requests: [],
@@ -39,6 +39,25 @@ router.post("", (req, res, next) => {
       message: 'success',
       newInvoice: invoice
     });
+  });
+
+});
+
+router.put("/:id",(req, res, next) => {
+
+  var newRequest = new Request ({
+    number: req.body.number,
+    animal: req.body.animal,
+    other: req.body.other,
+    complete: false,
+    price: 0
+  });
+  // console.log(newRequest);
+  Invoice.findOneAndUpdate(
+    { _id: req.body.id },
+    { $push: { requests: newRequest } })
+    .then(result => {
+      res.status(200).json({ message: "Update successful!" });
   });
 
 });

@@ -36,7 +36,7 @@ export class DBCustomerComponent implements OnInit {
   }
 
   openCustomerDialog(data: any) {
-    if (data.name) {
+    if (this.title === 'edit') {
       this.openDialogEdit(data);
     } else {
       this.openDialogAdd(data);

@@ -5,6 +5,8 @@ import { InvoiceService } from './invoice.service';
 import { CustomerService } from '../customers/customer.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Request } from '../../models/invoice-data.model';
+
 
 @Component({
   selector: 'app-data-view',
@@ -17,9 +19,10 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   private dataSubbscription: Subscription;
   private customerId: string;
 
+  flag = false;
   view: any;
   customer: Customer;
-  displayedColumns = [ 'edit', 'date', 'requests', 'total'];
+  displayedColumns = [ 'edit', 'date', 'total', 'requests'];
   dataSource = new MatTableDataSource(this.records);
 
   constructor(
@@ -50,6 +53,10 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     this.dataSubbscription.unsubscribe();
   }
 
+  openRecords(myId: string) {
+    this.flag = true;
+    this.invoiceService.setRequest(myId);
+  }
 
   setUp() {
     this.view = {

@@ -9,7 +9,7 @@ const mongo = require('mongodb');
 const router = express.Router();
 ObjectID = mongo.ObjectID;
 
-router.post("", (req, res, next) => {
+router.post("/new", (req, res, next) => {
   const customer = new Customer({
     name: req.body.name,
     address: req.body.address,
@@ -32,21 +32,12 @@ router.get("",(req, res, next) => {
 
 });
 
-router.delete("/:id", (req, res, next) => {
-  var id = mongoose.Types.ObjectId(req.params.id);
-  Customer.deleteOne({ _id: id })
-    .exec()
-    .then(result => {
-      res.status(200).json({
-      message: "Deleted Successfuly"
-     });
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({
-        error: err
-      })
-    });
+router.delete("/:name", (req, res, next) => {
+  console.log(req.params);
+  Customer.deleteOne({ name: req.params.name}).then(result => {
+    // console.log(result);
+    res.status(200).json({ message: "Post deleted!" });
+  });
 });
 
 
