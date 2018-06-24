@@ -15,7 +15,7 @@ ObjectID = mongo.ObjectID;
 
 app.use(bodyParse.json());
 
-mongoose.connect("mongodb+srv://Lando:cfDUpyJXcXFxxFlZ@anker0-k2bcv.gcp.mongodb.net/Dispatchdb?retryWrites=false")
+mongoose.connect("mongodb+srv://Lando:cfDUpyJXcXFxxFlZ@anker0-k2bcv.gcp.mongodb.net/Dispatchdb?retryWrites=true")
   .then(() => {
     console.log('connected database');
   })

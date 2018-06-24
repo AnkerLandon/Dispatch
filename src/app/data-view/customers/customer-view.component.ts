@@ -32,6 +32,7 @@ export class CustomerViewComponent implements OnInit, OnDestroy {
     this.dataSubbscription = this.recordService.getDataUpdateListener()
       .subscribe((records: any[]) => {
         this.dataSource.data = records;
+        console.log(this.dataSource.data);
       });
   }
 
@@ -41,9 +42,9 @@ export class CustomerViewComponent implements OnInit, OnDestroy {
 
 
   setUp() {
-    this.view = { id: '', name: '', address: '', city: '', payment: null};
+    this.view = { _id: '', name: '', address: '', city: '', payment: null};
     this.displayedColumns = this.displayedColumns.concat(Object.keys(this.view));
-    this.displayedColumns.splice(this.displayedColumns.indexOf('id'), 1);
+    this.displayedColumns.splice(this.displayedColumns.indexOf('_id'), 1);
   }
 
 }

@@ -10,11 +10,16 @@ import { Request } from '../../models/invoice-data.model';
 export class InvoiceService {
   private invoices: Invoice[] = [];
   private invoice: Invoice;
+  private requestIndex;
   private invoiceUpdate = new Subject<Invoice[]>();
   private requestUpdate = new Subject<Invoice>();
 
   constructor(private http: HttpClient) {}
 
+setRequestIndex(request: Request) {
+  console.log(this.invoice.requests.indexOf(request));
+  this.requestIndex = this.invoice.requests.indexOf(request);
+}
 
 getInvoices(invoiceId: string) {
   this.http.get
@@ -23,7 +28,7 @@ getInvoices(invoiceId: string) {
     .pipe(map((invoiceData) => {
       return invoiceData.documents.map(invoice => {
         return {
-          id: invoice._id,
+          _id: invoice._id,
           accountId: invoice.accountId,
           date: invoice.date,
           requests: invoice.requests,
@@ -38,7 +43,7 @@ getInvoices(invoiceId: string) {
 }
 
 getInvoice(id: string) {
-  return {...this.invoices.find(i => i.id === id)};
+  return {...this.invoices.find(i => i._id === id)};
 }
 
 setRequest(newId: string) {
@@ -55,15 +60,26 @@ viewRequestUpdate() {
   return this.requestUpdate.asObservable();
 }
 
-
+editRecord( request: Request) {
+  const accountId = this.getCurrentInvoice();
+  console.log('edit service', request);
+  this.http.put('http://localhost:3000/api/invoice/request/'
+    + accountId._id, request)
+    .subscribe((response: any) => {
+      console.log(response.message);
+      this.invoice.requests[this.requestIndex] = request;
+      this.requestUpdate.next(this.invoice);
+    });
+}
 
 getInvoicesUpdateListener() {
   return this.invoiceUpdate.asObservable();
 }
 
 addRequest(newRequest: any) {
-  console.log(newRequest);
-  this.http.put('http://localhost:3000/api/invoice/' + newRequest.id, newRequest)
+  console.log('addRequest', newRequest);
+  const currenInvoice = this.getCurrentInvoice();
+  this.http.put('http://localhost:3000/api/invoice/' + currenInvoice._id, newRequest)
     .subscribe((response: any) => {
       console.log(response.message);
       this.invoice.requests.push(response.data);
@@ -71,8 +87,9 @@ addRequest(newRequest: any) {
     });
 }
 
-addInvoice(newRequest: Request) {
-  this.http.post<{message: string, newInvoice: Invoice }>
+addInvoice(newRequest: any) {
+  console.log('service', newRequest);
+  this.http.post<{message: string, newInvoice: any }>
     ('http://localhost:3000/api/invoice', newRequest)
     .subscribe((responceData) => {
       this.invoices.push(responceData.newInvoice);

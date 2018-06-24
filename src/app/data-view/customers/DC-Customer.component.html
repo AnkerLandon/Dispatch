@@ -49,19 +49,19 @@
       <button mat-button (click)="onNoClick()">Cancel</button>
       <button
         mat-button
-        *ngIf="!data.id"
+        *ngIf="!data._id"
         (click)="saveCustomer(formData)"
         cdkFocusInitial
         >Submit</button>
       <button
         mat-button
-        *ngIf="data.id"
+        *ngIf="data._id"
         (click)="editCustomer(formData)"
         cdkFocusInitial
         >Edit</button>
       <button
         mat-button
-        *ngIf="data.id && !confirmDelete"
+        *ngIf="data._id && !confirmDelete"
         id="delete"
         color="warn"
         (click)="checkDelete()"

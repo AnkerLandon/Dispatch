@@ -6,7 +6,6 @@ const Request = require("../models/request");
 const router = express.Router();
 
 router.post("", (req, res, next) => {
-
   var request = new Request({
     number: req.body.number,
     animal: req.body.animal,
@@ -52,14 +51,36 @@ router.put("/:id",(req, res, next) => {
     complete: false,
     price: 0
   });
-  // console.log(newRequest);
-  Invoice.findOneAndUpdate(
-    { _id: req.body.id },
+   console.log('add',req.body);
+  Invoice.updateOne(
+    { _id: req.params.id },
     { $push: { requests: newRequest } })
     .then(result => {
+      console.log(result);
       res.status(200).json({ message: "Update successful!" , data: newRequest});
-  });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({message: err})
+    });;
 
+});
+
+router.put("/request/:id",(req, res, next) => {
+  console.log('server', req.body, req.params.id, req.params.index);
+  Invoice.updateOne(
+    {_id: req.params.id, "requests._id": req.body._id },
+    {$set: {"requests.$": req.body}}
+  )
+  .exec()
+  .then(result => {
+    console.log(result);
+    res.status(200).json({message: "update success"})
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({message: err})
+  });
 });
 
 router.get("/:id",(req, res, next) => {

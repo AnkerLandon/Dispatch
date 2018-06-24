@@ -15,14 +15,16 @@
                             <ng-container matColumnDef="edit">
                                 <th mat-header-cell *matHeaderCellDef>
                                     <div class="onSeam">
-                                        <app-db-invoice [myForm]="view">
-                                        </app-db-invoice>
+                                        <button mat-mini-fab >
+                                          <app-db-invoice [myForm]="view">
+                                          </app-db-invoice>
+                                        </button>
                                     </div>
 
                                 </th>
                                 <td mat-cell *matCellDef="let element">
                                     <button mat-icon-button matTooltip="open in new">
-                                        <mat-icon aria-label="expand icon" (click)="openRecords(element.id)">launch</mat-icon>
+                                        <mat-icon aria-label="expand icon" (click)="openRecords(element._id)">launch</mat-icon>
                                     </button>
                                 </td>
                             </ng-container>

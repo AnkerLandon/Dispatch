@@ -22,7 +22,7 @@ export class CustomerService {
       .pipe(map((customerData) => {
         return customerData.documents.map(customer => {
           return {
-            id: customer._id,
+            _id: customer._id,
             name: customer.name,
             address: customer.address,
             city: customer.city,
@@ -36,12 +36,12 @@ export class CustomerService {
       });
   }
 
-  getCustomer(id: string) {
-    return this.customers.find(c => c.id === id);
+  getCustomer(_id: string) {
+    return this.customers.find(c => c._id === _id);
   }
 
-  setCurrentCustomer(id: string) {
-    this.customer = this.customers.find(c => c.id === id);
+  setCurrentCustomer(_id: string) {
+    this.customer = this.customers.find(c => c._id === _id);
     this.currentCustomerUpdate.next(this.customer);
   }
 
@@ -58,26 +58,26 @@ export class CustomerService {
   }
 
   addCustomer(newCustomer: Customer) {
-    this.http.post<{message: string, custId: string}>
+    this.http.post<{message: string, cust__id: string}>
       ('http://localhost:3000/api/customers/new', newCustomer)
       .subscribe((responceData) => {
-        const myCustId = responceData.custId;
-        newCustomer.id = myCustId;
+        const myCust__id = responceData.cust__id;
+        newCustomer._id = myCust__id;
         this.customers.push(newCustomer);
         this.dataUpdate.next([...this.customers]);
       });
   }
 
-  deleteCustomer(customerId: string) {
-    this.invoiceService.deleteInvoices(customerId);
-    this.http.delete('http://localhost:3000/api/customers/' + customerId)
+  deleteCustomer(customer_id: string) {
+    this.invoiceService.deleteInvoices(customer_id);
+    this.http.delete('http://localhost:3000/api/customers/' + customer_id)
       .subscribe((response) => {
       this.getCustomers();
       });
   }
 
-  editCustomer(id: string, editedCustomer: Customer) {
-    this.http.put('http://localhost:3000/api/customers/' + id, editedCustomer)
+  editCustomer(_id: string, editedCustomer: Customer) {
+    this.http.put('http://localhost:3000/api/customers/' + _id, editedCustomer)
     .subscribe((response) => {
       console.log(response);
       this.getCustomers();

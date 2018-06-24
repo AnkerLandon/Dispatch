@@ -35,17 +35,17 @@ export class DCCustomerComponent {
   }
 
   editCustomer(formData: NgForm) {
-    console.log(this.data.id, formData.value);
+    console.log(this.data._id, formData.value);
     if (formData.invalid) {
       return;
     }
 
-    this.customerService.editCustomer(this.data.id, formData.value);
+    this.customerService.editCustomer(this.data._id, formData.value);
     this.dialogRef.close();
   }
 
   deleteCustomer() {
-    this.customerService.deleteCustomer(this.data.id);
+    this.customerService.deleteCustomer(this.data._id);
     this.router.navigate(['']);
     this.dialogRef.close();
   }

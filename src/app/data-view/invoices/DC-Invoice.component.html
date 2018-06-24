@@ -1,14 +1,14 @@
-<h1 mat-dialog-title>Add Customer </h1>
+<h1 mat-dialog-title>Add Invoice </h1>
 <div mat-dialog-content>
 
-  <form (submit)="saveInvoice(formData)" #formData="ngForm" >
+  <form  #formData="ngForm" >
     <mat-form-field class="item" >
       <input matInput
         class="inputs"
         type='number'
         name='number'
         placeholder='number of dead'
-        ngModel
+        [ngModel]='data.number'
         required
       >
     </mat-form-field>
@@ -17,7 +17,7 @@
         class="inputs"
         placeholder='Animal'
         name='animal'
-        ngModel
+        [ngModel]='data.animal'
         required
         >
         <mat-option *ngFor="let item of animals" value="{{item}}">{{item}}</mat-option>
@@ -29,7 +29,7 @@
         type='string'
         name='other'
         placeholder='Other:'
-        ngModel
+        [ngModel]='data.other'
         required
       >
     </mat-form-field>
@@ -37,7 +37,24 @@
 
     <div mat-dialog-actions>
       <button mat-button (click)="onNoClick()">Cancel</button>
-      <button mat-button type="submit" cdkFocusInitial>Submit</button>
+      <button
+        mat-button
+        *ngIf="!data._id && !data.number"
+        (click)="addInvoice(formData)"
+        cdkFocusInitial>Add New
+      </button>
+      <button
+        mat-button
+        *ngIf="data.requests"
+        (click)="addRequest(formData)"
+        cdkFocusInitial>Add Request
+      </button>
+      <button
+        mat-button
+        *ngIf="!data.requests && data._id"
+        (click)="editRequest(formData)"
+        cdkFocusInitial>Edit
+      </button>
     </div>
   </form>
 

@@ -7,17 +7,22 @@
       <ng-container matColumnDef="edit">
           <th mat-header-cell *matHeaderCellDef >
             <div class="onSeam">
-              <app-db-request>
-                [myForm]="invoice"
-              </app-db-request>
+                <button mat-mini-fab >
+                  <app-db-invoice
+                     [myForm]="invoice">
+                  </app-db-invoice>
+                </button>
             </div>
 
           </th>
           <td mat-cell *matCellDef="let element">
             <button mat-icon-button matTooltip="open in new">
-              <mat-icon
-              aria-label="expand icon"
-              >edit</mat-icon>
+              <mat-icon>
+                  <button mat-icon-button >
+                    <app-db-request [myForm]='element'>
+                    </app-db-request>
+                  </button>
+              </mat-icon>
             </button>
           </td>
         </ng-container>

@@ -1,5 +1,5 @@
 export interface Invoice {
-  id: string;
+  _id: string;
   accountId: string;
   date: string;
   requests: Request[];
@@ -7,6 +7,7 @@ export interface Invoice {
 }
 
 export interface Request {
+  _id?: string;
   number: number;
   animal: animals;
   other?: string;

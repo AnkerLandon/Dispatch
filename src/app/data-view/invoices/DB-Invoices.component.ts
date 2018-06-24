@@ -8,11 +8,9 @@ import { DCInvoiceComponent } from './DC-Invoice.component';
 @Component({
   selector: 'app-db-invoice',
   template: `
-    <button mat-mini-fab >
     <mat-icon
       aria-label="icon-button with an add icon"
-      (click)=openInvoiceDialog(myForm) >add</mat-icon>
-    </button>
+      (click)='openInvoiceDialog()' >add</mat-icon>
     `,
   styleUrls: ['../dialog-box.component.css']
 })
@@ -24,18 +22,11 @@ export class DBInvoiceComponent {
 
   @Input() myForm: any;
 
-  openInvoiceDialog(dialogRequest: any): void {
-  const dialogRef = this.dialog.open(DCInvoiceComponent, {
-    maxWidth: '50vw',
-    data:  this.myForm});
-
-    dialogRef.componentInstance.newRecord.subscribe((newData: any) => {
-    newData.accountId = dialogRequest.accountId;
-
-    if (!newData.other) {newData.other = ''; }
-
-    this.invoiceService.addInvoice(newData);
-  });
+  openInvoiceDialog(): void {
+    console.log('start data', this.myForm);
+    const dialogRef = this.dialog.open(DCInvoiceComponent, {
+      maxWidth: '50vw',
+      data:  this.myForm});
   }
 }
 

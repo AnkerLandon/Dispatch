@@ -58,12 +58,12 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   setUp() {
     this.view = {
       accountId: this.customerId,
-      id: '',
-      number: 0,
+      _id: '',
+      number: null,
       animal: '',
       other: '',
       complete: false,
-      price: 0};
+      price: null};
   }
 
 }

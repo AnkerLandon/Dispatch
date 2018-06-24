@@ -72,7 +72,7 @@ export class ContextComponent implements OnInit  {
 
   flag = false;
   customer: Customer = {
-    id: '',
+    _id: '',
     name: '',
     address: '',
     city: '',
