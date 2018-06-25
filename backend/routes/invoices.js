@@ -90,6 +90,19 @@ router.get("/:id",(req, res, next) => {
 
 });
 
+router.delete("/:invId/:reqId", (req, res, next) => {
+  console.log('server',req.params.invId , req.params.reqId);
+  Invoice.updateOne(
+    { _id: req.params.invId },
+    { $pull: { requests : { _id : req.params.reqId} } },
+    { safe: true },
+    function removeConnectionsCB(err, obj) {
+     console.log(obj);
+      res.status(200).json({message: "deleted request"});
+    });
+
+});
+
 router.delete("/destroy/:accountId", (req, res, next) => {
   Invoice.deleteMany({accountId: req.params.accountId})
   .exec()

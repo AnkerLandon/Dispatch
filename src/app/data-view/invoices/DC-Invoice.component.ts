@@ -25,6 +25,8 @@ export class DCInvoiceComponent {
 
 
   myRequest: any;
+  confirmDelete = false;
+  complete = false;
 
   @Output() newRecord = new EventEmitter();
 
@@ -66,13 +68,27 @@ export class DCInvoiceComponent {
       number: formData.value.number,
       animal: formData.value.animal,
       other: formData.value.other,
-      complete: this.data.complete,
+      complete: this.complete,
       price: 0
     };
     if (!this.myRequest.other) {this.myRequest.other = ''; }
     console.log('DC', this.myRequest, this.data);
     this.invoiceService.editRecord(this.myRequest);
     this.dialogRef.close();
+  }
+
+  deleteRequest() {
+    this.invoiceService.setRequestIndex(this.data);
+    this.invoiceService.deleteRequest(this.data._id);
+    this.dialogRef.close();
+  }
+
+  checkDelete() {
+    this.confirmDelete = true;
+  }
+
+  completeSwitch(value: boolean) {
+    if (value) {this.complete = false; } else {this.complete = true; }
   }
 
 

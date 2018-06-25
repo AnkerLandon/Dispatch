@@ -61,10 +61,10 @@ viewRequestUpdate() {
 }
 
 editRecord( request: Request) {
-  const accountId = this.getCurrentInvoice();
+  const currentInvoice = this.getCurrentInvoice();
   console.log('edit service', request);
   this.http.put('http://localhost:3000/api/invoice/request/'
-    + accountId._id, request)
+    + currentInvoice._id, request)
     .subscribe((response: any) => {
       console.log(response.message);
       this.invoice.requests[this.requestIndex] = request;
@@ -104,6 +104,17 @@ deleteInvoices(accountId: string) {
        const updatedInvoices = this.invoices.filter(invoices => invoices.accountId !== accountId);
        this.invoices = updatedInvoices;
        this.invoiceUpdate.next([...this.invoices]);*/
+    });
+}
+
+deleteRequest(resId: string) {
+  const currenInvoice = this.getCurrentInvoice();
+  console.log('request', currenInvoice, resId );
+  this.http.delete('http://localhost:3000/api/invoice/' + currenInvoice._id + '/' + resId)
+    .subscribe((result) => {
+      console.log(result);
+      this.invoice.requests.splice(this.requestIndex, 1);
+      this.requestUpdate.next(this.invoice);
     });
 }
 

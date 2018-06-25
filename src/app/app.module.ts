@@ -17,7 +17,13 @@ import {
   MatTable,
   MatTooltipModule,
   MatDialogModule,
-  MatSelectModule
+  MatSelectModule,
+  MatCheckboxModule,
+  MatFormFieldControl,
+  MatFormFieldModule,
+  MatRadioButton,
+  MatRadioModule,
+  MatSlideToggleModule
 } from '@angular/material';
 import { AppComponent } from './app.component';
 import { SearchOrderComponent } from './search/search-order/search-order.component';
@@ -84,9 +90,13 @@ import { DBRequestComponent } from './request/DB-Request.component';
     MatTooltipModule,
     MatDialogModule,
     MatButtonToggleModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatRadioModule,
     CommonModule,
     MatSelectModule,
     HttpClientModule,
+    MatSlideToggleModule,
     FlexLayoutModule,
     BrowserAnimationsModule
   ],
