@@ -8,7 +8,8 @@ const mongo = require('mongodb');
 
 const router = express.Router();
 
-router.post("/login", (req, res, next) => {
+router.post("/new", (req, res, next) => {
+  console.log(req.body);
   bcrypt.hash(req.body.password, 10).then(hash => {
     const user = new User({
       email: req.body.email,
@@ -19,13 +20,15 @@ router.post("/login", (req, res, next) => {
       city: req.body.city,
       state: req.body.state,
       zip: req.body.zip,
-      phone: req.body.phone
+      phone: req.body.phone,
+      rank: req.body.rank
     });
+    console.log(this.user);
     user.save()
       .then(result => {
         res.status(201).json({
           message: 'user created',
-          result: result
+          result: result.id
         });
       })
       .catch(err => {
@@ -35,5 +38,14 @@ router.post("/login", (req, res, next) => {
       });
   });
 });
+
+router.get("",(req, res, next) => {
+  User.find().then(documents => {
+    res.status(200).json({documents});
+  });
+
+});
+
+
 
 module.exports = router;

@@ -22,12 +22,13 @@ export class UserService {
             email:  user.email,
             password:  user.password,
             firstName:  user.firstName,
-            LastName:  user.LastName,
+            lastName:  user.lastName,
             address:  user.address,
             city:  user.city,
             state:  user.state,
             zip:  user.zip,
-            phone: user.phone
+            phone: user.phone,
+            rank: user.rank
           };
         });
       }))
@@ -39,6 +40,19 @@ export class UserService {
 
   getUsersUpdateListener() {
     return this.userUpdate.asObservable();
+  }
+
+  addUser(newUser: User) {
+    this.http.post
+      ('http://localhost:3000/api/users/new', newUser)
+      .subscribe((responceData: any) => {
+        console.log(responceData.message);
+        const myUser_id = responceData.id ;
+        newUser._id = myUser_id;
+        this.users.push(newUser);
+        this.userUpdate.next([...this.users]);
+      });
+
   }
 
 

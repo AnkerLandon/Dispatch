@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema({
     state: {type: String},
     zip: {type: Number},
   phone: {type: Number, required: true},
-  level: {type: String, required: true}
+  rank: {type: String, required: true}
 });
 
 userSchema.plugin(uniqueValidator);

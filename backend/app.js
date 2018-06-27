@@ -38,7 +38,7 @@ app.use((req, res, next) => {
 
 app.use("/api/customers", customerRoutes);
 app.use("/api/invoice", invoiceRoutes);
-app.use("/api/user", userRoutes);
+app.use("/api/users", userRoutes);
 
 
 module.exports = app;

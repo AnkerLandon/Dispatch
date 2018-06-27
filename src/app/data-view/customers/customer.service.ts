@@ -58,7 +58,7 @@ export class CustomerService {
   }
 
   addCustomer(newCustomer: Customer) {
-    this.http.post<{message: string, cust__id: string}>
+    this.http.post
       ('http://localhost:3000/api/customers/new', newCustomer)
       .subscribe((responceData: any) => {
         const myCust_id = responceData.custId ;

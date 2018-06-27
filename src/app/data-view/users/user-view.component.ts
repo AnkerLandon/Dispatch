@@ -17,7 +17,7 @@ export class UserViewComponent implements OnInit, OnDestroy {
   private users: User[] = [];
 
   view: any;
-  displayedColumns = ['edit', 'firstName', 'lastName', 'email', 'address', 'phone', 'status'];
+  displayedColumns = ['edit', 'firstName', 'lastName', 'email', 'address', 'phone', 'rank'];
   dataSource = new MatTableDataSource(this.users);
 
   constructor(
@@ -31,13 +31,11 @@ export class UserViewComponent implements OnInit, OnDestroy {
     this.userService.getUsers();
     this.setUp();
     this.dataSource.sort = this.sort;
-    /*
     this.dataSubbscription = this.userService.getUsersUpdateListener()
       .subscribe((rcvdUsers: User[]) => {
         this.dataSource.data = rcvdUsers;
       });
-  */
-     this.dataSource.data = this.view;
+     // this.dataSource.data = this.view;
   }
 
   ngOnDestroy() {
@@ -50,12 +48,13 @@ export class UserViewComponent implements OnInit, OnDestroy {
       email: '',
       password: '',
       firstName: '',
-      LastName: '',
+      lastName: '',
       address: '',
       city: '',
       state: '',
       zip: null,
-      phone: null};
+      phone: null,
+      rank: ''};
   }
 
 }

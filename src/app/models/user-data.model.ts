@@ -9,5 +9,5 @@ export interface User {
     state?: string;
     zip?: number;
   phone: number;
-
+  rank: string;
 }

@@ -38,6 +38,17 @@
     <mat-form-field class="item" >
       <input matInput
         class="inputs"
+        type='password'
+        name='password'
+        placeholder='Password'
+        [ngModel]="data.password"
+        required
+      >
+    </mat-form-field>
+
+    <mat-form-field class="item" >
+      <input matInput
+        class="inputs"
         type='string'
         name='address'
         placeholder='Address'
@@ -64,13 +75,18 @@
         placeholder="State"
         aria-label="State"
         matInput
+        required
+        minLength="2"
+        maxLength="2"
         [formControl]="stateControl"
         [matAutocomplete]="auto">
+
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
           {{option}}
         </mat-option>
       </mat-autocomplete>
+      <mat-error *ngIf="stateControl.invalid">Please enter valid state.</mat-error>
     </mat-form-field>
 
     <mat-form-field class="item" >
@@ -88,15 +104,17 @@
       <mat-select
         class="inputs"
         placeholder='User Role'
-        name='status'
-        [ngModel]="data.status"
+        name='rank'
+        [ngModel]="data.rank"
         required
         >
-          <mat-option value="dispatch">Dispatch</mat-option>
+          <mat-option value="Dispatch">Dispatch</mat-option>
           <mat-option value="Driver">Driver</mat-option>
           <mat-option value="Admin">Admin</mat-option>
       </mat-select>
     </mat-form-field>
+
+    <div id="error" *ngIf="isStateValid === -1">Please enter a valid state</div>
 
     <div mat-dialog-actions id="buttons">
       <button mat-button (click)="onNoClick()">Cancel</button>
@@ -104,12 +122,14 @@
         mat-button
         *ngIf="!data._id"
         (click)="saveUser(formData)"
+        (keyup.enter)="saveUser(formData)"
         cdkFocusInitial
         >Submit</button>
       <button
         mat-button
         *ngIf="data._id"
         (click)="editUser(formData)"
+        (keyup.enter)="editUser(formData)"
         cdkFocusInitial
         >Edit</button>
       <button

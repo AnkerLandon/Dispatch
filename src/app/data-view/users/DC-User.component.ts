@@ -1,6 +1,6 @@
 import { Component, Inject, EventEmitter, Output, OnInit} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatInputModule} from '@angular/material';
-import { NgForm, FormControl } from '@angular/forms';
+import { NgForm, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
 import { Observable } from 'rxjs';
@@ -27,7 +27,8 @@ export class DCUserComponent implements OnInit {
 
   @Output() newRecord = new EventEmitter();
   filteredOptions: Observable<string[]>;
-  stateControl = new FormControl();
+  stateControl = new FormControl(undefined, [Validators.required, Validators.minLength(2), Validators.maxLength(2)]);
+  isStateValid;
 
   constructor(
     public dialogRef: MatDialogRef<DCUserComponent>,
@@ -55,12 +56,17 @@ export class DCUserComponent implements OnInit {
     this.dialogRef.close();
   }
   saveUser(formData: NgForm) {
-    if (formData.invalid && this.stateControl.invalid) {
+    this.isStateValid = this.states.indexOf(this.stateControl.value.toUpperCase());
+    console.log(formData.value, this.stateControl, this.isStateValid);
+    if ( this.isStateValid === -1) {
       return;
     }
-    // this.customerService.addCustomer(formData.value);
-    formData.value.state = this.stateControl.value;
-    console.log(formData.value);
+    if (formData.invalid) {
+      return;
+    }
+    formData.value.state = this.stateControl.value.toUpperCase();
+    this.userService.addUser(formData.value);
+    console.log(formData.value, this.stateControl);
     this.dialogRef.close();
   }
 
