@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-//const requestSchema = require('./request');
+const uniqueValidator = require("mongoose-unique-validator");
 
 const requestSchema = mongoose.Schema({
   number: {type: Number, required: true},
@@ -24,10 +24,12 @@ const requestSchema = mongoose.Schema({
 
 const invoiceSchema = mongoose.Schema({
   accountId: {type: String, required: true},
-  date: {type: String },
+  date: {type: String, required: true },
   requests: [requestSchema],
   total: {type: Number}
 });
+
+invoiceSchema.plugin(uniqueValidator);
 
 
 module.exports = mongoose.model('Invoice', invoiceSchema);

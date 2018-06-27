@@ -13,7 +13,8 @@
               <div class="onSeam">
                 <button mat-mini-fab matTooltip="new Customer">
                   <app-db-customer
-                        [myForm]="view"></app-db-customer>
+                        [myForm]="view">
+                  </app-db-customer>
                 </button>
               </div>
             </th>
@@ -21,7 +22,7 @@
               <button mat-icon-button matTooltip="open in new">
                 <mat-icon
                     aria-label="expand icon"
-                    routerLink='invoices/{{element._id}}'
+                    routerLink='../invoices/{{element._id}}'
                     >launch</mat-icon>
               </button>
             </td>

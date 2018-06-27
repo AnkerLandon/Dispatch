@@ -5,6 +5,7 @@ const app = express();
 
 const customerRoutes = require('./routes/customers');
 const invoiceRoutes = require('./routes/invoices');
+const userRoutes = require('./routes/user');
 
 const Invoice = require('./models/invoice');
 const Request = require('./models/request');
@@ -37,6 +38,7 @@ app.use((req, res, next) => {
 
 app.use("/api/customers", customerRoutes);
 app.use("/api/invoice", invoiceRoutes);
+app.use("/api/user", userRoutes);
 
 
 module.exports = app;

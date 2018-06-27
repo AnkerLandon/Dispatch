@@ -33,10 +33,16 @@ router.post("", (req, res, next) => {
     }
   }
   */
-  invoice.save().then(result => {
+  invoice.save()
+  .then(result => {
     res.status(201).json({
       message: 'success',
       newInvoice: invoice
+    });
+  })
+  .catch(err => {
+    res.status(500).json({
+      error: err
     });
   });
 

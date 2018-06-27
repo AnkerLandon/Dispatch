@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Directive } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, NG_VALIDATORS } from '@angular/forms';
 
 import {
   MatInputModule,
@@ -23,7 +23,8 @@ import {
   MatFormFieldModule,
   MatRadioButton,
   MatRadioModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatAutocompleteModule
 } from '@angular/material';
 import { AppComponent } from './app.component';
 import { SearchOrderComponent } from './search/search-order/search-order.component';
@@ -46,6 +47,12 @@ import { ContextComponent } from './nav/context/context.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { RequestsViewComponent } from './request/requests-view.component';
 import { DBRequestComponent } from './request/DB-Request.component';
+import { LoginComponent } from './auth/login.component';
+import 'hammerjs';
+import { UserService } from './data-view/users/user.service';
+import { UserViewComponent } from './data-view/users/user-view.component';
+import { DBUserComponent } from './data-view/users/DB-User.component';
+import { DCUserComponent } from './data-view/users/DC-User.component';
 
 
 
@@ -53,6 +60,8 @@ import { DBRequestComponent } from './request/DB-Request.component';
   entryComponents: [
     DBCustomerComponent,
     DBInvoiceComponent,
+    DBUserComponent,
+    DCUserComponent,
     DCCustomerComponent,
     DCInvoiceComponent,
     DBRequestComponent,
@@ -61,11 +70,15 @@ import { DBRequestComponent } from './request/DB-Request.component';
     AppComponent,
     SearchOrderComponent,
     HeaderComponent,
+    LoginComponent,
     RequestsViewComponent,
     DBCustomerComponent,
     DBInvoiceComponent,
     DBRequestComponent,
+    DBUserComponent,
+    UserViewComponent,
     DCCustomerComponent,
+    DCUserComponent,
     DCInvoiceComponent,
     CustomerViewComponent,
     SideBarComponent,
@@ -76,6 +89,7 @@ import { DBRequestComponent } from './request/DB-Request.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     MatInputModule,
     MatCardModule,
     MatButtonModule,
@@ -97,10 +111,11 @@ import { DBRequestComponent } from './request/DB-Request.component';
     MatSelectModule,
     HttpClientModule,
     MatSlideToggleModule,
+    MatAutocompleteModule,
     FlexLayoutModule,
     BrowserAnimationsModule
   ],
-  providers: [CustomerService, InvoiceService],
+  providers: [CustomerService, InvoiceService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

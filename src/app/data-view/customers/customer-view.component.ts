@@ -17,7 +17,7 @@ export class CustomerViewComponent implements OnInit, OnDestroy {
 
   view: any;
   customer: Customer;
-  displayedColumns = [ 'edit'];
+  displayedColumns = [ 'edit', 'name', 'address', 'city', 'payment'];
   dataSource = new MatTableDataSource(this.records);
 
   constructor(public recordService: CustomerService, public route: ActivatedRoute) {}
@@ -42,9 +42,12 @@ export class CustomerViewComponent implements OnInit, OnDestroy {
 
 
   setUp() {
-    this.view = { _id: '', name: '', address: '', city: '', payment: null};
-    this.displayedColumns = this.displayedColumns.concat(Object.keys(this.view));
-    this.displayedColumns.splice(this.displayedColumns.indexOf('_id'), 1);
+    this.view = {
+      _id: '',
+      name: '',
+      address: '',
+      city: '',
+      payment: null};
   }
 
 }

@@ -1,0 +1,134 @@
+<h1 mat-dialog-title> Customer </h1>
+<div mat-dialog-content>
+
+  <form  #formData="ngForm">
+    <mat-form-field class="item" >
+      <input matInput
+        class="inputs"
+        type='string'
+        name='firstName'
+        placeholder='First Name'
+        [ngModel]="data.firstName"
+        required
+      >
+    </mat-form-field>
+
+    <mat-form-field class="item" >
+      <input matInput
+        class="inputs"
+        type='string'
+        name='lastName'
+        placeholder='Last Name'
+        [ngModel]="data.lastName"
+        required
+      >
+    </mat-form-field>
+
+    <mat-form-field class="item" >
+      <input matInput
+        class="inputs"
+        type='string'
+        name='email'
+        placeholder='Email'
+        [ngModel]="data.email"
+        required
+      >
+    </mat-form-field>
+
+    <mat-form-field class="item" >
+      <input matInput
+        class="inputs"
+        type='string'
+        name='address'
+        placeholder='Address'
+        [ngModel]="data.address"
+        required
+      >
+    </mat-form-field>
+
+    <mat-form-field class="item" >
+      <input matInput
+        class="inputs"
+        type='string'
+        name='city'
+        placeholder=City
+        [ngModel]="data.city"
+        required
+      >
+    </mat-form-field>
+
+    <mat-form-field class="item" >
+      <input
+        type="text"
+        name="state"
+        placeholder="State"
+        aria-label="State"
+        matInput
+        [formControl]="stateControl"
+        [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field class="item" >
+      <input matInput
+        class="inputs"
+        type='phoneNumber'
+        name='phone'
+        placeholder='Phone Number'
+        [ngModel]="data.phone"
+        required
+      >
+    </mat-form-field>
+
+    <mat-form-field class="item">
+      <mat-select
+        class="inputs"
+        placeholder='User Role'
+        name='status'
+        [ngModel]="data.status"
+        required
+        >
+          <mat-option value="dispatch">Dispatch</mat-option>
+          <mat-option value="Driver">Driver</mat-option>
+          <mat-option value="Admin">Admin</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div mat-dialog-actions id="buttons">
+      <button mat-button (click)="onNoClick()">Cancel</button>
+      <button
+        mat-button
+        *ngIf="!data._id"
+        (click)="saveUser(formData)"
+        cdkFocusInitial
+        >Submit</button>
+      <button
+        mat-button
+        *ngIf="data._id"
+        (click)="editUser(formData)"
+        cdkFocusInitial
+        >Edit</button>
+      <button
+        mat-button
+        *ngIf="data._id && !confirmDelete"
+        id="delete"
+        color="warn"
+        (click)="checkDelete()"
+        >Delete
+      </button>
+      <button
+        mat-button
+        *ngIf="confirmDelete"
+        id="delete"
+        color="warn"
+        (click)="deleteUser(formData)"
+        >Delete cannot be undone
+      </button>
+    </div>
+  </form>
+
+</div>

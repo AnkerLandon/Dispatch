@@ -46,9 +46,9 @@ import { InvoiceViewComponent } from '../../data-view/invoices/invoice-view.comp
         aria-label="Navigation"
         fxLayout="column"
         fxLayout.lt-md="row">
-        <mat-button-toggle value="Customers">Customers</mat-button-toggle>
+        <mat-button-toggle value="Customers" routerLink='../../customers'>Customers</mat-button-toggle>
         <mat-button-toggle value="Prices">Prices</mat-button-toggle>
-        <mat-button-toggle value="Accounts">Accounts</mat-button-toggle>
+        <mat-button-toggle value="Accounts" routerLink='../users'>Users</mat-button-toggle>
      </mat-button-toggle-group>
   </div>
 </div>
