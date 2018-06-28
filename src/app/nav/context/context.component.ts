@@ -41,14 +41,14 @@ import { InvoiceViewComponent } from '../../data-view/invoices/invoice-view.comp
   <div fxFlex="100%" fxFlex.lt-md="50%" >
      <mat-button-toggle-group
         id="toggle"
-        value="Customers"
+        [value]="currentLoc"
         name="Nav"
         aria-label="Navigation"
         fxLayout="column"
         fxLayout.lt-md="row">
-        <mat-button-toggle value="Customers" routerLink='../../customers'>Customers</mat-button-toggle>
-        <mat-button-toggle value="Prices">Prices</mat-button-toggle>
-        <mat-button-toggle value="Accounts" routerLink='../users'>Users</mat-button-toggle>
+        <mat-button-toggle value="customers" routerLink='../../customers'>Customers</mat-button-toggle>
+        <mat-button-toggle value="prices">Prices</mat-button-toggle>
+        <mat-button-toggle value="accounts" routerLink='../users'>Users</mat-button-toggle>
      </mat-button-toggle-group>
   </div>
 </div>
@@ -71,6 +71,7 @@ import { InvoiceViewComponent } from '../../data-view/invoices/invoice-view.comp
 export class ContextComponent implements OnInit  {
 
   flag = false;
+  currentLoc;
   customer: Customer = {
     _id: '',
     name: '',
@@ -93,8 +94,10 @@ export class ContextComponent implements OnInit  {
     if (this.route.component === InvoiceViewComponent) {
       this.customer = this.customerService.getCurrentCustomer();
       this.flag = true;
+      this.currentLoc = 'customers';
     } else {
       this.flag = false;
+      this.currentLoc = 'users';
     }
   }
 
