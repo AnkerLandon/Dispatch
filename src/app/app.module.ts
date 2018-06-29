@@ -30,8 +30,6 @@ import { AppComponent } from './app.component';
 import { SearchOrderComponent } from './search/search-order/search-order.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './nav/header/header.component';
-import { CustomerViewComponent } from './data-view/customers/customer-view.component';
-import { DBCustomerComponent} from './data-view/customers/DB-Customer.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -50,17 +48,15 @@ import { DBRequestComponent } from './request/DB-Request.component';
 import { LoginComponent } from './auth/login.component';
 import 'hammerjs';
 import { UserService } from './data-view/users/user.service';
-import { UserViewComponent } from './data-view/users/user-view.component';
-import { DBUserComponent } from './data-view/users/DB-User.component';
 import { DCUserComponent } from './data-view/users/DC-User.component';
+import { MainViewComponent } from './data-view/main/main-view.component';
+import { MainService } from './data-view/main/main.service';
 
 
 
 @NgModule({
   entryComponents: [
-    DBCustomerComponent,
     DBInvoiceComponent,
-    DBUserComponent,
     DCUserComponent,
     DCCustomerComponent,
     DCInvoiceComponent,
@@ -70,17 +66,14 @@ import { DCUserComponent } from './data-view/users/DC-User.component';
     AppComponent,
     SearchOrderComponent,
     HeaderComponent,
+    MainViewComponent,
     LoginComponent,
     RequestsViewComponent,
-    DBCustomerComponent,
     DBInvoiceComponent,
     DBRequestComponent,
-    DBUserComponent,
-    UserViewComponent,
     DCCustomerComponent,
     DCUserComponent,
     DCInvoiceComponent,
-    CustomerViewComponent,
     SideBarComponent,
     ContextComponent,
     InvoiceViewComponent
@@ -115,7 +108,7 @@ import { DCUserComponent } from './data-view/users/DC-User.component';
     FlexLayoutModule,
     BrowserAnimationsModule
   ],
-  providers: [CustomerService, InvoiceService, UserService],
+  providers: [CustomerService, InvoiceService, UserService, MainService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

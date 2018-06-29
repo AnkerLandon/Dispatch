@@ -6,24 +6,39 @@
     <div fxFlex="8px"></div>
     <div fxFlex='70%' class='test2'>
       <mat-card  >
-        <mat-card-title>Customer</mat-card-title>
+        <mat-card-title>{{status}}</mat-card-title>
         <table mat-table #table [dataSource]="dataSource" matSort class="mat-z8">
           <ng-container matColumnDef="edit">
             <th mat-header-cell *matHeaderCellDef >
               <div class="onSeam">
-                <button mat-mini-fab matTooltip="new Customer">
-                  <app-db-customer
-                        [myForm]="view">
-                  </app-db-customer>
+                <button mat-mini-fab matTooltip="new Customer" *ngIf="status === 'customers'">
+                  <mat-icon
+                    aria-label="icon-button with an add icon"
+                    (click)='addCustomerDialog()' >add
+                  </mat-icon>
+                </button>
+                <button mat-mini-fab matTooltip="new User" *ngIf="status === 'users'">
+                  <mat-icon
+                     aria-label="icon-button with an add icon"
+                     (click)='addUserDialog()' >add
+                  </mat-icon>
                 </button>
               </div>
             </th>
             <td mat-cell *matCellDef="let element">
-              <button mat-icon-button matTooltip="open in new">
+              <button mat-icon-button matTooltip="open in new" *ngIf="status === 'customers'">
                 <mat-icon
                     aria-label="expand icon"
                     routerLink='../invoices/{{element._id}}'
-                    >launch</mat-icon>
+                    >launch
+                </mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Edit User" *ngIf="status === 'users'">
+                <mat-icon
+                    aria-label="edit icon"
+                    (click)='editUserDialog(element)'
+                    >edit
+                </mat-icon>
               </button>
             </td>
           </ng-container>

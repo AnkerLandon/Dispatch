@@ -4,6 +4,8 @@ import { Customer } from '../../models/customers-data.model';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import {  InvoiceService } from '../invoices/invoice.service';
+import { DCCustomerComponent } from './DC-Customer.component';
+import { MatDialog } from '@angular/material';
 
 @Injectable({providedIn: 'root'})
 export class CustomerService {
@@ -13,7 +15,11 @@ export class CustomerService {
   private dataUpdate = new Subject<any[]>();
   private currentCustomerUpdate = new Subject<Customer>();
 
-  constructor(private http: HttpClient, public invoiceService: InvoiceService, ) {}
+  constructor(
+    private http: HttpClient,
+    public invoiceService: InvoiceService,
+    public dialog: MatDialog
+  ) {}
 
   getCustomers() {
     this.http.get
@@ -32,6 +38,7 @@ export class CustomerService {
       }))
       .subscribe(transCustomers => {
         this.customers = transCustomers;
+        console.log('flag 1');
         this.dataUpdate.next([...this.customers]);
       });
   }
@@ -83,6 +90,13 @@ export class CustomerService {
       this.getCustomers();
       this.customer = editedCustomer;
       this.currentCustomerUpdate.next(this.customer);
+    });
+  }
+
+  openCustomerDialog(): void {
+    const dialogRef = this.dialog.open(DCCustomerComponent, {
+      maxWidth: '50vw',
+      data:  this.getCurrentCustomer()
     });
   }
 

@@ -23,7 +23,7 @@ router.post("/new", (req, res, next) => {
       phone: req.body.phone,
       rank: req.body.rank
     });
-    console.log(this.user);
+    console.log(user);
     user.save()
       .then(result => {
         res.status(201).json({

@@ -31,7 +31,10 @@ import { InvoiceViewComponent } from '../../data-view/invoices/invoice-view.comp
               </div>
               <mat-action-row>
                 <button mat-icon-button >
-                  <app-db-customer [myForm]="customer"></app-db-customer>
+                  <mat-icon
+                    aria-label="icon-button with an add icon"
+                    (click)='addCustomerDialog()' >edit
+                  </mat-icon>
                 </button>
               </mat-action-row>
            </mat-expansion-panel>
@@ -46,7 +49,7 @@ import { InvoiceViewComponent } from '../../data-view/invoices/invoice-view.comp
         aria-label="Navigation"
         fxLayout="column"
         fxLayout.lt-md="row">
-        <mat-button-toggle value="customers" routerLink='../../customers'>Customers</mat-button-toggle>
+        <mat-button-toggle value="customers" routerLink='../customers'>Customers</mat-button-toggle>
         <mat-button-toggle value="prices">Prices</mat-button-toggle>
         <mat-button-toggle value="accounts" routerLink='../users'>Users</mat-button-toggle>
      </mat-button-toggle-group>
@@ -105,6 +108,9 @@ export class ContextComponent implements OnInit  {
     this.customer = this.customerService.getCurrentCustomer();
   }
 
+  addCustomerDialog() {
+    this.customerService.openCustomerDialog();
+  }
 
 
 }

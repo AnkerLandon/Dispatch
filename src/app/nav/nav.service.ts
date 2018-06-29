@@ -1,6 +1,8 @@
 import { Subject, Observable } from 'rxjs';
 import { Injectable, OnInit } from '@angular/core';
 import { EventManager } from '@angular/platform-browser';
+import { DCCustomerComponent } from '../data-view/customers/DC-Customer.component';
+import { MatDialog } from '@angular/material';
 
 
 @Injectable({
@@ -13,7 +15,7 @@ export class NavService  {
   private theStatus = false;
   private resizeSubject: Subject<Window>;
 
-  constructor(private eventManager: EventManager) {
+  constructor(private eventManager: EventManager, public dialog: MatDialog) {
         this.resizeSubject = new Subject();
         this.eventManager.addGlobalEventListener('window', 'resize', this.onResize.bind(this));
       }
@@ -26,6 +28,13 @@ export class NavService  {
 
   get() {
     return this.navUpdate.asObservable();
+  }
+
+  openCustomerDialog(form: any): void {
+    const dialogRef = this.dialog.open(DCCustomerComponent, {
+      maxWidth: '50vw',
+      data:  form
+    });
   }
 
   getSize() {
