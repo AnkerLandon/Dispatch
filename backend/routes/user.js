@@ -65,7 +65,12 @@ router.post("/login", (req, res, next) => {
         {email: matchedUser.email, userId: matchedUser._id, rank: matchedUser.rank},
         '4!8Dy7fzQL_`[3E%(hs(y.]L+bhNk/2x',
         {expiresIn: '1h'});
-      res.status(200).json({message: "Auth Succsess", token: token, rank: matchedUser.rank});
+      res.status(200).json({
+        message: "Auth Succsess",
+        token: token,
+        rank: matchedUser.rank,
+        expiresIn: 3600
+      });
     })
     .catch(err => {
       return res.status(401).json({message: "Auth Failed 3", token: null});
