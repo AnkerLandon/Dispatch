@@ -35,13 +35,23 @@
       >
     </mat-form-field>
 
-    <mat-form-field class="item" >
+    <mat-form-field class="item"  *ngIf="data._id">
+      <input matInput
+        class="inputs"
+        type='password'
+        name='password'
+        placeholder='New Password (Optional)'
+        ngModel
+      >
+    </mat-form-field>
+
+    <mat-form-field class="item" *ngIf="!data._id">
       <input matInput
         class="inputs"
         type='password'
         name='password'
         placeholder='Password'
-        [ngModel]="data.password"
+        ngModel
         required
       >
     </mat-form-field>

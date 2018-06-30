@@ -55,6 +55,23 @@ export class UserService {
 
   }
 
+  editUser(userId: string, editedUserData: User) {
+    console.log('userData', editedUserData);
+    this.http.put('http://localhost:3000/api/user/' + userId, editedUserData)
+      .subscribe((response) => {
+        console.log(response);
+        this.getUsers();
+
+      });
+  }
+
+  deleteUser(userId: string) {
+    this.http.delete('http://localhost:3000/api/user/' + userId)
+      .subscribe((response) => {
+      this.getUsers();
+      });
+  }
+
 
 
 

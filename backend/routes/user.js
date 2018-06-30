@@ -77,6 +77,43 @@ router.post("/login", (req, res, next) => {
     });
 });
 
+router.put("/:id", (req, res, next) => {
+  const editedUser = req.body;
+
+  if(editedUser.password) {
+    bcrypt.hash(req.body.password, 10).then(hash => {
+      editedUser.password = hash;
+      updateFunk();
+    })
+  } else {
+    updateFunk();
+  }
+
+ //updateFunk forces proper order so password hash is created and then updates
+
+ function updateFunk() {
+  User.updateOne({_id: req.params.id}, editedUser)
+    .exec()
+    .then(result => {
+      console.log(result);
+      res.status(200).json({message: "update success"})
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      })
+    });
+  };
+});
+
+router.delete("/:id", (req, res, next) => {
+  User.deleteOne({_id: req.params.id}).then(result => {
+    console.log(result);
+    res.status(200).json({message: "User Deleted!"});
+  });
+});
+
 
 
 module.exports = router;

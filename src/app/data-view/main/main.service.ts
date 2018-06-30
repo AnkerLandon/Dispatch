@@ -76,8 +76,6 @@ export class MainService {
       'lastName',
       'address',
       'city',
-      'state',
-      'zip',
       'phone',
       'rank'
     ];

@@ -76,13 +76,12 @@ export class DCUserComponent implements OnInit {
       return;
     }
 
-    // this.customerService.editCustomer(this.data._id, formData.value);
+    this.userService.editUser(this.data._id, formData.value);
     this.dialogRef.close();
   }
 
   deleteUser() {
-    // this.customerService.deleteCustomer(this.data._id);
-    this.router.navigate(['']);
+    this.userService.deleteUser(this.data._id);
     this.dialogRef.close();
   }
 
