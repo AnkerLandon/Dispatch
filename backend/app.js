@@ -28,7 +28,7 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-Wich, Content-Type, Accept"
+    "Origin, X-Requested-Wich, Content-Type, Accept, Authorization"
   );
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -38,7 +38,7 @@ app.use((req, res, next) => {
 
 app.use("/api/customers", customerRoutes);
 app.use("/api/invoice", invoiceRoutes);
-app.use("/api/users", userRoutes);
+app.use("/api/user", userRoutes);
 
 
 module.exports = app;

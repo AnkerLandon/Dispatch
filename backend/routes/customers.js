@@ -2,6 +2,7 @@ const express = require("express");
 const Customer = require("../models/customer");
 const Invoice = require("../models/invoice");
 var mongoose = require('mongoose');
+const checkAuth = require('../Middleware/check-auth-admin');
 
 
 const mongo = require('mongodb');

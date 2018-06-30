@@ -93,11 +93,4 @@ export class CustomerService {
     });
   }
 
-  openCustomerDialog(): void {
-    const dialogRef = this.dialog.open(DCCustomerComponent, {
-      maxWidth: '50vw',
-      data:  this.getCurrentCustomer()
-    });
-  }
-
 }

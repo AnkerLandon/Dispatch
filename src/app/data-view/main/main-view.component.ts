@@ -86,9 +86,8 @@ export class MainViewComponent implements OnInit, OnDestroy {
     this.mainService.openUserDialog(emptyCustomer);
   }
 
-  editUserDialog(test: any) {
-    console.log(test);
-    this.mainService.openUserDialog(test);
+  editUserDialog(myUser: any) {
+    this.mainService.openUserDialog(myUser);
   }
 
 

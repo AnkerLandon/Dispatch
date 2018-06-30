@@ -14,7 +14,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getUsers() {
-    this.http.get<{documents}>('http://localhost:3000/api/users')
+    this.http.get<{documents}>('http://localhost:3000/api/user')
       .pipe(map((userData) => {
         return userData.documents.map(user => {
           return {
@@ -44,7 +44,7 @@ export class UserService {
 
   addUser(newUser: User) {
     this.http.post
-      ('http://localhost:3000/api/users/new', newUser)
+      ('http://localhost:3000/api/user/new', newUser)
       .subscribe((responceData: any) => {
         console.log(responceData.message);
         const myUser_id = responceData.id ;

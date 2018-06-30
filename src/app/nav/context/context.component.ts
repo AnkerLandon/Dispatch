@@ -4,6 +4,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Customer } from '../../models/customers-data.model';
 import { CustomerService } from '../../data-view/customers/customer.service';
 import { InvoiceViewComponent } from '../../data-view/invoices/invoice-view.component';
+import { MainService } from '../../data-view/main/main.service';
 
 
 
@@ -33,7 +34,7 @@ import { InvoiceViewComponent } from '../../data-view/invoices/invoice-view.comp
                 <button mat-icon-button >
                   <mat-icon
                     aria-label="icon-button with an add icon"
-                    (click)='addCustomerDialog()' >edit
+                    (click)='addCustomerDialog(customer)' >edit
                   </mat-icon>
                 </button>
               </mat-action-row>
@@ -49,9 +50,9 @@ import { InvoiceViewComponent } from '../../data-view/invoices/invoice-view.comp
         aria-label="Navigation"
         fxLayout="column"
         fxLayout.lt-md="row">
-        <mat-button-toggle value="customers" routerLink='../customers'>Customers</mat-button-toggle>
+        <mat-button-toggle value="customers" routerLink='/customers' routerLinkActive="mat-accent">Customers</mat-button-toggle>
         <mat-button-toggle value="prices">Prices</mat-button-toggle>
-        <mat-button-toggle value="accounts" routerLink='../users'>Users</mat-button-toggle>
+        <mat-button-toggle value="users" routerLink='/users' routerLinkActive="mat-accent" >Users</mat-button-toggle>
      </mat-button-toggle-group>
   </div>
 </div>
@@ -86,21 +87,24 @@ export class ContextComponent implements OnInit  {
 
   constructor(
     public route: ActivatedRoute,
+    public mainService: MainService,
     public customerService: CustomerService
   ) {}
 
   ngOnInit() {
+    this.currentLoc = this.route.snapshot.routeConfig.path;
     this.dataSubbscription = this.customerService.test()
       .subscribe((records: any) => {
         this.refresh();
       });
+
     if (this.route.component === InvoiceViewComponent) {
       this.customer = this.customerService.getCurrentCustomer();
       this.flag = true;
-      this.currentLoc = 'customers';
+      // this.currentLoc = 'customers';
     } else {
       this.flag = false;
-      this.currentLoc = 'users';
+      // this.currentLoc = 'users';
     }
   }
 
@@ -108,8 +112,8 @@ export class ContextComponent implements OnInit  {
     this.customer = this.customerService.getCurrentCustomer();
   }
 
-  addCustomerDialog() {
-    this.customerService.openCustomerDialog();
+  addCustomerDialog(customerData) {
+    this.mainService.openCustomerDialog(customerData);
   }
 
 

@@ -31,7 +31,7 @@ import { SearchOrderComponent } from './search/search-order/search-order.compone
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './nav/header/header.component';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { DCCustomerComponent } from './data-view/customers/DC-Customer.component';
 import { DCInvoiceComponent } from './data-view/invoices/DC-Invoice.component';
@@ -51,6 +51,7 @@ import { UserService } from './data-view/users/user.service';
 import { DCUserComponent } from './data-view/users/DC-User.component';
 import { MainViewComponent } from './data-view/main/main-view.component';
 import { MainService } from './data-view/main/main.service';
+import { AuthInterceptor } from './auth/auth-intercepter';
 
 
 
@@ -108,7 +109,10 @@ import { MainService } from './data-view/main/main.service';
     FlexLayoutModule,
     BrowserAnimationsModule
   ],
-  providers: [CustomerService, InvoiceService, UserService, MainService],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    CustomerService, InvoiceService,
+    UserService, MainService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
