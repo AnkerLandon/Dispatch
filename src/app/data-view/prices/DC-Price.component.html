@@ -1,0 +1,130 @@
+<h1 mat-dialog-title> Price </h1>
+<div mat-dialog-content>
+
+  <form  #formData="ngForm">
+    <mat-form-field class="item" >
+      <input matInput
+        class="inputs"
+        type='number'
+        name='cow'
+        placeholder=cow
+        [ngModel]="data.cow"
+        required
+      >
+    </mat-form-field>
+    <mat-form-field class="item" >
+      <input matInput
+        class="inputs"
+        type='number'
+        name='heffer'
+        placeholder="heffer"
+        [ngModel]="data.heffer"
+        required
+      >
+    </mat-form-field>
+    <mat-form-field class="item" >
+      <input matInput
+        class="inputs"
+        type='number'
+        name='calf'
+        placeholder=calf
+        [ngModel]="data.calf"
+        required
+      >
+    </mat-form-field>
+    <mat-form-field class="item" >
+      <input matInput
+        class="inputs"
+        type='number'
+        name='bull'
+        placeholder=bull
+        [ngModel]="data.bull"
+        required
+      >
+    </mat-form-field>
+    <mat-form-field class="item" >
+      <input matInput
+        class="inputs"
+        type='number'
+        name='steer'
+        placeholder=steer
+        [ngModel]="data.steer"
+        required
+      >
+    </mat-form-field>
+    <mat-form-field class="item" >
+      <input matInput
+        class="inputs"
+        type='number'
+        name='pig'
+        placeholder=pig
+        [ngModel]="data.pig"
+        required
+      >
+    </mat-form-field>
+    <mat-form-field class="item" >
+      <input matInput
+        class="inputs"
+        type='number'
+        name='sow'
+        placeholder=sow
+        [ngModel]="data.sow"
+        required
+      >
+    </mat-form-field>
+    <mat-form-field class="item" >
+      <input matInput
+        class="inputs"
+        type='number'
+        name='boar'
+        placeholder=boar
+        [ngModel]="data.boar"
+        required
+      >
+    </mat-form-field>
+    <mat-form-field class="item" >
+      <input matInput
+        class="inputs"
+        type='number'
+        name='barrel'
+        placeholder=barrel
+        [ngModel]="data.barrel"
+        required
+      >
+    </mat-form-field>
+
+
+    <div mat-dialog-actions id="buttons">
+      <button mat-button (click)="onNoClick()">Cancel</button>
+      <button
+        mat-button
+        *ngIf="!data._id"
+        (click)="savePrice(formData)"
+        cdkFocusInitial
+        >Submit</button>
+      <button
+        mat-button
+        *ngIf="data._id"
+        (click)="editPrice(formData)"
+        cdkFocusInitial
+        >Edit</button>
+      <button
+        mat-button
+        *ngIf="data._id && !confirmDelete"
+        id="delete"
+        color="warn"
+        (click)="checkDelete()"
+        >Delete
+      </button>
+      <button
+        mat-button
+        *ngIf="confirmDelete"
+        id="delete"
+        color="warn"
+        (click)="deletePrice(formData)"
+        >Delete cannot be undone
+      </button>
+    </div>
+  </form>
+
+</div>

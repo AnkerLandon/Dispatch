@@ -50,9 +50,9 @@ import { MainService } from '../../data-view/main/main.service';
         aria-label="Navigation"
         fxLayout="column"
         fxLayout.lt-md="row">
-        <mat-button-toggle value="customers" routerLink='/customers' routerLinkActive="mat-accent">Customers</mat-button-toggle>
-        <mat-button-toggle value="prices">Prices</mat-button-toggle>
-        <mat-button-toggle value="users" routerLink='/users' routerLinkActive="mat-accent" >Users</mat-button-toggle>
+        <mat-button-toggle value="customers" routerLink='/customers'>Customers</mat-button-toggle>
+        <mat-button-toggle value="prices" routerLink='/prices'>Prices</mat-button-toggle>
+        <mat-button-toggle value="users" routerLink='/users'  >Users</mat-button-toggle>
      </mat-button-toggle-group>
   </div>
 </div>

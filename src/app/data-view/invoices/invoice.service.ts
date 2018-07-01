@@ -8,6 +8,7 @@ import { Request } from '../../models/invoice-data.model';
 
 @Injectable({providedIn: 'root'})
 export class InvoiceService {
+  private currentInvoiceId: string;
   private invoices: Invoice[] = [];
   private invoice: Invoice;
   private requestIndex;
@@ -22,6 +23,7 @@ setRequestIndex(request: Request) {
 }
 
 getInvoices(invoiceId: string) {
+  this.currentInvoiceId = invoiceId;
   this.http.get
     <{documents}>
     ('http://localhost:3000/api/invoice/' + invoiceId)
@@ -69,6 +71,7 @@ editRecord( request: Request) {
       console.log(response.message);
       this.invoice.requests[this.requestIndex] = request;
       this.requestUpdate.next(this.invoice);
+      this.getInvoices(this.currentInvoiceId);
     });
 }
 
@@ -84,6 +87,7 @@ addRequest(newRequest: any) {
       console.log(response.message);
       this.invoice.requests.push(response.data);
       this.requestUpdate.next(this.invoice);
+      this.getInvoices(this.currentInvoiceId);
     });
 }
 
@@ -92,6 +96,7 @@ addInvoice(newRequest: any) {
   this.http.post<{message: string, newInvoice: any }>
     ('http://localhost:3000/api/invoice', newRequest)
     .subscribe((responceData) => {
+      console.log('responce', responceData);
       this.invoices.push(responceData.newInvoice);
       this.invoiceUpdate.next([...this.invoices]);
     });

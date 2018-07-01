@@ -19,7 +19,7 @@ export class UserService {
         return userData.documents.map(user => {
           return {
             _id: user._id,
-            email:  user.email,
+            userName:  user.userName,
             password:  user.password,
             firstName:  user.firstName,
             lastName:  user.lastName,

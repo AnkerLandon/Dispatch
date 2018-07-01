@@ -52,6 +52,8 @@ import { DCUserComponent } from './data-view/users/DC-User.component';
 import { MainViewComponent } from './data-view/main/main-view.component';
 import { MainService } from './data-view/main/main.service';
 import { AuthInterceptor } from './auth/auth-intercepter';
+import { PriceService } from './data-view/prices/price.service';
+import { DCPriceComponent } from './data-view/prices/DC-Price.component';
 
 
 
@@ -61,6 +63,7 @@ import { AuthInterceptor } from './auth/auth-intercepter';
     DCUserComponent,
     DCCustomerComponent,
     DCInvoiceComponent,
+    DCPriceComponent,
     DBRequestComponent,
   ],
   declarations: [
@@ -75,6 +78,7 @@ import { AuthInterceptor } from './auth/auth-intercepter';
     DCCustomerComponent,
     DCUserComponent,
     DCInvoiceComponent,
+    DCPriceComponent,
     SideBarComponent,
     ContextComponent,
     InvoiceViewComponent
@@ -111,8 +115,12 @@ import { AuthInterceptor } from './auth/auth-intercepter';
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
-    CustomerService, InvoiceService,
-    UserService, MainService],
+    CustomerService,
+    InvoiceService,
+    UserService,
+    MainService,
+    PriceService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

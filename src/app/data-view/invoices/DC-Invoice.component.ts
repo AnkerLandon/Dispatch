@@ -3,6 +3,8 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatInputModule } from '@angular/material
 
 import { NgForm } from '@angular/forms';
 import { InvoiceService } from './invoice.service';
+import { PriceService } from '../prices/price.service';
+import { Price } from '../../models/price-data.model';
 
 
 @Component({
@@ -33,6 +35,7 @@ export class DCInvoiceComponent {
   constructor(
     public dialogRef: MatDialogRef<DCInvoiceComponent>,
     public invoiceService: InvoiceService,
+    public priceService: PriceService,
     @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   onNoClick(): void {
@@ -44,6 +47,8 @@ export class DCInvoiceComponent {
     }
     if (!formData.value.other) {formData.value.other = ''; }
     formData.value.accountId = this.data.accountId;
+    const price = this.priceService.getMostRecentPrice();
+    formData.value.price = price[formData.value.animal];
     this.invoiceService.addRequest(formData.value);
     this.dialogRef.close();
   }
@@ -53,6 +58,9 @@ export class DCInvoiceComponent {
       return;
     }
     if (!formData.value.other) {formData.value.other = ''; }
+    const price = this.priceService.getMostRecentPrice();
+    formData.value.priceId = price._id;
+    formData.value.price = price[formData.value.animal];
     formData.value.accountId = this.data.accountId;
     this.invoiceService.addInvoice(formData.value);
     this.dialogRef.close();

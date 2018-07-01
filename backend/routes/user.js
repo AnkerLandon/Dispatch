@@ -13,7 +13,7 @@ router.post("/new", (req, res, next) => {
   console.log(req.body);
   bcrypt.hash(req.body.password, 10).then(hash => {
     const user = new User({
-      email: req.body.email,
+      userName: req.body.userName,
       password: hash,
       firstName: req.body.firstName,
       lastName: req.body.lastName,

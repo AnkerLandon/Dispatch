@@ -28,9 +28,9 @@
       <input matInput
         class="inputs"
         type='string'
-        name='email'
-        placeholder='Email'
-        [ngModel]="data.email"
+        name='userName'
+        placeholder='User Name'
+        [ngModel]="formData.value.firstName + '.' + formData.value.lastName"
         required
       >
     </mat-form-field>

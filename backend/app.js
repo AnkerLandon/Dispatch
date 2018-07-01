@@ -6,9 +6,7 @@ const app = express();
 const customerRoutes = require('./routes/customers');
 const invoiceRoutes = require('./routes/invoices');
 const userRoutes = require('./routes/user');
-
-const Invoice = require('./models/invoice');
-const Request = require('./models/request');
+const priceRoutes = require('./routes/prices');
 
 const mongo = require('mongodb');
 
@@ -39,6 +37,7 @@ app.use((req, res, next) => {
 app.use("/api/customers", customerRoutes);
 app.use("/api/invoice", invoiceRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/price", priceRoutes);
 
 
 module.exports = app;

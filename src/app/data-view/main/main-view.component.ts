@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatSort, MatTableDataSource, MatTable} from '@angular/material';
-import { Customer } from '../../models/customers-data.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { MainService } from './main.service';
 import { CustomerService } from '../customers/customer.service';
 import { UserService } from '../users/user.service';
+import { PriceService } from '../prices/price.service';
 
 
 @Component({
@@ -26,6 +26,7 @@ export class MainViewComponent implements OnInit, OnDestroy {
     public mainService: MainService,
     public customerService: CustomerService,
     public userService: UserService,
+    public priceService: PriceService,
     public route: ActivatedRoute) {
       console.log(this.route.snapshot.routeConfig.path);
     }
@@ -46,6 +47,10 @@ export class MainViewComponent implements OnInit, OnDestroy {
       case 'users':
         this.userService.getUsers();
         this.status = 'users';
+        break;
+      case 'prices':
+        this.priceService.getPrices();
+        this.status = 'prices';
         break;
       default:
         this.customerService.getCustomers();
@@ -86,8 +91,27 @@ export class MainViewComponent implements OnInit, OnDestroy {
     this.mainService.openUserDialog(emptyCustomer);
   }
 
+  addPriceDialog() {
+    const emptyCustomer = {
+      cow: '',
+      heffer: '',
+      calf: '',
+      bull: '',
+      steer: '',
+      pig: '',
+      sow: '',
+      boar: '',
+      barrel: ''
+    };
+    this.mainService.openPriceDialog(emptyCustomer);
+  }
+
   editUserDialog(myUser: any) {
     this.mainService.openUserDialog(myUser);
+  }
+
+  editPriceDialog(myUser: any) {
+    this.mainService.openPriceDialog(myUser);
   }
 
 

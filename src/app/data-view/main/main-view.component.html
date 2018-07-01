@@ -23,6 +23,12 @@
                      (click)='addUserDialog()' >add
                   </mat-icon>
                 </button>
+                <button mat-mini-fab matTooltip="new Price" *ngIf="status === 'prices'">
+                  <mat-icon
+                     aria-label="icon-button with an add icon"
+                     (click)='addPriceDialog()' >add
+                  </mat-icon>
+                </button>
               </div>
             </th>
             <td mat-cell *matCellDef="let element">
@@ -37,6 +43,13 @@
                 <mat-icon
                     aria-label="edit icon"
                     (click)='editUserDialog(element)'
+                    >edit
+                </mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Edit User" *ngIf="status === 'prices'">
+                <mat-icon
+                    aria-label="edit icon"
+                    (click)='editPriceDialog(element)'
                     >edit
                 </mat-icon>
               </button>

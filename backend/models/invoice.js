@@ -18,7 +18,8 @@ const requestSchema = mongoose.Schema({
   required: true},
   other: {type: String},
   complete: {type: Boolean, required: true},
-  price: {type: Number}
+  price: {type: Number},
+  priceId: {type: String}
 });
 
 
@@ -28,8 +29,6 @@ const invoiceSchema = mongoose.Schema({
   requests: [requestSchema],
   total: {type: Number}
 });
-
-invoiceSchema.plugin(uniqueValidator);
 
 
 module.exports = mongoose.model('Invoice', invoiceSchema);
