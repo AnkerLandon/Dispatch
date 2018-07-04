@@ -1,5 +1,6 @@
 const express = require("express");
 const Customer = require("../models/customer");
+const PaymentPlan = require("../models/paymentPlan");
 const Invoice = require("../models/invoice");
 var mongoose = require('mongoose');
 const checkAuth = require('../Middleware/check-auth-admin');
@@ -11,12 +12,24 @@ const router = express.Router();
 ObjectID = mongo.ObjectID;
 
 router.post("/new", (req, res, next) => {
+  console.log('server data', req.body);
+  const paymentPlan = new PaymentPlan({
+    plan: req.body.currentPlan,
+    start: new Date,
+    end: ''
+  });
   const customer = new Customer({
+    companyName: req.body.companyName,
     name: req.body.name,
     address: req.body.address,
     city: req.body.city,
-    payment: req.body.payment
+    township: req.body.township,
+    currentPlan: req.body.currentPlan,
+    planLog: []
   });
+
+  customer.planLog.push(paymentPlan);
+
   customer.save().then(result => {
     res.status(201).json({
       message: 'success',
@@ -42,19 +55,53 @@ router.delete("/:id", (req, res, next) => {
 
 
 
-router.put("/:id",(req, res, next) => {
-  const cust = new Customer ({
-    _id: req.params.id,
-    name: req.body.name,
-    address: req.body.address,
-    city: req.body.city,
-    payment: req.body.payment
-  });
-  Customer.updateOne({_id: req.params.id}, cust)
+router.put("/details/:id",(req, res, next) => {
+  console.log('details edit:', req.body);
+  Customer.updateOne({_id: req.params.id}, req.body)
     .exec()
     .then(result => {
       console.log(result);
-      res.status(200).json({message: "update success"})
+      res.status(200).json({message: "Details update success"})
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      })
+    });
+});
+
+router.put("/addend/:id",(req, res, next) => {
+  Customer
+    .updateOne({_id: req.params.id, 'planLog.end': null},
+      {$set: {'planLog.$.end': new Date}})
+    .exec()
+    .then(result => {
+      console.log(result);
+      res.status(200).json({message: "End date update success"})
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      })
+    });
+});
+
+router.put("/addpaymentplan/:id",(req, res, next) => {
+  console.log('payment edit:', req.body);
+  const paymentplan = new PaymentPlan ({
+    plan: req.body.currentPlan,
+    start: new Date,
+    end: ''
+  });
+  Customer
+    .updateOne({_id: req.params.id},
+      {$push: {planLog: paymentplan}})
+    .exec()
+    .then(result => {
+      console.log(result);
+      res.status(200).json({message: "add payment Plan update success"})
     })
     .catch(err => {
       console.log(err);

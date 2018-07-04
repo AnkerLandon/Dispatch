@@ -78,10 +78,12 @@ export class MainService {
   customerView() {
     return [
       'edit',
+      'companyName',
       'name',
       'address',
       'city',
-      'payment'
+      'township',
+      'currentPlan'
     ];
   }
 
@@ -110,7 +112,8 @@ export class MainService {
       'pig',
       'sow',
       'boar',
-      'barrel'
+      'barrel',
+      'subscription'
     ];
   }
 

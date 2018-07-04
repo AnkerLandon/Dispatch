@@ -57,6 +57,7 @@ import { DCPriceComponent } from './data-view/prices/DC-Price.component';
 
 
 
+
 @NgModule({
   entryComponents: [
     DBInvoiceComponent,

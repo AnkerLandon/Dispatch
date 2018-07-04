@@ -30,6 +30,7 @@ export class DCCustomerComponent {
     if (formData.invalid) {
       return;
     }
+    console.log('new cust data', formData.value);
     this.customerService.addCustomer(formData.value);
     this.dialogRef.close();
   }
@@ -40,7 +41,19 @@ export class DCCustomerComponent {
       return;
     }
 
-    this.customerService.editCustomer(this.data._id, formData.value);
+    formData.value._id = this.data._id;
+    formData.value.planLog = this.data.planLog;
+
+    if (this.data.currentPlan !== formData.value.currentPlan) {
+      const data = {
+        currentPlan: formData.value.currentPlan,
+        oldpos: this.data.planLog.length - 1,
+        id: formData.value._id
+      };
+      this.customerService.addCustomerPaymentPlan(data);
+    }
+
+    this.customerService.editCustomer(formData.value);
     this.dialogRef.close();
   }
 

@@ -3,6 +3,15 @@
 
   <form  #formData="ngForm">
     <mat-form-field class="item" >
+        <input matInput
+          class="inputs"
+          type='string'
+          name='companyName'
+          placeholder='Company Name'
+          [ngModel]="data.companyName"
+        >
+    </mat-form-field>
+    <mat-form-field class="item" >
       <input matInput
         class="inputs"
         type='string'
@@ -32,12 +41,21 @@
         required
       >
     </mat-form-field>
+    <mat-form-field class="item" >
+        <input matInput
+          class="inputs"
+          type='string'
+          name='township'
+          placeholder='Township'
+          [ngModel]="data.township"
+        >
+    </mat-form-field>
     <mat-form-field class="item">
       <mat-select
         class="inputs"
-        placeholder='Payment'
-        name='payment'
-        [ngModel]="data.payment"
+        placeholder='Payment Plan'
+        name='currentPlan'
+        [ngModel]="data.currentPlan"
         required
         >
           <mat-option value="Subscription">subscription</mat-option>

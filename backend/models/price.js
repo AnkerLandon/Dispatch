@@ -11,6 +11,7 @@ const priceSchema = mongoose.Schema({
   pig: {type: Number, required: true},
   sow: {type: Number, required: true},
   boar: {type: Number, required: true},
+  subscription: {type: Number, required: true},
   barrel: {type: Number, required: true}
 });
 priceSchema.set('autoIndex', false);

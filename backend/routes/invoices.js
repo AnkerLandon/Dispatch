@@ -15,7 +15,7 @@ router.post("", (req, res, next) => {
   });
 
   var d = new Date();
-  var datestring = (d.getMonth()+1) + "-" + d.getDate() + "-" + d.getFullYear();
+  var datestring = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
 
   var invoice = new Invoice({
     accountId: req.body.accountId,

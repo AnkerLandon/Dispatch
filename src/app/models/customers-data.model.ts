@@ -1,16 +1,13 @@
 export interface Customer {
   _id: string;
+  companyName?: string;
   name: string;
   address: string;
   city: string;
-  payment: pay;
+  township: string;
+  currentPlan: string;
+  planLog: [{plan: string, start: Date, end?: Date}];
 
 }
-
-
-enum pay {
-    cash = 'cash',
-    subscription = 'subscription'
-  }
 
 

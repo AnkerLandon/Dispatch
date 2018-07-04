@@ -9,5 +9,6 @@ export interface Price {
   sow: number;
   boar: number;
   barrel: number;
+  subscription: number;
   date: Date;
 }

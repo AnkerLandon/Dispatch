@@ -17,7 +17,7 @@ export class PriceService {
   constructor(
     private http: HttpClient,
     public dialog: MatDialog
-  ) {}
+  ) { this.getPrices(); }
 
   getPrices() {
     this.http.get<{documents}> ('http://localhost:3000/api/price')
@@ -34,6 +34,7 @@ export class PriceService {
           pig: price.pig,
           sow: price.sow,
           boar: price.boar,
+          subscription: price.subscription,
           barrel: price.barrel
         };
       });
@@ -59,7 +60,7 @@ export class PriceService {
   }
 
   getMostRecentPrice() {
-    this.getPrices();
-    return this.prices[0];
+    console.log('price length', this.prices , this.prices.length);
+    return this.prices[this.prices.length - 1];
   }
 }

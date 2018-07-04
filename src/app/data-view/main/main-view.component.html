@@ -11,22 +11,10 @@
           <ng-container matColumnDef="edit">
             <th mat-header-cell *matHeaderCellDef >
               <div class="onSeam">
-                <button mat-mini-fab matTooltip="new Customer" *ngIf="status === 'customers'">
+                <button mat-mini-fab matTooltip="New {{status}}" >
                   <mat-icon
                     aria-label="icon-button with an add icon"
-                    (click)='addCustomerDialog()' >add
-                  </mat-icon>
-                </button>
-                <button mat-mini-fab matTooltip="new User" *ngIf="status === 'users'">
-                  <mat-icon
-                     aria-label="icon-button with an add icon"
-                     (click)='addUserDialog()' >add
-                  </mat-icon>
-                </button>
-                <button mat-mini-fab matTooltip="new Price" *ngIf="status === 'prices'">
-                  <mat-icon
-                     aria-label="icon-button with an add icon"
-                     (click)='addPriceDialog()' >add
+                    (click)='addSwitch()' >add
                   </mat-icon>
                 </button>
               </div>
@@ -35,21 +23,14 @@
               <button mat-icon-button matTooltip="open in new" *ngIf="status === 'customers'">
                 <mat-icon
                     aria-label="expand icon"
-                    routerLink='../invoices/{{element._id}}'
+                    (click)="editSwith(element)"
                     >launch
                 </mat-icon>
               </button>
-              <button mat-icon-button matTooltip="Edit User" *ngIf="status === 'users'">
+              <button mat-icon-button matTooltip="Edit" *ngIf="status !== 'customers'">
                 <mat-icon
                     aria-label="edit icon"
-                    (click)='editUserDialog(element)'
-                    >edit
-                </mat-icon>
-              </button>
-              <button mat-icon-button matTooltip="Edit User" *ngIf="status === 'prices'">
-                <mat-icon
-                    aria-label="edit icon"
-                    (click)='editPriceDialog(element)'
+                    (click)='editSwith(element)'
                     >edit
                 </mat-icon>
               </button>

@@ -29,16 +29,19 @@ export class CustomerService {
         return customerData.documents.map(customer => {
           return {
             _id: customer._id,
+            companyName: customer.companyName,
             name: customer.name,
             address: customer.address,
             city: customer.city,
-            payment: customer.payment
+            township: customer.township,
+            currentPlan: customer.currentPlan,
+            planLog: customer.planLog
           };
         });
       }))
       .subscribe(transCustomers => {
         this.customers = transCustomers;
-        console.log('flag 1');
+        console.log('Customer Get');
         this.dataUpdate.next([...this.customers]);
       });
   }
@@ -65,11 +68,13 @@ export class CustomerService {
   }
 
   addCustomer(newCustomer: Customer) {
+    console.log('service cust data', newCustomer);
     this.http.post
       ('http://localhost:3000/api/customers/new', newCustomer)
       .subscribe((responceData: any) => {
         const myCust_id = responceData.custId ;
         newCustomer._id = myCust_id;
+        newCustomer.planLog = [{plan: newCustomer.currentPlan, start: new Date}];
         this.customers.push(newCustomer);
         this.dataUpdate.next([...this.customers]);
       });
@@ -83,13 +88,32 @@ export class CustomerService {
       });
   }
 
-  editCustomer(_id: string, editedCustomer: Customer) {
-    this.http.put('http://localhost:3000/api/customers/' + _id, editedCustomer)
+  editCustomer(editedCustomer: Customer) {
+    this.http.put('http://localhost:3000/api/customers/details/' + editedCustomer._id, editedCustomer)
     .subscribe((response) => {
       console.log(response);
       this.getCustomers();
       this.customer = editedCustomer;
       this.currentCustomerUpdate.next(this.customer);
+    });
+  }
+
+  addCustomerPaymentPlan( newPlan: any) {
+  this.http.put('http://localhost:3000/api/customers/addpaymentplan/' + newPlan.id, newPlan)
+    .subscribe((response) => {
+      console.log(response);
+      /*
+      this.getCustomers();
+      this.customer = editedCustomer;
+      this.currentCustomerUpdate.next(this.customer);*/
+    });
+    this.http.put('http://localhost:3000/api/customers/addend/' + newPlan.id, null)
+    .subscribe((response) => {
+      console.log(response);
+      /*
+      this.getCustomers();
+      this.customer = editedCustomer;
+      this.currentCustomerUpdate.next(this.customer);*/
     });
   }
 

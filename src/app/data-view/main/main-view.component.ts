@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatSort, MatTableDataSource, MatTable} from '@angular/material';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MainService } from './main.service';
 import { CustomerService } from '../customers/customer.service';
 import { UserService } from '../users/user.service';
@@ -19,10 +19,12 @@ export class MainViewComponent implements OnInit, OnDestroy {
   private dataSubbscription: Subscription;
 
   public status;
+
   displayedColumns = [ 'edit'];
   dataSource = new MatTableDataSource(this.records);
 
   constructor(
+    private router: Router,
     public mainService: MainService,
     public customerService: CustomerService,
     public userService: UserService,
@@ -61,6 +63,38 @@ export class MainViewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.dataSubbscription.unsubscribe();
+  }
+
+  addSwitch() {
+    switch (this.status) {
+      case 'users':
+        this.addUserDialog();
+        break;
+      case 'prices':
+        this.addPriceDialog();
+        break;
+      case 'customers':
+        this.addCustomerDialog();
+        break;
+      default:
+      console.log('addSwitch Error');
+    }
+  }
+
+  editSwith(data: any) {
+    switch (this.status) {
+      case 'users':
+        this.editUserDialog(data);
+        break;
+      case 'prices':
+        this.editPriceDialog(data);
+        break;
+      case 'customers':
+        this.router.navigate(['/invoices/' + data._id]);
+        break;
+      default:
+      console.log('addSwitch Error');
+    }
   }
 
   addCustomerDialog() {

@@ -76,12 +76,11 @@ export class ContextComponent implements OnInit  {
 
   flag = false;
   currentLoc;
-  customer: Customer = {
+  customer: any = {
     _id: '',
     name: '',
     address: '',
-    city: '',
-    payment: null
+    city: ''
   };
   private dataSubbscription: Subscription;
 
