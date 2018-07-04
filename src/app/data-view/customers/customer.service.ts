@@ -102,18 +102,10 @@ export class CustomerService {
   this.http.put('http://localhost:3000/api/customers/addpaymentplan/' + newPlan.id, newPlan)
     .subscribe((response) => {
       console.log(response);
-      /*
-      this.getCustomers();
-      this.customer = editedCustomer;
-      this.currentCustomerUpdate.next(this.customer);*/
     });
     this.http.put('http://localhost:3000/api/customers/addend/' + newPlan.id, null)
     .subscribe((response) => {
       console.log(response);
-      /*
-      this.getCustomers();
-      this.customer = editedCustomer;
-      this.currentCustomerUpdate.next(this.customer);*/
     });
   }
 

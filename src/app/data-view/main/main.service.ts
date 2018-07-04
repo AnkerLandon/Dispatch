@@ -80,7 +80,6 @@ export class MainService {
       'edit',
       'companyName',
       'name',
-      'address',
       'city',
       'township',
       'currentPlan'

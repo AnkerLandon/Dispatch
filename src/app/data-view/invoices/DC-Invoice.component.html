@@ -23,6 +23,7 @@
         <mat-option *ngFor="let item of animals" value="{{item}}">{{item}}</mat-option>
       </mat-select>
     </mat-form-field>
+
     <mat-form-field class="item" *ngIf="formData.value.animal === 'other'">
       <input matInput
         class="inputs"
@@ -33,6 +34,17 @@
         required
       >
     </mat-form-field>
+
+    <mat-form-field class="item" *ngIf="formData.value.animal === 'other'">
+        <input matInput
+          class="inputs"
+          type='number'
+          name='price'
+          placeholder='Price per animal'
+          [ngModel]='data.price'
+          required
+        >
+      </mat-form-field>
 
     <div class="item" *ngIf="!data.requests && data._id">
         <mat-checkbox
