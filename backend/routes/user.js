@@ -62,13 +62,14 @@ router.post("/login", (req, res, next) => {
         return res.status(401).json({message: "Auth Failed 2", token: null});
       }
       const token = jwt.sign(
-        {email: matchedUser.email, userId: matchedUser._id, rank: matchedUser.rank},
+        {userName: matchedUser.userName, userId: matchedUser._id, rank: matchedUser.rank},
         '4!8Dy7fzQL_`[3E%(hs(y.]L+bhNk/2x',
         {expiresIn: '1h'});
       res.status(200).json({
         message: "Auth Succsess",
         token: token,
         rank: matchedUser.rank,
+        userName: matchedUser.userName,
         expiresIn: 3600
       });
     })

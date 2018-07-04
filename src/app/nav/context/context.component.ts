@@ -27,8 +27,9 @@ import { MainService } from '../../data-view/main/main.service';
                  </mat-panel-description>
               </mat-expansion-panel-header>
               <div>
-                 <div>{{customer.address}}</div>
-                 <div>{{customer.city}}</div>
+                <div>{{customer.companyName}}</div>
+                <div>{{customer.address}}</div>
+                <div>{{customer.city}}</div>
               </div>
               <mat-action-row>
                 <button mat-icon-button >

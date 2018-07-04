@@ -42,31 +42,14 @@ export class DCInvoiceComponent {
     this.dialogRef.close();
   }
   addRequest(formData: NgForm) {
-    if (formData.invalid) {
-      return;
-    }
-    if (!formData.value.other) {formData.value.other = ''; }
-    if (!formData.value.price) {
-      const price = this.priceService.getMostRecentPrice();
-      formData.value.price = price[formData.value.animal];
-    }
-
-    formData.value.accountId = this.data.accountId;
-    this.invoiceService.addRequest(formData.value);
+    if (formData.invalid) { return; }
+    this.invoiceService.addRequest(this.prepFormData(formData));
     this.dialogRef.close();
   }
 
   addInvoice(formData: NgForm) {
-    if (formData.invalid) {
-      return;
-    }
-    if (!formData.value.other) {formData.value.other = ''; }
-    if (!formData.value.price) {
-      const price = this.priceService.getMostRecentPrice();
-      formData.value.price = price[formData.value.animal];
-    }
-    formData.value.accountId = this.data.accountId;
-    this.invoiceService.addInvoice(formData.value);
+    if (formData.invalid) { return; }
+    this.invoiceService.addInvoice(this.prepFormData(formData));
     this.dialogRef.close();
   }
 
@@ -103,6 +86,15 @@ export class DCInvoiceComponent {
     if (value) {this.complete = false; } else {this.complete = true; }
   }
 
+  private prepFormData(formData: NgForm) {
+    if (!formData.value.other) {formData.value.other = ''; }
+    if (!formData.value.price) {
+      const price = this.priceService.getMostRecentPrice();
+      formData.value.price = price[formData.value.animal];
+    }
+    formData.value.accountId = this.data.accountId;
+    return formData;
+  }
 
 
 }

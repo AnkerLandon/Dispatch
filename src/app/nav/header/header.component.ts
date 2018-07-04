@@ -21,7 +21,7 @@ import { Subscription } from 'rxjs';
       <span>
         <ul *ngIf="userAuthentication.status">
           <li>
-            <h3>{{userAuthentication.rank}}</h3>
+            <h3>{{userAuthentication.userName}} {{userAuthentication.rank}}</h3>
           </li>
           <li>
             <button mat-button (click) ="onLogOut()">Sign Out</button>
@@ -36,7 +36,10 @@ import { Subscription } from 'rxjs';
 
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  userAuthentication: {status: boolean, rank: string; } = {status: false, rank: null};
+  userAuthentication: {
+    status: boolean,
+    rank: string,
+    userName: string } = {status: false, rank: null, userName: null};
   opened: boolean;
   private AuthListenerSubs: Subscription;
 
