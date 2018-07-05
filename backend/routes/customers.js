@@ -24,6 +24,7 @@ router.post("/new", (req, res, next) => {
     address: req.body.address,
     city: req.body.city,
     township: req.body.township,
+    route: req.body.route,
     currentPlan: req.body.currentPlan,
     planLog: []
   });

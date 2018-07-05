@@ -1,7 +1,7 @@
 import { Subject, Observable } from 'rxjs';
 import { Injectable, OnInit } from '@angular/core';
 import { EventManager } from '@angular/platform-browser';
-import { DCCustomerComponent } from '../data-view/customers/DC-Customer.component';
+import { DCCustomerComponent } from '../dispatch/customers/DC-Customer.component';
 import { MatDialog } from '@angular/material';
 
 

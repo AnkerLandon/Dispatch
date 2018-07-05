@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Customer } from '../../models/customers-data.model';
-import { CustomerService } from '../../data-view/customers/customer.service';
-import { InvoiceViewComponent } from '../../data-view/invoices/invoice-view.component';
-import { MainService } from '../../data-view/main/main.service';
+import { CustomerService } from '../../dispatch/customers/customer.service';
+import { InvoiceViewComponent } from '../../dispatch/invoices/invoice-view.component';
+import { MainService } from '../../dispatch/main/main.service';
 
 
 
@@ -53,7 +53,8 @@ import { MainService } from '../../data-view/main/main.service';
         fxLayout.lt-md="row">
         <mat-button-toggle value="customers" routerLink='/customers'>Customers</mat-button-toggle>
         <mat-button-toggle value="prices" routerLink='/prices'>Prices</mat-button-toggle>
-        <mat-button-toggle value="users" routerLink='/users'  >Users</mat-button-toggle>
+        <mat-button-toggle value="users" routerLink='/users'>Users</mat-button-toggle>
+        <mat-button-toggle value="routes" routerLink='/routes'>Routes</mat-button-toggle>
      </mat-button-toggle-group>
   </div>
 </div>

@@ -53,6 +53,18 @@
     <mat-form-field class="item">
       <mat-select
         class="inputs"
+        placeholder='Route assignment'
+        name='route'
+        [ngModel]="data.route"
+        required
+        >
+          <mat-option *ngFor="let item of routes" value="{{item}}">{{item}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="item">
+      <mat-select
+        class="inputs"
         placeholder='Payment Plan'
         name='currentPlan'
         [ngModel]="data.currentPlan"

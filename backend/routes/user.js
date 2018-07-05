@@ -49,7 +49,7 @@ router.get("", (req, res, next) => {
 
 router.post("/login", (req, res, next) => {
   let matchedUser;
-  User.findOne({email: req.body.email})
+  User.findOne({userName: req.body.userName})
     .then(user => {
       if(!user) {
         return res.status(401).json({message: "Auth Failed 1", token: null});

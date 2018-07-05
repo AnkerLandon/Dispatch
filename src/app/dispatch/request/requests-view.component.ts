@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, OnDestroy  } from '@angular/core';
 import {MatSort, MatTableDataSource, MatTable} from '@angular/material';
-import { InvoiceService } from '../data-view/invoices/invoice.service';
+import { InvoiceService } from '../invoices/invoice.service';
 import { Subscription } from 'rxjs';
-import { Request, Invoice } from '../models/invoice-data.model';
+import { Request, Invoice } from '../../models/invoice-data.model';
 
 @Component({
   selector: 'app-record-view',

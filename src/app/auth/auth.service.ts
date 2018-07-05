@@ -36,8 +36,12 @@ export class AuthService {
         const now = new Date();
         const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
         this.saveAuthData(this.token, expirationDate, response.rank, response.userName);
-
-        this.router.navigate(['/customers']);
+        console.log('log', this.authentication.rank);
+        if (this.authentication.rank === 'Dispatch') {
+          this.router.navigate(['/customers']);
+        } else {
+          this.router.navigate(['/driver']);
+        }
       }
     });
   }

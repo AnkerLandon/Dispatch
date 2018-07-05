@@ -1,15 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes} from '@angular/router';
-import { InvoiceViewComponent } from './data-view/invoices/invoice-view.component';
+import { InvoiceViewComponent } from './dispatch/invoices/invoice-view.component';
 import { LoginComponent } from './auth/login.component';
-import { MainViewComponent } from './data-view/main/main-view.component';
+import { MainViewComponent } from './dispatch/main/main-view.component';
 import { AuthGuard } from './auth/auth.guard';
+import { DriverViewComponent } from './drive/driver-view/driver-view.component';
+import { RouteSelectComponent } from './drive/route-select/route-select.component';
 
 const routes: Routes = [
   {path: 'customers', component: MainViewComponent, canActivate: [AuthGuard] },
   {path: 'prices', component: MainViewComponent, canActivate: [AuthGuard] },
   {path: 'invoices/:customerId', component: InvoiceViewComponent, canActivate: [AuthGuard]},
   {path: 'users', component: MainViewComponent, canActivate: [AuthGuard]},
+  {path: 'routes', component: MainViewComponent, canActivate: [AuthGuard]},
+  {path: 'driver', component: RouteSelectComponent },
+  {path: 'driver/:route', component: DriverViewComponent},
   {path: '', component: LoginComponent}
 ];
 

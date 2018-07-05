@@ -1,8 +1,8 @@
 import {Component, Input} from '@angular/core';
 import {MatDialog} from '@angular/material';
-import { InvoiceService } from '../data-view/invoices/invoice.service';
-import { DCInvoiceComponent } from '../data-view/invoices/DC-Invoice.component';
-import { Request } from '../models/invoice-data.model';
+import { InvoiceService } from '../invoices/invoice.service';
+import { DCInvoiceComponent } from '../invoices/DC-Invoice.component';
+import { Request } from '../../models/invoice-data.model';
 
 
 

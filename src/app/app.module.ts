@@ -27,33 +27,37 @@ import {
   MatAutocompleteModule
 } from '@angular/material';
 import { AppComponent } from './app.component';
-import { SearchOrderComponent } from './search/search-order/search-order.component';
+import { SearchOrderComponent } from './dispatch/search/search-order/search-order.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './nav/header/header.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
-import { DCCustomerComponent } from './data-view/customers/DC-Customer.component';
-import { DCInvoiceComponent } from './data-view/invoices/DC-Invoice.component';
-import { InvoiceViewComponent } from './data-view/invoices/invoice-view.component';
-import { CustomerService } from './data-view/customers/customer.service';
-import { InvoiceService } from './data-view/invoices/invoice.service';
-import { DBInvoiceComponent } from './data-view/invoices/DB-Invoices.component';
-import { SideBarComponent } from './nav/side-bar/side-bar.component';
+import { DCCustomerComponent } from './dispatch/customers/DC-Customer.component';
+import { DCInvoiceComponent } from './dispatch/invoices/DC-Invoice.component';
+import { InvoiceViewComponent } from './dispatch/invoices/invoice-view.component';
+import { CustomerService } from './dispatch/customers/customer.service';
+import { InvoiceService } from './dispatch/invoices/invoice.service';
+import { DBInvoiceComponent } from './dispatch/invoices/DB-Invoices.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ContextComponent } from './nav/context/context.component';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import { RequestsViewComponent } from './request/requests-view.component';
-import { DBRequestComponent } from './request/DB-Request.component';
+import { MatButtonToggleModule} from '@angular/material/button-toggle';
+import { RequestsViewComponent } from './dispatch/request/requests-view.component';
+import { DBRequestComponent } from './dispatch/request/DB-Request.component';
 import { LoginComponent } from './auth/login.component';
 import 'hammerjs';
-import { UserService } from './data-view/users/user.service';
-import { DCUserComponent } from './data-view/users/DC-User.component';
-import { MainViewComponent } from './data-view/main/main-view.component';
-import { MainService } from './data-view/main/main.service';
+import { UserService } from './dispatch/users/user.service';
+import { DCUserComponent } from './dispatch//users/DC-User.component';
+import { MainViewComponent } from './dispatch/main/main-view.component';
+import { MainService } from './dispatch/main/main.service';
 import { AuthInterceptor } from './auth/auth-intercepter';
-import { PriceService } from './data-view/prices/price.service';
-import { DCPriceComponent } from './data-view/prices/DC-Price.component';
+import { PriceService } from './dispatch/prices/price.service';
+import { DCPriceComponent } from './dispatch/prices/DC-Price.component';
+import { DriverViewComponent } from './drive/driver-view/driver-view.component';
+import { RouteSelectComponent } from './drive/route-select/route-select.component';
+import { DriveService } from './drive/drive.service';
+import { RouteService } from './dispatch/route/route.service';
+import { DCRouteComponent } from './dispatch/route/DC-Route.component';
 
 
 
@@ -64,6 +68,7 @@ import { DCPriceComponent } from './data-view/prices/DC-Price.component';
     DCUserComponent,
     DCCustomerComponent,
     DCInvoiceComponent,
+    DCRouteComponent,
     DCPriceComponent,
     DBRequestComponent,
   ],
@@ -73,14 +78,16 @@ import { DCPriceComponent } from './data-view/prices/DC-Price.component';
     HeaderComponent,
     MainViewComponent,
     LoginComponent,
+    DriverViewComponent,
+    RouteSelectComponent,
     RequestsViewComponent,
     DBInvoiceComponent,
     DBRequestComponent,
     DCCustomerComponent,
+    DCRouteComponent,
     DCUserComponent,
     DCInvoiceComponent,
     DCPriceComponent,
-    SideBarComponent,
     ContextComponent,
     InvoiceViewComponent
   ],
@@ -120,6 +127,8 @@ import { DCPriceComponent } from './data-view/prices/DC-Price.component';
     InvoiceService,
     UserService,
     MainService,
+    DriveService,
+    RouteService,
     PriceService
   ],
   bootstrap: [AppComponent]

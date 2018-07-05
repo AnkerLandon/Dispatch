@@ -7,7 +7,7 @@ export interface Customer {
   township: string;
   currentPlan: string;
   planLog: [{plan: string, start: Date, end?: Date}];
-
+  route?: string;
 }
 
 

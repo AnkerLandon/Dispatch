@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatInputModule} from '@angular/material'
 import { NgForm } from '@angular/forms';
 import { CustomerService } from './customer.service';
 import { Router } from '@angular/router';
+import { RouteService } from '../route/route.service';
 
 @Component({
   selector: 'app-dialog-add',
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 export class DCCustomerComponent {
 
   confirmDelete = false;
+  public routes;
 
   @Output() newRecord = new EventEmitter();
 
@@ -19,8 +21,11 @@ export class DCCustomerComponent {
     public dialogRef: MatDialogRef<DCCustomerComponent>,
     public customerService: CustomerService,
     public router: Router,
+    private routeService: RouteService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       console.log(data);
+      this.routes = this.routeService.getRouteArray();
+      console.log(this.routes);
     }
 
   onNoClick(): void {
@@ -30,6 +35,7 @@ export class DCCustomerComponent {
     if (formData.invalid) {
       return;
     }
+    formData.value.route = formData.value.route.toUpperCase();
     console.log('new cust data', formData.value);
     this.customerService.addCustomer(formData.value);
     this.dialogRef.close();
@@ -52,7 +58,7 @@ export class DCCustomerComponent {
       };
       this.customerService.addCustomerPaymentPlan(data);
     }
-
+    formData.value.route = formData.value.route.toUpperCase();
     this.customerService.editCustomer(formData.value);
     this.dialogRef.close();
   }

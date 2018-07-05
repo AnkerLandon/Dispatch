@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Customer } from '../../models/customers-data.model';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
-import {  InvoiceService } from '../invoices/invoice.service';
+import { InvoiceService } from '../invoices/invoice.service';
 import { DCCustomerComponent } from './DC-Customer.component';
 import { MatDialog } from '@angular/material';
 
@@ -34,6 +34,7 @@ export class CustomerService {
             address: customer.address,
             city: customer.city,
             township: customer.township,
+            route: customer.route,
             currentPlan: customer.currentPlan,
             planLog: customer.planLog
           };

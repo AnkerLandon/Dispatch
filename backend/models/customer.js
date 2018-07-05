@@ -13,6 +13,7 @@ const customerSchema = mongoose.Schema({
   city: {type: String, required: true},
   township: {type: String},
   currentPlan: {type: String},
+  route: {type: String},
   planLog: [paymentPlanSchema]
 });
 

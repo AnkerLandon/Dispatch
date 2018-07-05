@@ -21,7 +21,7 @@ import { Subscription } from 'rxjs';
       <span>
         <ul *ngIf="userAuthentication.status">
           <li>
-            <h3>{{userAuthentication.userName}} {{userAuthentication.rank}}</h3>
+            <h3>{{userAuthentication.userName}} ({{userAuthentication.rank}})</h3>
           </li>
           <li>
             <button mat-button (click) ="onLogOut()">Sign Out</button>

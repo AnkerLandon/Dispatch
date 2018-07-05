@@ -8,6 +8,8 @@ import { DCCustomerComponent } from '../customers/DC-Customer.component';
 import { DCUserComponent } from '../users/DC-User.component';
 import { PriceService } from '../prices/price.service';
 import { DCPriceComponent } from '../prices/DC-Price.component';
+import { RouteService } from '../route/route.service';
+import { DCRouteComponent } from '../route/DC-Route.component';
 
 @Injectable({providedIn: 'root'})
 export class MainService {
@@ -18,6 +20,7 @@ export class MainService {
   private customerSub: Subscription;
   private userSub: Subscription;
   private priceSub: Subscription;
+  private routeSub: Subscription;
 
   private viewUpdate = new Subject<any[]>();
 
@@ -26,6 +29,7 @@ export class MainService {
     public customerService: CustomerService,
     public userService: UserService,
     private priceService: PriceService,
+    private routeService: RouteService,
     public dialog: MatDialog,
 
   ) {
@@ -46,6 +50,12 @@ export class MainService {
     .subscribe((prices: any[]) => {
       this.view = prices;
       this.display = this.priceView();
+      this.viewUpdate.next([...this.view]);
+    });
+    this.routeSub = this.routeService.getRoutesUpdateListener()
+    .subscribe((routes: any[]) => {
+      this.view = routes;
+      this.display = this.routeView();
       this.viewUpdate.next([...this.view]);
     });
   }
@@ -71,6 +81,13 @@ export class MainService {
     });
   }
 
+  openRouteDialog(form: any): void {
+    const dialogRef = this.dialog.open(DCRouteComponent, {
+      maxWidth: '50vw',
+      data:  form
+    });
+  }
+
   getViewUpdateListener() {
     return this.viewUpdate.asObservable();
   }
@@ -82,6 +99,7 @@ export class MainService {
       'name',
       'city',
       'township',
+      'route',
       'currentPlan'
     ];
   }
@@ -113,6 +131,14 @@ export class MainService {
       'boar',
       'barrel',
       'subscription'
+    ];
+  }
+
+  routeView() {
+    return [
+      'edit',
+      'title',
+      'description'
     ];
   }
 

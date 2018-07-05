@@ -6,6 +6,7 @@ import { MainService } from './main.service';
 import { CustomerService } from '../customers/customer.service';
 import { UserService } from '../users/user.service';
 import { PriceService } from '../prices/price.service';
+import { RouteService } from '../route/route.service';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class MainViewComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
+    private routeService: RouteService,
     public mainService: MainService,
     public customerService: CustomerService,
     public userService: UserService,
@@ -54,6 +56,10 @@ export class MainViewComponent implements OnInit, OnDestroy {
         this.priceService.getPrices();
         this.status = 'prices';
         break;
+      case 'routes':
+        this.routeService.getRoutes();
+        this.status = 'routes';
+        break;
       default:
         this.customerService.getCustomers();
         this.status = 'customers';
@@ -75,6 +81,9 @@ export class MainViewComponent implements OnInit, OnDestroy {
         break;
       case 'customers':
         this.addCustomerDialog();
+        break;
+      case 'routes':
+        this.addRouteDialog();
         break;
       default:
       console.log('addSwitch Error');
@@ -138,6 +147,14 @@ export class MainViewComponent implements OnInit, OnDestroy {
       barrel: ''
     };
     this.mainService.openPriceDialog(emptyCustomer);
+  }
+
+  addRouteDialog() {
+    const emptyRoute = {
+      title: '',
+      description: ''
+    };
+    this.mainService.openRouteDialog(emptyRoute);
   }
 
   editUserDialog(myUser: any) {
