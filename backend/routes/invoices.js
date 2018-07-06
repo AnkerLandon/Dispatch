@@ -23,7 +23,8 @@ router.post("", (req, res, next) => {
     date: datestring,
     requests: [],
     total: req.body.price * req.body.number,
-    priceId: req.body.priceId
+    priceId: req.body.priceId,
+    route: req.body.route
   });
   console.log('one');
   invoice.requests.push(request);
@@ -89,6 +90,16 @@ router.put("/request/:id",(req, res, next) => {
 
 router.get("/:id",(req, res, next) => {
   Invoice.find({accountId: req.params.id}).then(documents => {
+    res.status(200).json({documents});
+  });
+
+});
+
+router.get("/route/:route",(req, res, next) => {
+  console.log('get route', req.params.route);
+  Invoice.find({
+    route: req.params.route,
+    'requests.complete': false}).then(documents => {
     res.status(200).json({documents});
   });
 

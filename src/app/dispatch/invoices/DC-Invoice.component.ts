@@ -5,6 +5,7 @@ import { NgForm } from '@angular/forms';
 import { InvoiceService } from './invoice.service';
 import { PriceService } from '../prices/price.service';
 import { Price } from '../../models/price-data.model';
+import { CustomerService } from '../customers/customer.service';
 
 
 @Component({
@@ -36,6 +37,7 @@ export class DCInvoiceComponent {
     public dialogRef: MatDialogRef<DCInvoiceComponent>,
     public invoiceService: InvoiceService,
     public priceService: PriceService,
+    private customerService: CustomerService,
     @Inject(MAT_DIALOG_DATA) public data: any) {}
 
   onNoClick(): void {
@@ -92,7 +94,9 @@ export class DCInvoiceComponent {
       const price = this.priceService.getMostRecentPrice();
       formData.value.price = price[formData.value.animal];
     }
+    formData.value.route = this.customerService.getCustomerRoute();
     formData.value.accountId = this.data.accountId;
+    console.log('formData', formData.value);
     return formData.value;
   }
 

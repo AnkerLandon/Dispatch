@@ -9,5 +9,3 @@ export interface Customer {
   planLog: [{plan: string, start: Date, end?: Date}];
   route?: string;
 }
-
-

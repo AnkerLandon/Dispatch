@@ -1,24 +1,48 @@
 <mat-accordion class="delevery">
-  <mat-expansion-panel *ngFor="let thing of invoices">
+  <mat-expansion-panel *ngFor="let item of mergedData">
     <mat-expansion-panel-header>
       <mat-panel-title>
-       Company Name
+        <div *ngIf="!item.companyName" >{{item.name}}</div>
+        <div *ngIf="item.companyName" >{{item.companyName}}</div>
       </mat-panel-title>
       <mat-panel-description>
-        Township
+        {{item.date}}
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-      <mat-grid-list cols="2" rowHeight="100px">
-        <mat-grid-tile >
-          address info
+      <mat-grid-list cols="4" rowHeight="50px">
+        <mat-grid-tile  colspan="2" rowspan="2">
+          <ul>
+            <li>{{item.name}}</li>
+            <li>{{item.address}}</li>
+            <li>{{item.city}}</li>
+            <li>{{item.township}}</li>
+          </ul>
         </mat-grid-tile>
-        <mat-grid-tile >
-          maps icon
+        <mat-grid-tile  colspan="2" rowspan="2">
+          <button mat-button id="map-button">
+            <a href="https://www.google.com/maps/search/?api=1&query={{item.address}}+{{item.city}}" target="_blank" >
+              <mat-icon id="icon">directions</mat-icon>
+            </a>
+          </button>
+
         </mat-grid-tile>
-        <mat-grid-tile *ngFor="let item of invoices" colspan="2">
-          {{item}}
-        </mat-grid-tile>
+        <mat-divider></mat-divider>
+        <div *ngFor="let subitem of item['requests']">
+          <mat-grid-tile >
+            {{subitem.number}}
+          </mat-grid-tile>
+          <mat-grid-tile >
+            {{subitem.animal}}
+          </mat-grid-tile>
+          <mat-grid-tile >
+            {{subitem.other}}
+          </mat-grid-tile>
+          <mat-grid-tile >
+            <mat-checkbox [ngModel]=subitem.complete>complete</mat-checkbox>
+          </mat-grid-tile>
+      </div>
+
       </mat-grid-list>
 
     <mat-action-row>

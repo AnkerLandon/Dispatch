@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouteService } from '../../dispatch/route/route.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
   `,
   styleUrls: ['../drive.component.css']
 })
-export class RouteSelectComponent {
+export class RouteSelectComponent implements OnInit, OnDestroy {
 
   public routes: any;
   private routeSub: Subscription;
@@ -25,8 +25,18 @@ export class RouteSelectComponent {
   constructor(
     private routeService: RouteService,
     public router: Router
-  ) {
-    this.routes = this.routeService.getRouteArray();
+  ) {}
+
+  ngOnInit() {
+    this.routeSub = this.routeService.getRouteArrayUpdateListener()
+      .subscribe((results: any[]) => {
+        this.routes = results;
+        console.log(this.routes);
+      });
+    this.routeService.getRoutes();
+  }
+  ngOnDestroy() {
+    this.routeSub.unsubscribe();
   }
 
 }

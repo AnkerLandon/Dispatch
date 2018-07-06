@@ -27,7 +27,8 @@ const invoiceSchema = mongoose.Schema({
   accountId: {type: String, required: true},
   date: {type: String, required: true },
   requests: [requestSchema],
-  total: {type: Number}
+  total: {type: Number},
+  route: {type: String}
 });
 
 

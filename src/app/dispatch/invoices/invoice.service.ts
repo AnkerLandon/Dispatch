@@ -34,7 +34,8 @@ getInvoices(invoiceId: string) {
           accountId: invoice.accountId,
           date: invoice.date,
           requests: invoice.requests,
-          total: invoice.total
+          total: invoice.total,
+          route: invoice.route
         };
       });
     }))

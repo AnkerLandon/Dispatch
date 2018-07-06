@@ -19,7 +19,7 @@ export class CustomerService {
     private http: HttpClient,
     public invoiceService: InvoiceService,
     public dialog: MatDialog
-  ) {}
+  ) {this.getCustomers(); }
 
   getCustomers() {
     this.http.get
@@ -108,6 +108,10 @@ export class CustomerService {
     .subscribe((response) => {
       console.log(response);
     });
+  }
+
+  getCustomerRoute() {
+    return this.customer.route;
   }
 
 }

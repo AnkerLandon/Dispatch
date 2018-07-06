@@ -4,7 +4,7 @@ export interface Invoice {
   date: string;
   requests: Request[];
   total: number;
-  priceId?: string;
+  route: string;
 }
 
 export interface Request {

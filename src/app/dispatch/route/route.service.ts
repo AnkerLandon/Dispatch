@@ -31,9 +31,9 @@ export class RouteService {
       }))
       .subscribe(routeResult => {
         this.routes = routeResult;
+        this.getRouteArray();
         console.log('routes get', this.routes);
         this.routeUpdate.next([...this.routes]);
-        this.routeArray = this.getRouteArray();
       });
   }
 
@@ -51,14 +51,14 @@ export class RouteService {
   }
 
   getRouteArray() {
-    // this.getRoutes();
+    // while (!this.routes) {console.log('wait'); }
     const test = [];
     this.routes.forEach(function (item) {
       test.push(item.title);
     });
     console.log(test);
     this.routeArrayUpdate.next([...test]);
-    return test;
+
   }
 
   getRouteArrayUpdateListener() {
