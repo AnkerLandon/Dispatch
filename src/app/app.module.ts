@@ -24,7 +24,8 @@ import {
   MatRadioButton,
   MatRadioModule,
   MatSlideToggleModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatGridListModule
 } from '@angular/material';
 import { AppComponent } from './app.component';
 import { SearchOrderComponent } from './dispatch/search/search-order/search-order.component';
@@ -96,6 +97,7 @@ import { DCRouteComponent } from './dispatch/route/DC-Route.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    MatGridListModule,
     MatInputModule,
     MatCardModule,
     MatButtonModule,

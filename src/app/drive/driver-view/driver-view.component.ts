@@ -6,17 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['../drive.component.css']
 })
 export class DriverViewComponent {
-  step = 0;
-
-  setStep(index: number) {
-    this.step = index;
-  }
-
-  nextStep() {
-    this.step++;
-  }
-
-  prevStep() {
-    this.step--;
-  }
+  public invoices = ['invoice 1', 'invoice 2'];
 }

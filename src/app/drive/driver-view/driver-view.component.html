@@ -1,25 +1,28 @@
-<mat-accordion class="example-headers-align">
-  <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+<mat-accordion class="delevery">
+  <mat-expansion-panel *ngFor="let thing of invoices">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        Personal data
+       Company Name
       </mat-panel-title>
       <mat-panel-description>
-        Type your name and age
-        <mat-icon>account_circle</mat-icon>
+        Township
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <mat-form-field>
-      <input matInput placeholder="First name">
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput type="number" min="1" placeholder="Age">
-    </mat-form-field>
+      <mat-grid-list cols="2" rowHeight="100px">
+        <mat-grid-tile >
+          address info
+        </mat-grid-tile>
+        <mat-grid-tile >
+          maps icon
+        </mat-grid-tile>
+        <mat-grid-tile *ngFor="let item of invoices" colspan="2">
+          {{item}}
+        </mat-grid-tile>
+      </mat-grid-list>
 
     <mat-action-row>
-      <button mat-button color="primary" (click)="nextStep()">Next</button>
+      <button mat-button color="primary" >done</button>
     </mat-action-row>
   </mat-expansion-panel>
 

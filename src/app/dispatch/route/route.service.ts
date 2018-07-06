@@ -8,12 +8,14 @@ import { Subject } from 'rxjs';
 @Injectable({providedIn: 'root'})
 export class RouteService {
   private routes: any[] = [];
+  private routeArray: any[] = [];
   private routeUpdate = new Subject<any[]>();
+  private routeArrayUpdate = new Subject<any[]>();
 
   constructor(
     private http: HttpClient,
     public dialog: MatDialog
-  ) {}
+  ) { this.getRoutes(); }
 
   getRoutes() {
     this.http.get<{documents: any[]}>
@@ -29,8 +31,9 @@ export class RouteService {
       }))
       .subscribe(routeResult => {
         this.routes = routeResult;
-        console.log('routes get');
+        console.log('routes get', this.routes);
         this.routeUpdate.next([...this.routes]);
+        this.routeArray = this.getRouteArray();
       });
   }
 
@@ -48,13 +51,18 @@ export class RouteService {
   }
 
   getRouteArray() {
-    this.getRoutes();
+    // this.getRoutes();
     const test = [];
     this.routes.forEach(function (item) {
       test.push(item.title);
     });
+    console.log(test);
+    this.routeArrayUpdate.next([...test]);
     return test;
   }
 
+  getRouteArrayUpdateListener() {
+    return this.routeArrayUpdate.asObservable();
+  }
 
 }

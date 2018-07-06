@@ -4,9 +4,10 @@ import { NgForm } from '@angular/forms';
 import { CustomerService } from './customer.service';
 import { Router } from '@angular/router';
 import { RouteService } from '../route/route.service';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-dialog-add',
+  selector: 'app-customer-dialog',
   templateUrl: './DC-Customer.component.html',
   styleUrls: ['../DC.component.css']
 })
@@ -14,6 +15,7 @@ export class DCCustomerComponent {
 
   confirmDelete = false;
   public routes;
+  private routeSub: Subscription;
 
   @Output() newRecord = new EventEmitter();
 

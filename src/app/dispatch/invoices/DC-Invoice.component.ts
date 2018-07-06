@@ -93,7 +93,7 @@ export class DCInvoiceComponent {
       formData.value.price = price[formData.value.animal];
     }
     formData.value.accountId = this.data.accountId;
-    return formData;
+    return formData.value;
   }
 
 

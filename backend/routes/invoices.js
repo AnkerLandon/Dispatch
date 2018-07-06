@@ -6,6 +6,7 @@ const Request = require("../models/request");
 const router = express.Router();
 
 router.post("", (req, res, next) => {
+  console.log('one');
   var request = new Request({
     number: req.body.number,
     animal: req.body.animal,
@@ -13,7 +14,7 @@ router.post("", (req, res, next) => {
     complete: false,
     price: req.body.price * req.body.number
   });
-
+  console.log('one');
   var d = new Date();
   var datestring = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
 
@@ -24,9 +25,9 @@ router.post("", (req, res, next) => {
     total: req.body.price * req.body.number,
     priceId: req.body.priceId
   });
-
+  console.log('one');
   invoice.requests.push(request);
-
+  console.log('one');
   invoice.save()
   .then(result => {
     res.status(201).json({
