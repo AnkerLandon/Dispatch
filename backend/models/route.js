@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require("mongoose-unique-validator");
 
-const testSchema = mongoose.Schema({
-  title: {type: String, required: true},
+const RouteSchema = mongoose.Schema({
+  title: {type: String, required: true, unique: true, index: true},
   description: {type: String}
 });
-
-module.exports = mongoose.model('Test', testSchema);
+RouteSchema.set('autoIndex', false);
+RouteSchema.plugin(uniqueValidator);
+module.exports = mongoose.model('Route', RouteSchema);

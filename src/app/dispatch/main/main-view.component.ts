@@ -101,6 +101,9 @@ export class MainViewComponent implements OnInit, OnDestroy {
       case 'customers':
         this.router.navigate(['/invoices/' + data._id]);
         break;
+      case 'routes':
+        this.editRouteDialog(data);
+        break;
       default:
       console.log('addSwitch Error');
     }
@@ -163,6 +166,10 @@ export class MainViewComponent implements OnInit, OnDestroy {
 
   editPriceDialog(myUser: any) {
     this.mainService.openPriceDialog(myUser);
+  }
+
+  editRouteDialog(myUser: any) {
+    this.mainService.openRouteDialog(myUser);
   }
 
 

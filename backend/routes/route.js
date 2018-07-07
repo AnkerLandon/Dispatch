@@ -24,4 +24,28 @@ router.get("", (req, res, next) => {
   });
 
 });
+
+router.put("", (req, res, next) => {
+  console.log("edit route data", req.body)
+  Route.updateOne({_id: req.body._id}, req.body)
+  .exec()
+    .then(result => {
+      console.log(result);
+      res.status(200).json({message: "Route update success"})
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      })
+    });
+});
+
+router.delete("/:id", (req, res, next) => {
+  Route.deleteOne({ _id: req.params.id}).then(result => {
+    console.log(result);
+    res.status(200).json({ message: "Route deleted!" });
+  });
+});
+
 module.exports = router;

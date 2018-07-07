@@ -14,6 +14,7 @@ import { RouteService } from './route.service';
 
       <mat-form-field class="item" >
         <input matInput
+          [readonly]="editable"
           class="inputs"
           type='string'
           name='title'
@@ -75,6 +76,7 @@ import { RouteService } from './route.service';
 export class DCRouteComponent {
 
   confirmDelete = false;
+  editable = false;
 
   @Output() newRecord = new EventEmitter();
 
@@ -84,6 +86,7 @@ export class DCRouteComponent {
     public router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       console.log(data);
+      if (this.data._id) {this.editable = true; }
     }
 
   onNoClick(): void {
@@ -99,32 +102,19 @@ export class DCRouteComponent {
     this.dialogRef.close();
   }
 
-  editRoute(formData: NgForm) {/*
-    console.log(this.data._id, formData.value);
+  editRoute(formData: NgForm) {
     if (formData.invalid) {
       return;
     }
-
     formData.value._id = this.data._id;
-    formData.value.planLog = this.data.planLog;
-
-    if (this.data.currentPlan !== formData.value.currentPlan) {
-      const data = {
-        currentPlan: formData.value.currentPlan,
-        oldpos: this.data.planLog.length - 1,
-        id: formData.value._id
-      };
-      this.customerService.addCustomerPaymentPlan(data);
-    }
-    formData.value.route = formData.value.route.toUpperCase();
-    this.customerService.editCustomer(formData.value);
-    this.dialogRef.close();*/
+    formData.value.title = formData.value.title.toUpperCase();
+    this.routeService.editRoute(formData.value);
+    this.dialogRef.close();
   }
 
-  deleteRoute() {/*
-    this.customerService.deleteCustomer(this.data._id);
-    this.router.navigate(['/customers']);
-    this.dialogRef.close();*/
+  deleteRoute() {
+    this.routeService.deleteRoute(this.data._id);
+    this.dialogRef.close();
   }
 
   checkDelete() {

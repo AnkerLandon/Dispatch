@@ -55,6 +55,7 @@ import { MainService } from '../../dispatch/main/main.service';
         <mat-button-toggle value="prices" routerLink='/prices'>Prices</mat-button-toggle>
         <mat-button-toggle value="users" routerLink='/users'>Users</mat-button-toggle>
         <mat-button-toggle value="routes" routerLink='/routes'>Routes</mat-button-toggle>
+        <mat-button-toggle value="driverView" routerLink='/driver'>Driver View</mat-button-toggle>
      </mat-button-toggle-group>
   </div>
 </div>
