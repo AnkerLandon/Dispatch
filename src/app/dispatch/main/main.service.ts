@@ -63,28 +63,32 @@ export class MainService {
   openCustomerDialog(form: any): void {
     const dialogRef = this.dialog.open(DCCustomerComponent, {
       maxWidth: '50vw',
-      data:  form
+      data:  form,
+      disableClose: true
     });
   }
 
   openUserDialog(form: any): void {
     const dialogRef = this.dialog.open(DCUserComponent, {
       maxWidth: '50vw',
-      data:  form
+      data:  form,
+      disableClose: true
     });
   }
 
   openPriceDialog(form: any): void {
     const dialogRef = this.dialog.open(DCPriceComponent, {
       maxWidth: '50vw',
-      data:  form
+      data:  form,
+      disableClose: true
     });
   }
 
   openRouteDialog(form: any): void {
     const dialogRef = this.dialog.open(DCRouteComponent, {
       maxWidth: '50vw',
-      data:  form
+      data:  form,
+      disableClose: true
     });
   }
 

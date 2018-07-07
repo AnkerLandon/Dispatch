@@ -80,12 +80,14 @@
       <button
         mat-button
         *ngIf="!data._id"
+        type="submit"
         (click)="saveCustomer(formData)"
         cdkFocusInitial
         >Submit</button>
       <button
         mat-button
         *ngIf="data._id"
+        type="submit"
         (click)="editCustomer(formData)"
         cdkFocusInitial
         >Edit</button>

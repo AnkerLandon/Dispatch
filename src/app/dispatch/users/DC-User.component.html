@@ -130,12 +130,14 @@
       <button mat-button (click)="onNoClick()">Cancel</button>
       <button
         mat-button
+        type="submit"
         *ngIf="!data._id"
         (click)="saveUser(formData)"
         cdkFocusInitial
         >Submit</button>
       <button
         mat-button
+        type="submit"
         *ngIf="data._id"
         (click)="editUser(formData)"
         (keyup.enter)="editUser(formData)"

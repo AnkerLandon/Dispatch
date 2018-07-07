@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './login.component.html',
@@ -21,7 +22,18 @@ import { AuthService } from './auth.service';
 
 export class LoginComponent {
 
-  constructor(public authService: AuthService) {}
+  constructor(
+    public authService: AuthService,
+    private router: Router
+  ) {
+    const isAuth = this.authService.getAuth();
+    console.log(isAuth.status);
+    if (isAuth.status) {
+      if (isAuth.rank === 'Dispatch') {
+        this.router.navigate(['/customers']);
+      } else {this.router.navigate(['/driver']); }
+    }
+  }
   isLoading = false;
 
   onLogin(loginData: NgForm) {

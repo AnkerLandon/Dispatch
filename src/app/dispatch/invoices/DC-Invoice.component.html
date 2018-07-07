@@ -66,12 +66,14 @@
       <button mat-button (click)="onNoClick()">Cancel</button>
       <button
         mat-button
+        type="submit"
         *ngIf="!data._id && !data.number"
         (click)="addInvoice(formData)"
         cdkFocusInitial>Add New
       </button>
       <button
         mat-button
+        type="submit"
         *ngIf="data.requests"
         (click)="addRequest(formData)"
         cdkFocusInitial>Add Request

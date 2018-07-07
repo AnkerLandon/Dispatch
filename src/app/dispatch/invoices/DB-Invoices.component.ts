@@ -26,7 +26,9 @@ export class DBInvoiceComponent {
     console.log('start data', this.myForm);
     const dialogRef = this.dialog.open(DCInvoiceComponent, {
       maxWidth: '50vw',
-      data:  this.myForm});
+      data:  this.myForm,
+      disableClose: true
+    });
   }
 }
 

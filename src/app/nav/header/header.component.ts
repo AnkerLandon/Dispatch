@@ -2,6 +2,7 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import { NavService } from '../nav.service';
 import { AuthService } from '../../auth/auth.service';
 import { Subscription } from 'rxjs';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -10,10 +11,10 @@ import { Subscription } from 'rxjs';
     <mat-toolbar color="primary" class="example-toolbar">
       <button
           mat-icon-button class="topnav"
-          routerLink=''
+          (click)="backClicked()"
           fxHide.gt-md
          >
-        <mat-icon>menu</mat-icon>
+        <mat-icon>arrow_back_ios</mat-icon>
       </button>
       <div fxHide.lt-md opened="false" ></div>
       <h1 class="Dispatch">Dispatch App</h1>
@@ -45,6 +46,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private navService: NavService,
+    private location: Location,
     private authService: AuthService) {}
 
   ngOnInit() {
@@ -73,6 +75,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onLogOut() {
     this.authService.logOut();
   }
+
+  backClicked() {
+    this.location.back();
+}
 
 
 }
