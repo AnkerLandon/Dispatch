@@ -65,7 +65,8 @@ export class CustomerService {
   }
 
   isCurrentCustomerCash() {
-    if (this.customer.currentPlan === 'cash') { return true; }
+    console.log('current customer paymentPlan:', this.customer.currentPlan);
+    if (this.customer.currentPlan === 'Cash') { return true; }
     return false;
   }
 

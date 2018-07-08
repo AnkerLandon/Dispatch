@@ -23,8 +23,8 @@ router.post("", (req, res, next) => {
     accountId: req.body.accountId,
     date: datestring,
     requests: [],
-    total: req.body.price*1 + req.body.pickupFee,
     pickupFee: req.body.pickupFee,
+    tax: req.body.tax,
     route: req.body.route
   });
   console.log('one');
@@ -59,17 +59,14 @@ router.put("/:id",(req, res, next) => {
   Invoice.updateOne(
     { _id: req.params.id },
     { $push: { requests: newRequest } })
-    .then(result => {
-      console.log(result);
-  Invoice.updateOne({_id: req.params.id },
-    { $inc: { total: req.body.price} })
-    .then(results => {console.log('Total Updated')});
+    .then(results => {
+      console.log('Total Updated', results);
       res.status(200).json({ message: "Update successful!" , data: newRequest});
     })
     .catch(err => {
       console.log(err);
       res.status(500).json({message: err})
-    });;
+    });
 
 });
 

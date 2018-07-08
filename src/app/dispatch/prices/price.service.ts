@@ -62,4 +62,8 @@ export class PriceService {
   getPickupPrice() {
     return this.getMostRecentPrice().pickup ;
   }
+
+  getTax (taxableAmount: number) {
+    return +(taxableAmount * (this.getMostRecentPrice().tax / 100)).toFixed(2) ;
+  }
 }

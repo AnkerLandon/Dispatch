@@ -44,6 +44,7 @@ export class DCInvoiceComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
+
   addRequest(formData: NgForm) {
     if (formData.invalid) { return; }
     this.invoiceService.addRequest(this.prepFormData(formData));
@@ -52,8 +53,12 @@ export class DCInvoiceComponent {
 
   addInvoice(formData: NgForm) {
     if (formData.invalid) { return; }
-    if ( this.customerService.isCurrentCustomerCash) {
+    if ( this.customerService.isCurrentCustomerCash()) {
       formData.value.pickupFee = this.priceService.getPickupPrice();
+      formData.value.tax = this.priceService.getTax(formData.value.pickupFee) * 1;
+    } else {
+      formData.value.pickupFee = 0;
+      formData.value.pickupFee = 0;
     }
     this.invoiceService.addInvoice(this.prepFormData(formData));
     this.dialogRef.close();
@@ -89,6 +94,10 @@ export class DCInvoiceComponent {
     if (formData.value.animal === 'cow' || formData.value.animal === 'horse') {
       formData.value.price = price[formData.value.animal] * formData.value.number;
     } else {formData.value.price = 0; }
+
+    if (formData.value.animal === 'horse') {
+      formData.value.tax += this.priceService.getTax(price['horse'] * formData.value.number);
+    }
 
     formData.value.priceId = price._id;
     formData.value.route = this.customerService.getCustomerRoute();

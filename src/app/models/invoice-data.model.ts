@@ -3,8 +3,8 @@ export interface Invoice {
   accountId: string;
   date: string;
   requests: Request[];
-  total: number;
   pickupFee?: number;
+  tax?: number;
   route: string;
 }
 

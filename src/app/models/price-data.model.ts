@@ -4,5 +4,6 @@ export interface Price {
   horse: number;
   pickup: number;
   subscription: number;
+  tax: number;
   date: Date;
 }

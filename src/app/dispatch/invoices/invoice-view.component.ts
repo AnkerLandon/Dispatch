@@ -21,7 +21,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
   flag = false;
   view: any;
-  displayedColumns = [ 'edit', 'date', 'total', 'pickupFee', 'requests'];
+  displayedColumns = [ 'edit', 'date', 'pickupFee', 'tax', 'total', 'requests'];
   dataSource = new MatTableDataSource(this.records);
 
   constructor(
@@ -51,6 +51,16 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.dataSubbscription.unsubscribe();
+  }
+
+  getTotal(item: any) {
+    let total = 0;
+    for (let i = 0; i < item.requests.length; i++) {
+      total += item.requests[i].price;
+    }
+    total += item.pickupFee;
+    total += item.tax;
+    return total;
   }
 
   openRecords(myId: string) {

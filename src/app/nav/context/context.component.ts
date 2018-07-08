@@ -51,11 +51,26 @@ import { MainService } from '../../dispatch/main/main.service';
         aria-label="Navigation"
         fxLayout="column"
         fxLayout.lt-md="row">
-        <mat-button-toggle value="customers" routerLink='/customers'>Customers</mat-button-toggle>
-        <mat-button-toggle value="prices" routerLink='/prices'>Prices</mat-button-toggle>
-        <mat-button-toggle value="users" routerLink='/users'>Users</mat-button-toggle>
-        <mat-button-toggle value="routes" routerLink='/routes'>Routes</mat-button-toggle>
-        <mat-button-toggle value="driverView" routerLink='/driver'>Driver View</mat-button-toggle>
+        <mat-button-toggle value="customers" routerLink='/customers'>
+          <mat-icon>assignment_ind</mat-icon>
+          Customers
+        </mat-button-toggle>
+        <mat-button-toggle value="prices" routerLink='/prices'>
+          <mat-icon>monetization_on</mat-icon>
+          Prices
+        </mat-button-toggle>
+        <mat-button-toggle value="users" routerLink='/users'>
+          <mat-icon>account_box</mat-icon>
+          Users
+        </mat-button-toggle>
+        <mat-button-toggle value="routes" routerLink='/routes'>
+          <mat-icon>directions_car</mat-icon>
+          Routes
+        </mat-button-toggle>
+        <mat-button-toggle value="driverView" routerLink='/driver'>
+          <mat-icon>exit_to_app</mat-icon>
+          Driver View
+        </mat-button-toggle>
      </mat-button-toggle-group>
   </div>
 </div>

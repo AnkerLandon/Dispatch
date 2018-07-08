@@ -35,8 +35,8 @@ getInvoices(invoiceId: string) {
           accountId: invoice.accountId,
           date: invoice.date,
           requests: invoice.requests,
-          total: invoice.total,
           pickupFee: invoice.pickupFee,
+          tax: invoice.tax,
           route: invoice.route
         };
       });
@@ -123,6 +123,7 @@ deleteRequest(resId: string) {
       console.log(result);
       this.invoice.requests.splice(this.requestIndex, 1);
       this.requestUpdate.next(this.invoice);
+      this.getInvoices(this.currentInvoiceId);
     });
 }
 
