@@ -126,14 +126,8 @@ export class MainService {
       'edit',
       'date',
       'cow',
-      'heffer',
-      'calf',
-      'bull',
-      'steer',
-      'pig',
-      'sow',
-      'boar',
-      'barrel',
+      'horse',
+      'pickup',
       'subscription'
     ];
   }

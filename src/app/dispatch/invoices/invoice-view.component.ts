@@ -21,7 +21,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
   flag = false;
   view: any;
-  displayedColumns = [ 'edit', 'date', 'total', 'requests'];
+  displayedColumns = [ 'edit', 'date', 'total', 'pickupFee', 'requests'];
   dataSource = new MatTableDataSource(this.records);
 
   constructor(
@@ -35,7 +35,9 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
         this.customerId = paramMap.get('customerId');
+        console.log('cust', this.customerId);
     });
+
     this.customerService.setCurrentCustomer(this.customerId);
     this.invoiceService.getInvoices(this.customerId);
     this.setUp();
@@ -43,6 +45,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     this.dataSubbscription = this.invoiceService.getInvoicesUpdateListener()
       .subscribe((records: any[]) => {
         this.dataSource.data = records;
+        console.log('data', this.dataSource.data);
       });
   }
 

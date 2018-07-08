@@ -4,6 +4,7 @@ export interface Invoice {
   date: string;
   requests: Request[];
   total: number;
+  pickupFee?: number;
   route: string;
 }
 
@@ -14,10 +15,12 @@ export interface Request {
   other?: string;
   complete?: boolean;
   price?: number;
+  priceId?: number;
 }
 
 enum animals {
   'cow',
+  'horse',
   'heffer',
   'calf',
   'bull',

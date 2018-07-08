@@ -12,7 +12,8 @@ router.post("", (req, res, next) => {
     animal: req.body.animal,
     other: req.body.other,
     complete: false,
-    price: req.body.price * req.body.number
+    price: req.body.price,
+    priceId: req.body.priceId
   });
   console.log('one');
   var d = new Date();
@@ -22,8 +23,8 @@ router.post("", (req, res, next) => {
     accountId: req.body.accountId,
     date: datestring,
     requests: [],
-    total: req.body.price * req.body.number,
-    priceId: req.body.priceId,
+    total: req.body.price*1 + req.body.pickupFee,
+    pickupFee: req.body.pickupFee,
     route: req.body.route
   });
   console.log('one');
@@ -51,7 +52,8 @@ router.put("/:id",(req, res, next) => {
     animal: req.body.animal,
     other: req.body.other,
     complete: false,
-    price: req.body.price * req.body.number
+    price: req.body.price,
+    priceId: req.body.priceId
   });
    console.log('add',req.body);
   Invoice.updateOne(
@@ -59,9 +61,9 @@ router.put("/:id",(req, res, next) => {
     { $push: { requests: newRequest } })
     .then(result => {
       console.log(result);
-      Invoice.updateOne({_id: req.params.id },
-        { $inc: { total: req.body.price*req.body.number} })
-        .then(results => {console.log('Total Updated')});
+  Invoice.updateOne({_id: req.params.id },
+    { $inc: { total: req.body.price} })
+    .then(results => {console.log('Total Updated')});
       res.status(200).json({ message: "Update successful!" , data: newRequest});
     })
     .catch(err => {

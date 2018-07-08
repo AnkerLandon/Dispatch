@@ -25,17 +25,12 @@ export class PriceService {
       return priceData.documents.map(price => {
         return {
           _id: price._id,
+          pickup: price.pickup,
           date: price.date,
           cow: price.cow,
-          heffer: price.heffer,
-          calf: price.calf,
-          bull: price.bull,
-          steer: price.steer,
-          pig: price.pig,
-          sow: price.sow,
-          boar: price.boar,
-          subscription: price.subscription,
-          barrel: price.barrel
+          horse: price.horse,
+          tax: price.tax,
+          subscription: price.subscription
         };
       });
     }))
@@ -62,5 +57,9 @@ export class PriceService {
   getMostRecentPrice() {
     console.log('price length', this.prices , this.prices.length);
     return this.prices[this.prices.length - 1];
+  }
+
+  getPickupPrice() {
+    return this.getMostRecentPrice().pickup ;
   }
 }

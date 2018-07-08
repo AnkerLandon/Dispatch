@@ -28,6 +28,7 @@ getInvoices(invoiceId: string) {
     <{documents}>
     ('http://localhost:3000/api/invoice/' + invoiceId)
     .pipe(map((invoiceData) => {
+      console.log('invocen Data', invoiceData);
       return invoiceData.documents.map(invoice => {
         return {
           _id: invoice._id,
@@ -35,6 +36,7 @@ getInvoices(invoiceId: string) {
           date: invoice.date,
           requests: invoice.requests,
           total: invoice.total,
+          pickupFee: invoice.pickupFee,
           route: invoice.route
         };
       });
@@ -85,7 +87,7 @@ addRequest(newRequest: any) {
   const currenInvoice = this.getCurrentInvoice();
   this.http.put('http://localhost:3000/api/invoice/' + currenInvoice._id, newRequest)
     .subscribe((response: any) => {
-      console.log(response.message);
+      console.log(response);
       this.invoice.requests.push(response.data);
       this.requestUpdate.next(this.invoice);
       this.getInvoices(this.currentInvoiceId);

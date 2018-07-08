@@ -47,20 +47,29 @@ export class CustomerService {
       });
   }
 
-  getCustomer(_id: string) {
-    return this.customers.find(c => c._id === _id);
-  }
-
   setCurrentCustomer(_id: string) {
     this.customer = this.customers.find(c => c._id === _id);
     this.currentCustomerUpdate.next(this.customer);
+  }
+
+  getCustomer(_id: string) {
+    return this.customers.find(c => c._id === _id);
   }
 
   getCurrentCustomer() {
     return this.customer;
   }
 
-  test() {
+  getCustomerRoute() {
+    return this.customer.route;
+  }
+
+  isCurrentCustomerCash() {
+    if (this.customer.currentPlan === 'cash') { return true; }
+    return false;
+  }
+
+  getCurrentCustomerUpdateListener() {
     return this.currentCustomerUpdate.asObservable();
   }
 
@@ -110,8 +119,6 @@ export class CustomerService {
     });
   }
 
-  getCustomerRoute() {
-    return this.customer.route;
-  }
+
 
 }

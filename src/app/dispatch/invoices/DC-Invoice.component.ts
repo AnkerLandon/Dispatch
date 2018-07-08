@@ -23,6 +23,7 @@ export class DCInvoiceComponent {
     'pig',
     'sow',
     'boar',
+    'horse',
     'barrel',
     'other'];
 
@@ -51,26 +52,18 @@ export class DCInvoiceComponent {
 
   addInvoice(formData: NgForm) {
     if (formData.invalid) { return; }
+    if ( this.customerService.isCurrentCustomerCash) {
+      formData.value.pickupFee = this.priceService.getPickupPrice();
+    }
     this.invoiceService.addInvoice(this.prepFormData(formData));
     this.dialogRef.close();
   }
 
   editRequest(formData: NgForm) {
-    if (formData.invalid) {
-      return;
-    }
+    if (formData.invalid) { return; }
+    formData.value._id = this.data._id;
     this.invoiceService.setRequestIndex(this.data);
-    this.myRequest = {
-      _id: this.data._id,
-      number: formData.value.number,
-      animal: formData.value.animal,
-      other: formData.value.other,
-      complete: this.complete,
-      price: 0
-    };
-    if (!this.myRequest.other) {this.myRequest.other = ''; }
-    console.log('DC', this.myRequest, this.data);
-    this.invoiceService.editRecord(this.myRequest);
+    this.invoiceService.editRecord(this.prepFormData(formData));
     this.dialogRef.close();
   }
 
@@ -89,13 +82,18 @@ export class DCInvoiceComponent {
   }
 
   private prepFormData(formData: NgForm) {
+    const price = this.priceService.getMostRecentPrice();
+
     if (!formData.value.other) {formData.value.other = ''; }
-    if (!formData.value.price) {
-      const price = this.priceService.getMostRecentPrice();
-      formData.value.price = price[formData.value.animal];
-    }
+
+    if (formData.value.animal === 'cow' || formData.value.animal === 'horse') {
+      formData.value.price = price[formData.value.animal] * formData.value.number;
+    } else {formData.value.price = 0; }
+
+    formData.value.priceId = price._id;
     formData.value.route = this.customerService.getCustomerRoute();
     formData.value.accountId = this.data.accountId;
+
     console.log('formData', formData.value);
     return formData.value;
   }

@@ -6,6 +6,7 @@ const requestSchema = mongoose.Schema({
   animal: {type: String,
     enum:[
     'cow',
+    'horse',
     'heffer',
     'calf',
     'bull',
@@ -28,6 +29,7 @@ const invoiceSchema = mongoose.Schema({
   date: {type: String, required: true },
   requests: [requestSchema],
   total: {type: Number},
+  pickupFee: {type: Number},
   route: {type: String}
 });
 
