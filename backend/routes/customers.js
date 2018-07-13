@@ -1,7 +1,6 @@
 const express = require("express");
 const Customer = require("../models/customer");
 const PaymentPlan = require("../models/paymentPlan");
-const Invoice = require("../models/invoice");
 var mongoose = require('mongoose');
 const checkAuth = require('../Middleware/check-auth-admin');
 

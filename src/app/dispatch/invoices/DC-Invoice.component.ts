@@ -93,7 +93,7 @@ export class DCInvoiceComponent {
 
     if (formData.value.animal === 'cow' || formData.value.animal === 'horse') {
       formData.value.price = price[formData.value.animal] * formData.value.number;
-    } else {formData.value.price = 0; }
+    } else {formData.value.price += 0; }
 
     if (formData.value.animal === 'horse') {
       formData.value.tax += this.priceService.getTax(price['horse'] * formData.value.number);

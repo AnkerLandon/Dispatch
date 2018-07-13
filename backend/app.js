@@ -8,6 +8,7 @@ const invoiceRoutes = require('./routes/invoices');
 const userRoutes = require('./routes/user');
 const priceRoutes = require('./routes/prices');
 const routeRoutes = require('./routes/route');
+const paymentRoutes = require('./routes/payment');
 
 const mongo = require('mongodb');
 
@@ -40,6 +41,7 @@ app.use("/api/invoice", invoiceRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/price", priceRoutes);
 app.use("/api/route", routeRoutes);
+app.use("/api/payment", paymentRoutes);
 
 
 module.exports = app;

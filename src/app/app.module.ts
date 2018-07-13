@@ -59,12 +59,16 @@ import { RouteSelectComponent } from './drive/route-select/route-select.componen
 import { DriveService } from './drive/drive.service';
 import { RouteService } from './dispatch/route/route.service';
 import { DCRouteComponent } from './dispatch/route/DC-Route.component';
+import { PaymentService } from './dispatch/payments/payment.service';
+import { DCPaymentComponent } from './dispatch/payments/DC-Payment.component';
+import { SubMainViewComponent } from './dispatch/main/subMain-view.component';
 
 
 
 
 @NgModule({
   entryComponents: [
+    DCPaymentComponent,
     DBInvoiceComponent,
     DCUserComponent,
     DCCustomerComponent,
@@ -79,9 +83,11 @@ import { DCRouteComponent } from './dispatch/route/DC-Route.component';
     HeaderComponent,
     MainViewComponent,
     LoginComponent,
+    SubMainViewComponent,
     DriverViewComponent,
     RouteSelectComponent,
     RequestsViewComponent,
+    DCPaymentComponent,
     DBInvoiceComponent,
     DBRequestComponent,
     DCCustomerComponent,
@@ -128,6 +134,7 @@ import { DCRouteComponent } from './dispatch/route/DC-Route.component';
     CustomerService,
     InvoiceService,
     UserService,
+    PaymentService,
     MainService,
     DriveService,
     RouteService,

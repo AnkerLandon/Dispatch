@@ -127,5 +127,21 @@ deleteRequest(resId: string) {
     });
 }
 
+getAnimals() {
+  return [
+    'cow',
+    'horse',
+    'heffer',
+    'calf',
+    'bull',
+    'steer',
+    'pig',
+    'sow',
+    'boar',
+    'barrel',
+    'other'
+  ];
+}
+
 
 }

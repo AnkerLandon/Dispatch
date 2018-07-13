@@ -11,22 +11,20 @@ export class RouteService {
   private routeArray: any[] = [];
   private routeUpdate = new Subject<any[]>();
   private routeArrayUpdate = new Subject<any[]>();
+  private mapRoutes: any;
 
   constructor(
     private http: HttpClient,
     public dialog: MatDialog
-  ) { this.getRoutes(); }
+  ) { }
 
   getRoutes() {
     this.http.get<{documents: any[]}>
       ('http://localhost:3000/api/route')
       .pipe(map((routeData) => {
         return routeData.documents.map(route => {
-          return {
-            _id: route._id,
-            title: route.title,
-            description: route.description
-          };
+          this.mapRoutes = route;
+          return this.mapRoutes;
         });
       }))
       .subscribe(routeResult => {

@@ -1,9 +1,19 @@
 export interface Price {
   _id?: string;
-  cow: number;
-  horse: number;
   pickup: number;
   subscription: number;
   tax: number;
-  date: Date;
+  date?: Date;
+  fees?: Fee[];
 }
+
+export interface Fee {
+  _id?: string;
+  animal: string;
+  feeAmount: number;
+  taxable: boolean;
+  appliesToo: string;
+}
+
+
+

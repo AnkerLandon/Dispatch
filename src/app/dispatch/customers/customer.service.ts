@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material';
 export class CustomerService {
   private customers: Customer[] = [];
   private customer: Customer;
+  private mapCustomer: Customer;
 
   private dataUpdate = new Subject<any[]>();
   private currentCustomerUpdate = new Subject<Customer>();
@@ -19,7 +20,7 @@ export class CustomerService {
     private http: HttpClient,
     public invoiceService: InvoiceService,
     public dialog: MatDialog
-  ) {this.getCustomers(); }
+  ) { }
 
   getCustomers() {
     this.http.get
@@ -27,17 +28,8 @@ export class CustomerService {
       ('http://localhost:3000/api/customers')
       .pipe(map((customerData) => {
         return customerData.documents.map(customer => {
-          return {
-            _id: customer._id,
-            companyName: customer.companyName,
-            name: customer.name,
-            address: customer.address,
-            city: customer.city,
-            township: customer.township,
-            route: customer.route,
-            currentPlan: customer.currentPlan,
-            planLog: customer.planLog
-          };
+          this.mapCustomer = customer;
+          return this.mapCustomer;
         });
       }))
       .subscribe(transCustomers => {

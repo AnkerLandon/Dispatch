@@ -3,6 +3,11 @@ form {
   margin: 10px;
   padding-bottom: 25px;
 }
+.right-align {
+  text-align: right;
+  margin: auto;
+  width: 100%;
+}
 
 .item {
   margin: auto;

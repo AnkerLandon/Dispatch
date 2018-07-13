@@ -9,31 +9,10 @@
         type='number'
         name='pickup'
         placeholder='Pickup Fee'
-        [ngModel]="data.pickup"
+        ngModel
         required
       >
-    </mat-form-field>
-
-    <mat-form-field class="item" >
-      <input matInput
-        class="inputs"
-        type='number'
-        name='cow'
-        placeholder='Cow Fee'
-        [ngModel]="data.cow"
-        required
-      >
-    </mat-form-field>
-
-    <mat-form-field class="item" >
-      <input matInput
-        class="inputs"
-        type='number'
-        name='horse'
-        placeholder='Horse Fee'
-        [ngModel]="data.horse"
-        required
-      >
+      <span matPrefix>$&nbsp;</span>
     </mat-form-field>
 
     <mat-form-field class="item" >
@@ -42,9 +21,10 @@
         type='number'
         name='tax'
         placeholder='SD Tax'
-        [ngModel]="data.tax"
+        ngModel
         required
       >
+      <span matPrefix>$&nbsp;</span>
     </mat-form-field>
 
     <mat-form-field class="item" >
@@ -53,11 +33,61 @@
         type='number'
         name='subscription'
         placeholder='Subscription'
-        [ngModel]="data.subscription"
+        ngModel
         required
       >
+      <span matPrefix>$&nbsp;</span>
     </mat-form-field>
 
+    <div *ngFor="let fee of feeItems; let i = index">
+      <mat-divider></mat-divider>
+
+      <mat-form-field class="item" >
+        <mat-select
+          class="inputs"
+          placeholder='Animal'
+          name='animal{{i}}'
+          ngModel
+          required
+          >
+          <mat-option *ngFor="let item of animalArray" value="{{item}}">{{item}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="item" >
+          <input matInput
+            class="inputs"
+            type='number'
+            name='feeAmount{{i}}'
+            placeholder='Fee'
+            ngModel
+            required
+          >
+          <span matPrefix>$&nbsp;</span>
+        </mat-form-field>
+
+        <mat-checkbox
+          class="inputs"
+          name='taxable{{i}}'
+          (clicked)='isTaxable(i)'
+        >Taxable?
+        </mat-checkbox>
+
+        <mat-form-field class="item" >
+            <mat-select
+              class="inputs"
+              placeholder='Applies Too:'
+              name='appliesToo{{i}}'
+              ngModel
+              required
+              >
+              <mat-option value="cash">Cash</mat-option>
+              <mat-option value="subscription">Subscription</mat-option>
+              <mat-option value="both">Both</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+    </div>
 
     <div mat-dialog-actions id="buttons">
       <button mat-button (click)="onNoClick()">Cancel</button>
@@ -93,6 +123,7 @@
         (click)="deletePrice(formData)"
         >Delete cannot be undone
       </button>
+      <button mat-button (click)="incFee()">Add Fee</button>
     </div>
   </form>
 </div>

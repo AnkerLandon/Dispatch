@@ -3,6 +3,9 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatInputModule} from '@angular/material'
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PriceService } from './price.service';
+import { InvoiceService } from '../invoices/invoice.service';
+import { Price, Fee } from '../../models/price-data.model';
+
 
 @Component({
   selector: 'app-dialog-add',
@@ -12,15 +15,20 @@ import { PriceService } from './price.service';
 export class DCPriceComponent {
 
   confirmDelete = false;
+  public animalArray = [];
+  public feeItems = [];
+  private feeNum = 0;
 
   @Output() newRecord = new EventEmitter();
 
   constructor(
     public dialogRef: MatDialogRef<DCPriceComponent>,
     public priceService: PriceService,
+    private invoiceService: InvoiceService,
     public router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       console.log(data);
+      this.animalArray = this.invoiceService.getAnimals();
     }
 
   onNoClick(): void {
@@ -30,8 +38,24 @@ export class DCPriceComponent {
     if (formData.invalid) {
       return;
     }
-    console.log(formData.value);
-    this.priceService.newPrice(formData.value);
+    console.log('price form data', formData.value, this.feeItems);
+    const price: Price = {
+      pickup: formData.value.pickup,
+      subscription: formData.value.subscription,
+      tax: formData.value.tax,
+      fees: []
+    };
+    for (let i = 0; i < this.feeNum; i++) {
+      const fee: Fee = {
+        animal: formData.value['animal' + i],
+        feeAmount: formData.value['feeAmount' + i],
+        taxable: this.feeItems[i],
+        appliesToo: formData.value['appliesToo' + i]
+      };
+      price.fees.push(fee);
+    }
+    console.log(price);
+    this.priceService.newPrice(price);
     this.dialogRef.close();
   }
 
@@ -53,6 +77,19 @@ export class DCPriceComponent {
 
   checkDelete() {
     this.confirmDelete = true;
+  }
+
+  incFee() {
+    this.feeItems[this.feeNum] = false ;
+    this.feeNum++;
+  }
+
+  isTaxable(index: number) {
+    if (this.feeItems[index] === true) {
+      this.feeItems[index] = false;
+    } else {
+      this.feeItems[index] = true;
+    }
   }
 
 }

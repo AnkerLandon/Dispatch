@@ -9,29 +9,23 @@ import { map } from 'rxjs/operators';
 @Injectable({providedIn: 'root'})
 export class PriceService {
 
-  private prices: Price[] = [];
+  public prices: Price[] = [];
   private price: Price;
+  private mapPrice: Price;
 
   private priceUpdate = new Subject<any[]>();
 
   constructor(
     private http: HttpClient,
     public dialog: MatDialog
-  ) { this.getPrices(); }
+  ) { }
 
   getPrices() {
     this.http.get<{documents}> ('http://localhost:3000/api/price')
     .pipe(map((priceData) => {
       return priceData.documents.map(price => {
-        return {
-          _id: price._id,
-          pickup: price.pickup,
-          date: price.date,
-          cow: price.cow,
-          horse: price.horse,
-          tax: price.tax,
-          subscription: price.subscription
-        };
+        this.mapPrice = price;
+        return this.mapPrice;
       });
     }))
     .subscribe(transPrices => {
@@ -39,7 +33,6 @@ export class PriceService {
       console.log('flag 1');
       this.priceUpdate.next([...this.prices]);
     });
-    this.priceUpdate.next([...this.prices]);
   }
 
   getPricesUpdateListener() {

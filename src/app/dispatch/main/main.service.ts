@@ -10,17 +10,22 @@ import { PriceService } from '../prices/price.service';
 import { DCPriceComponent } from '../prices/DC-Price.component';
 import { RouteService } from '../route/route.service';
 import { DCRouteComponent } from '../route/DC-Route.component';
+import { PaymentService } from '../payments/payment.service';
+import { InvoiceService } from '../invoices/invoice.service';
 
 @Injectable({providedIn: 'root'})
 export class MainService {
 
-  view: any[];
-  display: any[];
+  public view: any[];
+  public display: any[];
+  public subDisplay: any[];
 
   private customerSub: Subscription;
   private userSub: Subscription;
   private priceSub: Subscription;
   private routeSub: Subscription;
+  private paymentSub: Subscription;
+  private invoiceSub: Subscription;
 
   private viewUpdate = new Subject<any[]>();
 
@@ -30,6 +35,8 @@ export class MainService {
     public userService: UserService,
     private priceService: PriceService,
     private routeService: RouteService,
+    private paymentService: PaymentService,
+    private invoiceService: InvoiceService,
     public dialog: MatDialog,
 
   ) {
@@ -50,12 +57,25 @@ export class MainService {
     .subscribe((prices: any[]) => {
       this.view = prices;
       this.display = this.priceView();
+      this.subDisplay = this.subPriceView();
       this.viewUpdate.next([...this.view]);
     });
     this.routeSub = this.routeService.getRoutesUpdateListener()
     .subscribe((routes: any[]) => {
       this.view = routes;
       this.display = this.routeView();
+      this.viewUpdate.next([...this.view]);
+    });
+    this.paymentSub = this.paymentService.getPaymentUpdateListener()
+    .subscribe((payments: any[]) => {
+      this.view = payments;
+      this.display = this.paymentView();
+      this.viewUpdate.next([...this.view]);
+    });
+    this.invoiceSub = this.invoiceService.getInvoicesUpdateListener()
+    .subscribe((invoices: any[]) => {
+      this.view = invoices;
+      this.display = this.invoiceView();
       this.viewUpdate.next([...this.view]);
     });
   }
@@ -125,11 +145,19 @@ export class MainService {
     return [
       'edit',
       'date',
-      'cow',
-      'horse',
       'tax',
       'pickup',
       'subscription'
+    ];
+  }
+
+  subPriceView() {
+    return [
+      'edit',
+      'animal',
+      'feeAmount',
+      'taxable',
+      'appliesToo'
     ];
   }
 
@@ -141,4 +169,31 @@ export class MainService {
     ];
   }
 
+  paymentView() {
+    return [
+      'edit',
+      'createdDate',
+      'billType',
+      'amountDue'
+    ];
+  }
+  invoiceView() {
+    return [
+      'edit',
+      'date',
+      'pickupFee',
+      'tax',
+      'total'
+    ];
+  }
+  requestView() {
+    return [
+      'edit',
+      'number',
+      'animal',
+      'other',
+      'complete',
+      'price'
+    ];
+  }
 }

@@ -10,7 +10,8 @@ import { RouteSelectComponent } from './drive/route-select/route-select.componen
 const routes: Routes = [
   {path: 'customers', component: MainViewComponent, canActivate: [AuthGuard] },
   {path: 'prices', component: MainViewComponent, canActivate: [AuthGuard] },
-  {path: 'invoices/:customerId', component: InvoiceViewComponent, canActivate: [AuthGuard]},
+  {path: 'invoices/:customerId', component: MainViewComponent, canActivate: [AuthGuard]},
+  {path: 'payments/:customerId', component: MainViewComponent, canActivate: [AuthGuard]},
   {path: 'users', component: MainViewComponent, canActivate: [AuthGuard]},
   {path: 'routes', component: MainViewComponent, canActivate: [AuthGuard]},
   {path: 'driver', component: RouteSelectComponent },

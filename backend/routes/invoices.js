@@ -1,12 +1,15 @@
 const express = require("express");
 const Invoice = require("../models/invoice");
 const Request = require("../models/request");
+const Payment = require("../models/payment");
 
 
 const router = express.Router();
+function getTotal() {
+
+}
 
 router.post("", (req, res, next) => {
-  console.log('one');
   var request = new Request({
     number: req.body.number,
     animal: req.body.animal,
@@ -15,7 +18,6 @@ router.post("", (req, res, next) => {
     price: req.body.price,
     priceId: req.body.priceId
   });
-  console.log('one');
   var d = new Date();
   var datestring = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
 
@@ -27,11 +29,22 @@ router.post("", (req, res, next) => {
     tax: req.body.tax,
     route: req.body.route
   });
-  console.log('one');
   invoice.requests.push(request);
-  console.log('one');
-  invoice.save()
-  .then(result => {
+
+  var bill = new Payment({
+    accountId: req.body.accountId,
+    invoiceId: invoice._id,
+    createdDate: datestring,
+    billType: "test",
+    amountDue: req.body.pickupFee + req.body.tax + (req.body.price * req.body.number)
+  })
+
+  Promise.all([
+    invoice.save(),
+    bill.save()
+  ])
+  .then(([invResult, billResult]) => {
+    console.log('test result', invResult);
     res.status(201).json({
       message: 'success',
       newInvoice: invoice
@@ -56,9 +69,13 @@ router.put("/:id",(req, res, next) => {
     priceId: req.body.priceId
   });
    console.log('add',req.body);
-  Invoice.updateOne(
+  Promise.all([
+    Invoice.updateOne(
     { _id: req.params.id },
-    { $push: { requests: newRequest } })
+    { $push: { requests: newRequest } }),
+    Payment.updateOne()
+  ])
+
     .then(results => {
       console.log('Total Updated', results);
       res.status(200).json({ message: "Update successful!" , data: newRequest});

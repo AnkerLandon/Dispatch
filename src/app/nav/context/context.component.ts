@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Customer } from '../../models/customers-data.model';
 import { CustomerService } from '../../dispatch/customers/customer.service';
 import { InvoiceViewComponent } from '../../dispatch/invoices/invoice-view.component';
 import { MainService } from '../../dispatch/main/main.service';
+import { PaymentService } from '../../dispatch/payments/payment.service';
 
 
 
@@ -51,6 +52,14 @@ import { MainService } from '../../dispatch/main/main.service';
         aria-label="Navigation"
         fxLayout="column"
         fxLayout.lt-md="row">
+        <mat-button-toggle value="invoices/:customerId" (click)='gotoInvoices()' *ngIf="flag">
+          <mat-icon>list</mat-icon>
+          Invoices
+        </mat-button-toggle>
+        <mat-button-toggle value="payments/:customerId" (click)='gotoPayments()' *ngIf="flag">
+          <mat-icon>payment</mat-icon>
+          Bills
+        </mat-button-toggle>
         <mat-button-toggle value="customers" routerLink='/customers'>
           <mat-icon>assignment_ind</mat-icon>
           Customers
@@ -105,18 +114,22 @@ export class ContextComponent implements OnInit  {
   constructor(
     public route: ActivatedRoute,
     public mainService: MainService,
-    public customerService: CustomerService
+    public paymentService: PaymentService,
+    public customerService: CustomerService,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.currentLoc = this.route.snapshot.routeConfig.path;
+    console.log('current loc', this.currentLoc);
     this.dataSubbscription = this.customerService.getCurrentCustomerUpdateListener()
       .subscribe((records: any) => {
         this.refresh();
       });
 
-    if (this.route.component === InvoiceViewComponent) {
+    if (this.currentLoc === 'invoices/:customerId' || this.currentLoc === 'payments/:customerId') {
       this.customer = this.customerService.getCurrentCustomer();
+      // this.paymentService.setAccount(this.customer._id);
       this.flag = true;
       // this.currentLoc = 'customers';
     } else {
@@ -133,5 +146,12 @@ export class ContextComponent implements OnInit  {
     this.mainService.openCustomerDialog(customerData);
   }
 
+  gotoPayments() {
+    this.paymentService.setAccount(this.customer._id);
+    this.router.navigate(['/payments/' + this.customer._id]);
+  }
+  gotoInvoices() {
+    this.router.navigate(['/invoices/' + this.customer._id]);
+  }
 
 }
