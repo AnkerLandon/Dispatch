@@ -10,7 +10,7 @@ const priceRoutes = require('./routes/prices');
 const routeRoutes = require('./routes/route');
 const paymentRoutes = require('./routes/payment');
 
-const password = require('./sensitive');
+const login= require('./sensitive');
 
 const mongo = require('mongodb');
 
@@ -18,7 +18,7 @@ ObjectID = mongo.ObjectID;
 
 app.use(bodyParse.json());
 
-mongoose.connect("mongodb+srv://Lando:" + password.password + "@anker0-k2bcv.gcp.mongodb.net/Dispatchdb?retryWrites=true")
+mongoose.connect("mongodb+srv://"+ login.userid + ":" + login.password + "@anker0-k2bcv.gcp.mongodb.net/Dispatchdb?retryWrites=true")
   .then(() => {
     console.log('connected database');
   })
