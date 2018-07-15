@@ -1,9 +1,7 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { Customer } from '../../models/customers-data.model';
 import { CustomerService } from '../../dispatch/customers/customer.service';
-import { InvoiceViewComponent } from '../../dispatch/invoices/invoice-view.component';
 import { MainService } from '../../dispatch/main/main.service';
 import { PaymentService } from '../../dispatch/payments/payment.service';
 

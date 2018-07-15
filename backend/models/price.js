@@ -20,3 +20,4 @@ priceSchema.set('autoIndex', false);
 priceSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model('Price', priceSchema);
+

@@ -12,6 +12,7 @@ import { RouteService } from '../route/route.service';
 import { DCRouteComponent } from '../route/DC-Route.component';
 import { PaymentService } from '../payments/payment.service';
 import { InvoiceService } from '../invoices/invoice.service';
+import { DCInvoiceComponent } from '../invoices/DC-Invoice.component';
 
 @Injectable({providedIn: 'root'})
 export class MainService {
@@ -26,8 +27,10 @@ export class MainService {
   private routeSub: Subscription;
   private paymentSub: Subscription;
   private invoiceSub: Subscription;
+  private requestSub: Subscription;
 
   private viewUpdate = new Subject<any[]>();
+  private subViewUpdate = new Subject<any[]>();
 
   constructor(
     private http: HttpClient,
@@ -78,6 +81,17 @@ export class MainService {
       this.display = this.invoiceView();
       this.viewUpdate.next([...this.view]);
     });
+    this.invoiceSub = this.invoiceService.getInvoicesUpdateListener()
+    .subscribe((invoices: any[]) => {
+      this.view = invoices;
+      this.display = this.invoiceView();
+      this.viewUpdate.next([...this.view]);
+    });
+    this.requestSub = this.invoiceService.getRequestUpdateListener()
+    .subscribe((records: any[]) => {
+      this.subViewUpdate.next([...records]);
+      console.log('main request sub', records);
+    });
   }
 
   openCustomerDialog(form: any): void {
@@ -112,8 +126,28 @@ export class MainService {
     });
   }
 
+  openInvoiceDialog(form: any): void {
+    const dialogRef = this.dialog.open(DCInvoiceComponent, {
+      maxWidth: '50vw',
+      data:  form,
+      disableClose: true
+    });
+  }
+
+  openRequestDialog(form: any): void {
+    const dialogRef = this.dialog.open(DCInvoiceComponent, {
+      maxWidth: '50vw',
+      data:  form,
+      disableClose: true
+    });
+  }
+
   getViewUpdateListener() {
     return this.viewUpdate.asObservable();
+  }
+
+  getSubViewUpdateListener() {
+    return this.subViewUpdate.asObservable();
   }
 
   customerView() {
@@ -193,7 +227,8 @@ export class MainService {
       'animal',
       'other',
       'complete',
-      'price'
+      'price',
+      'tax'
     ];
   }
 }

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes} from '@angular/router';
-import { InvoiceViewComponent } from './dispatch/invoices/invoice-view.component';
 import { LoginComponent } from './auth/login.component';
 import { MainViewComponent } from './dispatch/main/main-view.component';
 import { AuthGuard } from './auth/auth.guard';

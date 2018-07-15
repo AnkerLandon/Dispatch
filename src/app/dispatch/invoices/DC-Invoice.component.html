@@ -24,27 +24,44 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field class="item" *ngIf="formData.value.animal === 'other'">
-      <input matInput
-        class="inputs"
-        type='string'
-        name='other'
-        placeholder='Other:'
-        [ngModel]='data.other'
-        required
-      >
-    </mat-form-field>
-
-    <mat-form-field class="item" *ngIf="formData.value.animal === 'other'">
+    <div *ngIf="formData.value.animal === 'other'">
+      <mat-form-field class="item">
         <input matInput
           class="inputs"
-          type='number'
-          name='price'
-          placeholder='Additional Fee?'
-          [ngModel]='data.price'
+          type='string'
+          name='other'
+          placeholder='Other:'
+          [ngModel]='data.other'
           required
         >
       </mat-form-field>
+
+      <mat-form-field class="item">
+          <input matInput
+            class="inputs"
+            type='number'
+            name='price'
+            placeholder='Additional Fee?'
+            [ngModel]='data.price'
+            required
+          >
+        </mat-form-field>
+
+        <mat-form-field class="item">
+          <mat-select
+            class="inputs"
+            placeholder='Tax'
+            name="taxable"
+            ngModel
+            required
+            >
+              <mat-option value="true">Taxable</mat-option>
+              <mat-option value="false">Non-taxable</mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+
+
 
     <div class="item" *ngIf="!data.requests && data._id">
         <mat-checkbox
@@ -67,26 +84,26 @@
       <button
         mat-button
         type="submit"
-        *ngIf="!data._id && !data.number"
+        *ngIf="data.dialog === 'addInvoice'"
         (click)="addInvoice(formData)"
         cdkFocusInitial>Add New
       </button>
       <button
         mat-button
         type="submit"
-        *ngIf="data.requests"
+        *ngIf="data.dialog === 'addRequest'"
         (click)="addRequest(formData)"
         cdkFocusInitial>Add Request
       </button>
       <button
         mat-button
-        *ngIf="!data.requests && data._id"
+        *ngIf="data.dialog === 'editRequest'"
         (click)="editRequest(formData)"
         cdkFocusInitial>Edit
       </button>
       <button
         mat-button
-        *ngIf="!data.requests && data._id && !confirmDelete && !data.complete"
+        *ngIf=" data._id && !confirmDelete && !data.complete"
         id="delete"
         color="warn"
         (click)="checkDelete()"

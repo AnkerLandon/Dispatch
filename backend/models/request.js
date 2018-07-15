@@ -5,6 +5,7 @@ const requestSchema = mongoose.Schema({
   animal: {type: String,
     enum:[
     'cow',
+    'horse',
     'heffer',
     'calf',
     'bull',
@@ -17,7 +18,9 @@ const requestSchema = mongoose.Schema({
   required: true},
   other: {type: String},
   complete: {type: Boolean, required: true},
-  price: {type: Number}
+  price: {type: Number},
+  tax: {type: Number},
+  priceId: {type: String}
 });
 
 module.exports = mongoose.model('Request', requestSchema);

@@ -30,7 +30,7 @@ export class PriceService {
     }))
     .subscribe(transPrices => {
       this.prices = transPrices;
-      console.log('flag 1');
+      console.log('prices', this.prices);
       this.priceUpdate.next([...this.prices]);
     });
   }

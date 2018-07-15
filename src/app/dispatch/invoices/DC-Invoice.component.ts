@@ -39,7 +39,9 @@ export class DCInvoiceComponent {
     public invoiceService: InvoiceService,
     public priceService: PriceService,
     private customerService: CustomerService,
-    @Inject(MAT_DIALOG_DATA) public data: any) {}
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+      console.log('data', data);
+    }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -53,13 +55,7 @@ export class DCInvoiceComponent {
 
   addInvoice(formData: NgForm) {
     if (formData.invalid) { return; }
-    if ( this.customerService.isCurrentCustomerCash()) {
-      formData.value.pickupFee = this.priceService.getPickupPrice();
-      formData.value.tax = this.priceService.getTax(formData.value.pickupFee) * 1;
-    } else {
-      formData.value.pickupFee = 0;
-      formData.value.pickupFee = 0;
-    }
+
     this.invoiceService.addInvoice(this.prepFormData(formData));
     this.dialogRef.close();
   }
@@ -87,20 +83,9 @@ export class DCInvoiceComponent {
   }
 
   private prepFormData(formData: NgForm) {
-    const price = this.priceService.getMostRecentPrice();
 
     if (!formData.value.other) {formData.value.other = ''; }
 
-    if (formData.value.animal === 'cow' || formData.value.animal === 'horse') {
-      formData.value.price = price[formData.value.animal] * formData.value.number;
-    } else {formData.value.price += 0; }
-
-    if (formData.value.animal === 'horse') {
-      formData.value.tax += this.priceService.getTax(price['horse'] * formData.value.number);
-    }
-
-    formData.value.priceId = price._id;
-    formData.value.route = this.customerService.getCustomerRoute();
     formData.value.accountId = this.data.accountId;
 
     console.log('formData', formData.value);

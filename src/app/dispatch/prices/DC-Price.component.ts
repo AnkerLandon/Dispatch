@@ -1,6 +1,6 @@
-import { Component, Inject, EventEmitter, Output} from '@angular/core';
+import { Component, Inject, EventEmitter, Output, OnInit} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatInputModule} from '@angular/material';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PriceService } from './price.service';
 import { InvoiceService } from '../invoices/invoice.service';
@@ -13,11 +13,10 @@ import { Price, Fee } from '../../models/price-data.model';
   styleUrls: ['../DC.component.css']
 })
 export class DCPriceComponent {
-
   confirmDelete = false;
   public animalArray = [];
   public feeItems = [];
-  private feeNum = 0;
+  public feeNum = 0;
 
   @Output() newRecord = new EventEmitter();
 
@@ -26,14 +25,17 @@ export class DCPriceComponent {
     public priceService: PriceService,
     private invoiceService: InvoiceService,
     public router: Router,
+    private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       console.log(data);
       this.animalArray = this.invoiceService.getAnimals();
     }
 
+
   onNoClick(): void {
     this.dialogRef.close();
   }
+
   savePrice(formData: NgForm) {
     if (formData.invalid) {
       return;
@@ -49,7 +51,7 @@ export class DCPriceComponent {
       const fee: Fee = {
         animal: formData.value['animal' + i],
         feeAmount: formData.value['feeAmount' + i],
-        taxable: this.feeItems[i],
+        taxable: formData.value['taxable' + i],
         appliesToo: formData.value['appliesToo' + i]
       };
       price.fees.push(fee);
@@ -80,16 +82,9 @@ export class DCPriceComponent {
   }
 
   incFee() {
-    this.feeItems[this.feeNum] = false ;
+    this.feeItems.push(this.feeNum) ;
     this.feeNum++;
-  }
-
-  isTaxable(index: number) {
-    if (this.feeItems[index] === true) {
-      this.feeItems[index] = false;
-    } else {
-      this.feeItems[index] = true;
-    }
+    console.log('incFee', this.feeItems);
   }
 
 }

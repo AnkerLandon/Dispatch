@@ -19,7 +19,8 @@ import { InvoiceService } from '../invoices/invoice.service';
 
 export class MainViewComponent implements OnInit, OnDestroy {
   private records: any[] = [];
-  private dataSubbscription: Subscription;
+  private dataSub: Subscription;
+  private subViewSub: Subscription;
   private custId: string;
 
   public iconExpand = false;
@@ -54,11 +55,16 @@ export class MainViewComponent implements OnInit, OnDestroy {
       this.custId = paramMap.get('customerId');
       console.log('cust', this.custId);
     });
-    this.dataSubbscription = this.mainService.getViewUpdateListener()
+    this.dataSub = this.mainService.getViewUpdateListener()
       .subscribe((records: any[]) => {
         this.setUp();
         this.dataSource.data = records;
         console.log(this.displayedColumns, records);
+      });
+    this.subViewSub = this.mainService.getSubViewUpdateListener()
+      .subscribe((records: any[]) => {
+        this.subRecords = records;
+        console.log('sub view sub', records);
       });
     console.log('main location', this.route.snapshot.routeConfig.path);
     switch (this.route.snapshot.routeConfig.path) {
@@ -98,13 +104,17 @@ export class MainViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.dataSubbscription.unsubscribe();
+    this.dataSub.unsubscribe();
+    this.subViewSub.unsubscribe();
   }
 
   addSwitch() {
     switch (this.status) {
       case 'users':
         this.addUserDialog();
+        break;
+      case 'invoices':
+        this.InvoiceDialog('addInvoice');
         break;
       case 'prices':
         this.addPriceDialog();
@@ -139,6 +149,7 @@ export class MainViewComponent implements OnInit, OnDestroy {
         this.editRouteDialog(data);
         break;
       case 'invoices':
+        this.invoiceService.setInvoice(data._id);
         this.openSubView(data);
         break;
       default:
@@ -164,6 +175,25 @@ export class MainViewComponent implements OnInit, OnDestroy {
     this.showSub = true;
   }
 
+  subAddSwitch() {
+    console.log(this.subStatus);
+    switch (this.subStatus) {
+      case 'Requests':
+        this.InvoiceDialog('addRequest');
+      break;
+      default: console.log('subAddswitch error');
+    }
+  }
+
+  subEditSwitch(data) {
+    switch (this.subStatus) {
+      case 'Requests':
+      this.invoiceService.editRecord(data);
+      break;
+      default: console.log('subEditSwitch Error');
+    }
+  }
+
   addCustomerDialog() {
     const emptyCustomer = {
       _id: '',
@@ -173,6 +203,19 @@ export class MainViewComponent implements OnInit, OnDestroy {
       payment: null
     };
     this.mainService.openCustomerDialog(emptyCustomer);
+  }
+
+  InvoiceDialog(type) {
+    const emptyRequest = {
+      number: null,
+      animal: '',
+      other: '',
+      complete: false,
+      price: null,
+      accountId: this.custId,
+      dialog: type
+    };
+    this.mainService.openRequestDialog(emptyRequest);
   }
 
   addUserDialog() {

@@ -1,7 +1,7 @@
 export interface Invoice {
-  _id: string;
+  _id?: string;
   accountId: string;
-  date: string;
+  date?: string;
   requests: Request[];
   pickupFee?: number;
   tax?: number;
@@ -15,6 +15,7 @@ export interface Request {
   other?: string;
   complete?: boolean;
   price?: number;
+  tax?: number;
   priceId?: number;
 }
 

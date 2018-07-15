@@ -65,13 +65,19 @@
           >
           <span matPrefix>$&nbsp;</span>
         </mat-form-field>
-
-        <mat-checkbox
+      <mat-form-field class="item">
+        <mat-select
           class="inputs"
-          name='taxable{{i}}'
-          (clicked)='isTaxable(i)'
-        >Taxable?
-        </mat-checkbox>
+          placeholder='Tax'
+          name="taxable{{i}}"
+          ngModel
+          required
+          >
+            <mat-option value="true">Taxable</mat-option>
+            <mat-option value="false">Non-taxable</mat-option>
+        </mat-select>
+      </mat-form-field>
+
 
         <mat-form-field class="item" >
             <mat-select

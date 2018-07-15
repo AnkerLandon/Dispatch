@@ -20,6 +20,7 @@ const requestSchema = mongoose.Schema({
   other: {type: String},
   complete: {type: Boolean, required: true},
   price: {type: Number},
+  tax: {type: Number},
   priceId: {type: String}
 });
 

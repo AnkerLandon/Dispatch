@@ -36,15 +36,11 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { DCCustomerComponent } from './dispatch/customers/DC-Customer.component';
 import { DCInvoiceComponent } from './dispatch/invoices/DC-Invoice.component';
-import { InvoiceViewComponent } from './dispatch/invoices/invoice-view.component';
 import { CustomerService } from './dispatch/customers/customer.service';
 import { InvoiceService } from './dispatch/invoices/invoice.service';
-import { DBInvoiceComponent } from './dispatch/invoices/DB-Invoices.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ContextComponent } from './nav/context/context.component';
 import { MatButtonToggleModule} from '@angular/material/button-toggle';
-import { RequestsViewComponent } from './dispatch/request/requests-view.component';
-import { DBRequestComponent } from './dispatch/request/DB-Request.component';
 import { LoginComponent } from './auth/login.component';
 import 'hammerjs';
 import { UserService } from './dispatch/users/user.service';
@@ -69,13 +65,11 @@ import { SubMainViewComponent } from './dispatch/main/subMain-view.component';
 @NgModule({
   entryComponents: [
     DCPaymentComponent,
-    DBInvoiceComponent,
     DCUserComponent,
     DCCustomerComponent,
     DCInvoiceComponent,
     DCRouteComponent,
     DCPriceComponent,
-    DBRequestComponent,
   ],
   declarations: [
     AppComponent,
@@ -86,17 +80,13 @@ import { SubMainViewComponent } from './dispatch/main/subMain-view.component';
     SubMainViewComponent,
     DriverViewComponent,
     RouteSelectComponent,
-    RequestsViewComponent,
     DCPaymentComponent,
-    DBInvoiceComponent,
-    DBRequestComponent,
     DCCustomerComponent,
     DCRouteComponent,
     DCUserComponent,
     DCInvoiceComponent,
     DCPriceComponent,
-    ContextComponent,
-    InvoiceViewComponent
+    ContextComponent
   ],
   imports: [
     BrowserModule,

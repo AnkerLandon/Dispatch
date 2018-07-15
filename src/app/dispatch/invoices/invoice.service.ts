@@ -8,12 +8,13 @@ import { Request } from '../../models/invoice-data.model';
 
 @Injectable({providedIn: 'root'})
 export class InvoiceService {
+  private mapInvoice: Invoice;
   private currentInvoiceId: string;
   private invoices: Invoice[] = [];
   private invoice: Invoice;
   private requestIndex;
   private invoiceUpdate = new Subject<Invoice[]>();
-  private requestUpdate = new Subject<Invoice>();
+  private requestUpdate = new Subject<Request[]>();
 
   constructor(private http: HttpClient) {}
 
@@ -30,15 +31,8 @@ getInvoices(invoiceId: string) {
     .pipe(map((invoiceData) => {
       console.log('invocen Data', invoiceData);
       return invoiceData.documents.map(invoice => {
-        return {
-          _id: invoice._id,
-          accountId: invoice.accountId,
-          date: invoice.date,
-          requests: invoice.requests,
-          pickupFee: invoice.pickupFee,
-          tax: invoice.tax,
-          route: invoice.route
-        };
+        this.mapInvoice = invoice;
+        return this.mapInvoice;
       });
     }))
     .subscribe(transInvoices => {
@@ -51,18 +45,14 @@ getInvoice(id: string) {
   return {...this.invoices.find(i => i._id === id)};
 }
 
-setRequest(newId: string) {
+setInvoice(newId: string) {
   const myInvoice = this.getInvoice(newId);
   this.invoice = myInvoice;
-  this.requestUpdate.next(this.invoice);
+  this.requestUpdate.next(this.invoice.requests);
 }
 
 getCurrentInvoice() {
   return this.invoice;
-}
-
-viewRequestUpdate() {
-  return this.requestUpdate.asObservable();
 }
 
 editRecord( request: Request) {
@@ -73,7 +63,7 @@ editRecord( request: Request) {
     .subscribe((response: any) => {
       console.log(response.message);
       this.invoice.requests[this.requestIndex] = request;
-      this.requestUpdate.next(this.invoice);
+
       this.getInvoices(this.currentInvoiceId);
     });
 }
@@ -82,15 +72,18 @@ getInvoicesUpdateListener() {
   return this.invoiceUpdate.asObservable();
 }
 
+getRequestUpdateListener() {
+  return this.requestUpdate.asObservable();
+}
+
 addRequest(newRequest: any) {
   console.log('addRequest', newRequest);
   const currenInvoice = this.getCurrentInvoice();
   this.http.put('http://localhost:3000/api/invoice/' + currenInvoice._id, newRequest)
     .subscribe((response: any) => {
       console.log(response);
-      this.invoice.requests.push(response.data);
-      this.requestUpdate.next(this.invoice);
-      this.getInvoices(this.currentInvoiceId);
+      this.invoice.requests.push(response.request);
+      this.requestUpdate.next([...this.invoice.requests]);
     });
 }
 
@@ -122,7 +115,7 @@ deleteRequest(resId: string) {
     .subscribe((result) => {
       console.log(result);
       this.invoice.requests.splice(this.requestIndex, 1);
-      this.requestUpdate.next(this.invoice);
+      this.requestUpdate.next(this.invoice.requests);
       this.getInvoices(this.currentInvoiceId);
     });
 }

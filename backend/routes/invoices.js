@@ -1,88 +1,135 @@
 const express = require("express");
 const Invoice = require("../models/invoice");
 const Request = require("../models/request");
-const Payment = require("../models/payment");
+const Customer = require("../models/customer");
+const Price = require("../models/price");
+const Fee = require("../models/fee");
 
 
 const router = express.Router();
-function getTotal() {
+
+function calculatePrices(animal, number, custId, otherPrice, otherTaxable,  callback) {
+
+  var result = {plan: 0, fee: 0, Rtax: 0, Itax: 0, id: '', route: ''};
+
+  Promise.all([
+    Customer.findOne({_id: custId}),
+    Price.findOne({}).sort({$natural:-1})
+  ])
+  .then(([custResult, priceResult]) => {
+    console.log('calc results', custResult, priceResult);
+
+    result.id = priceResult._id;
+    result.route = custResult.route;
+
+    if (custResult.currentPlan.toLowerCase() === 'cash') {
+      result.plan = priceResult.pickup;
+      result.Itax = ((priceResult.tax / 100) * result.plan).toFixed(2);
+    }
+
+    if (animal.toLowerCase() === 'other') {
+      result.fee = otherPrice;
+      if (otherTaxable) {
+        result.Itax = ((priceResult.tax / 100) * otherPrice).toFixed(2);
+      }
+      console.log('results', result);
+      callback(null, result);
+    }
+
+    for( let i = 0; i < priceResult.fees.length; i++) {
+      const myFee = priceResult.fees[i];
+      if (myFee.animal === animal) {
+        if (myFee.appliesToo.toLowerCase() === custResult.currentPlan.toLowerCase() || myFee.appliesToo.toLowerCase() === 'both') {
+          result.fee = myFee.feeAmount * number;
+
+        }
+        if (myFee.taxable) {
+          result.Rtax += ((priceResult.tax / 100) * result.fee).toFixed(2);
+        }
+      }
+    }
+    console.log('results', result);
+    callback(null, result);
+  })
+  .catch(err => {
+    console.log('calc error', err);
+    return callback(new Error('fuck'));
+  });
 
 }
 
 router.post("", (req, res, next) => {
-  var request = new Request({
-    number: req.body.number,
-    animal: req.body.animal,
-    other: req.body.other,
-    complete: false,
-    price: req.body.price,
-    priceId: req.body.priceId
-  });
-  var d = new Date();
-  var datestring = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
-
-  var invoice = new Invoice({
-    accountId: req.body.accountId,
-    date: datestring,
-    requests: [],
-    pickupFee: req.body.pickupFee,
-    tax: req.body.tax,
-    route: req.body.route
-  });
-  invoice.requests.push(request);
-
-  var bill = new Payment({
-    accountId: req.body.accountId,
-    invoiceId: invoice._id,
-    createdDate: datestring,
-    billType: "test",
-    amountDue: req.body.pickupFee + req.body.tax + (req.body.price * req.body.number)
-  })
-
-  Promise.all([
-    invoice.save(),
-    bill.save()
-  ])
-  .then(([invResult, billResult]) => {
-    console.log('test result', invResult);
-    res.status(201).json({
-      message: 'success',
-      newInvoice: invoice
+  calculatePrices(req.body.animal, req.body.number, req.body.accountId, req.body.price, req.body.taxable, function (err, prices) {
+    console.log('test price', prices);
+    var request = new Request({
+      number: req.body.number,
+      animal: req.body.animal,
+      other: req.body.other,
+      complete: false,
+      price: prices.fee,
+      tax: prices.Rtax,
+      priceId: prices.id
     });
-  })
-  .catch(err => {
-    res.status(500).json({
-      error: err
+    var d = new Date();
+    var datestring = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
+
+    var invoice = new Invoice({
+      accountId: req.body.accountId,
+      date: datestring,
+      requests: [],
+      pickupFee: prices.plan,
+      tax: prices.Itax,
+      route: prices.route
+    });
+    invoice.requests.push(request);
+
+    invoice.save()
+    .then(invResult => {
+      console.log('test result', invResult);
+      res.status(201).json({
+        message: 'success',
+        newInvoice: invoice
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
     });
   });
+
 
 });
 
 router.put("/:id",(req, res, next) => {
-
-  var newRequest = new Request ({
-    number: req.body.number,
-    animal: req.body.animal,
-    other: req.body.other,
-    complete: false,
-    price: req.body.price,
-    priceId: req.body.priceId
-  });
-   console.log('add',req.body);
-  Promise.all([
-    Invoice.updateOne(
-    { _id: req.params.id },
-    { $push: { requests: newRequest } }),
-    Payment.updateOne()
-  ])
-
-    .then(results => {
-      console.log('Total Updated', results);
-      res.status(200).json({ message: "Update successful!" , data: newRequest});
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({message: err})
+  calculatePrices(
+    req.body.animal,
+    req.body.number,
+    req.body.accountId,
+    req.body.price,
+    req.body.taxable,
+    function (err, prices) {
+      var newRequest = new Request ({
+        number: req.body.number,
+        animal: req.body.animal,
+        other: req.body.other,
+        complete: false,
+        price: prices.fee,
+        tax: prices.Rtax,
+        priceId: prices.id
+      });
+      console.log('add',req.body);
+        Invoice.updateOne(
+        { _id: req.params.id },
+        { $push: { requests: newRequest } })
+        .then(results => {
+          console.log('Total Updated', results);
+          res.status(200).json({ message: "Update successful!" , request: newRequest});
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).json({message: err})
+        });
     });
 
 });
