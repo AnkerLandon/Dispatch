@@ -15,6 +15,8 @@ export class DriverViewComponent implements OnInit, OnDestroy {
   private invRouteSub: Subscription;
   public mergedData: any[];
   private driverRoute;
+  private results: Result[] = [];
+
 
   constructor(
     private driveService: DriveService,
@@ -28,7 +30,7 @@ export class DriverViewComponent implements OnInit, OnDestroy {
     this.invRouteSub = this.driveService.getInvRouteUpdateListener()
       .subscribe((results: any[]) => {
         this.mergedData = results;
-        console.log(this.mergedData);
+        console.log('merged Data', this.mergedData);
       });
     this.driveService.getRouteInvoices(this.driverRoute);
   }
@@ -37,4 +39,28 @@ export class DriverViewComponent implements OnInit, OnDestroy {
     this.invRouteSub.unsubscribe();
   }
 
+  onChange( invoiceId: string, requestId: string, checked: any, index: number) {
+    console.log('test', invoiceId, requestId, checked);
+    const changed = this.mergedData.find(d => d.invoiceId === invoiceId);
+    changed.requests[index].complete = checked;
+    console.log('result', changed);
+
+
+  }
+
+  submit(invoiceId: string) {
+    const invoice = this.mergedData.find(I => I.invoiceId === invoiceId);
+    console.log('submit', invoice);
+    this.driveService.completeRequests(invoice);
+  }
+
+  test() {
+    console.log('test:', this.mergedData);
+  }
+
+}
+
+interface Result {
+  invoiceId?: string;
+  status?: Array<any>;
 }

@@ -151,6 +151,23 @@ router.put("/request/:id",(req, res, next) => {
   });
 });
 
+router.put("/driver/update/:id",(req, res, next) => {
+  console.log('server', req.body, req.params.id, req.params.index);
+  Invoice.updateOne(
+    {_id: req.params.id, "requests._id": req.body.requestId },
+    {$set: {"requests.$.complete": req.body.checked}}
+  )
+  .exec()
+  .then(result => {
+    console.log(result);
+    res.status(200).json({message: "update success"})
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({message: err})
+  });
+});
+
 router.get("/:id",(req, res, next) => {
   Invoice.find({accountId: req.params.id}).then(documents => {
     res.status(200).json({documents});
@@ -162,8 +179,13 @@ router.get("/route/:route",(req, res, next) => {
   console.log('get route', req.params.route);
   Invoice.find({
     route: req.params.route,
-    'requests.complete': false}).then(documents => {
+    'requests.complete': false
+  }).then(documents => {
+    console.log('num', documents.length);
     res.status(200).json({documents});
+  }).catch(err => {
+    console.log(err);
+    res.status(500).json({message: err})
   });
 
 });

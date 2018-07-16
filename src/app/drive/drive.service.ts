@@ -13,6 +13,7 @@ export class DriveService {
   private invoices: Invoice[] = [];
   private customers: Customer[] = [];
   private mergedData: any[] = [];
+  private mapInvoice: Invoice;
   private invRouteUpdate = new Subject<any[]>();
 
   constructor(
@@ -28,14 +29,8 @@ export class DriveService {
       ('http://localhost:3000/api/invoice/route/' + route)
       .pipe(map((invoiceData) => {
         return invoiceData.documents.map(invoice => {
-          return {
-            _id: invoice._id,
-            accountId: invoice.accountId,
-            date: invoice.date,
-            requests: invoice.requests,
-            total: invoice.total,
-            route: invoice.route
-          };
+          this.mapInvoice = invoice;
+          return this.mapInvoice;
         });
       }))
       .subscribe(transInvoices => {
@@ -66,6 +61,26 @@ export class DriveService {
     this.invRouteUpdate.next([...this.mergedData]);
   }
 
+  completeRequests(data: any) {
+    for ( let i = 0; i < data.requests.length; i++) {
+      const record = {
+        invoiceId: data.invoiceId,
+        requestId: data.requests[i]._id,
+        checked: data.requests[i].complete
+      };
+      this.http.put('http://localhost:3000/api/invoice/driver/update/'
+      + record.invoiceId, record)
+      .subscribe((response: any) => {
+        console.log(response.message);
+        /*
+        this.invoice.requests[this.requestIndex] = request;
+
+        this.getInvoices(this.currentInvoiceId);
+        */
+      });
+    }
+  }
+
   getInvRouteUpdateListener() {
     return this.invRouteUpdate.asObservable();
   }
@@ -76,6 +91,8 @@ export class DriveService {
       this.customers.push(cust);
     }
   }
+
+
 
   getCustomers() {
     return this.customers;

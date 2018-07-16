@@ -28,7 +28,7 @@
 
         </mat-grid-tile>
         <mat-divider></mat-divider>
-        <div *ngFor="let subitem of item['requests']">
+        <div *ngFor="let subitem of item['requests']; let i = index">
           <mat-grid-tile >
             {{subitem.number}}
           </mat-grid-tile>
@@ -39,14 +39,17 @@
             {{subitem.other}}
           </mat-grid-tile>
           <mat-grid-tile >
-            <mat-checkbox [ngModel]=subitem.complete>complete</mat-checkbox>
+            <mat-checkbox
+              [(ngModel)]=subitem.complete
+              (change)="onChange( item.invoiceId, subitem._id, subitem.complete, i)"
+              >complete</mat-checkbox>
           </mat-grid-tile>
       </div>
 
       </mat-grid-list>
 
     <mat-action-row>
-      <button mat-button color="primary" >done</button>
+      <button mat-button color="primary" (click)="submit(item.invoiceId)" >Submit</button>
     </mat-action-row>
   </mat-expansion-panel>
 
