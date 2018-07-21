@@ -31,7 +31,8 @@ export class MainViewComponent implements OnInit, OnDestroy {
   public subColumns: any[] = [];
 
   displayedColumns = [ 'edit'];
-  dataSource = new MatTableDataSource(this.records);
+  dataSourceMain = new MatTableDataSource(this.records);
+  dataSourceSub = new MatTableDataSource(this.records);
 
   constructor(
     private router: Router,
@@ -46,11 +47,13 @@ export class MainViewComponent implements OnInit, OnDestroy {
       console.log(this.route.snapshot.routeConfig.path);
     }
 
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('sortMain') sortMain: MatSort;
+  @ViewChild('sortSub') sortSub: MatSort;
   @ViewChild(MatTable) table: MatTable<any>;
 
   ngOnInit() {
-    this.dataSource.sort = this.sort;
+    this.dataSourceMain.sort = this.sortMain;
+    this.dataSourceSub.sort = this.sortSub;
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.custId = paramMap.get('customerId');
       console.log('cust', this.custId);
@@ -58,12 +61,12 @@ export class MainViewComponent implements OnInit, OnDestroy {
     this.dataSub = this.mainService.getViewUpdateListener()
       .subscribe((records: any[]) => {
         this.setUp();
-        this.dataSource.data = records;
+        this.dataSourceMain.data = records;
         console.log(this.displayedColumns, records);
       });
     this.subViewSub = this.mainService.getSubViewUpdateListener()
       .subscribe((records: any[]) => {
-        this.subRecords = records;
+        this.dataSourceSub.data = records;
         console.log('sub view sub', records);
       });
     console.log('main location', this.route.snapshot.routeConfig.path);
@@ -162,12 +165,12 @@ export class MainViewComponent implements OnInit, OnDestroy {
     switch (this.status) {
       case 'prices':
         this.subStatus = 'fees';
-        this.subRecords = data.fees;
+        this.dataSourceSub.data = data.fees;
         this.subColumns = this.mainService.subPriceView();
       break;
       case 'invoices':
         this.subStatus = 'Requests';
-        this.subRecords = data.requests;
+        this.dataSourceSub.data = data.requests;
         this.subColumns = this.mainService.requestView();
       break;
       default: console.log('openSubView error');

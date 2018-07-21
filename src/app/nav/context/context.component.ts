@@ -12,7 +12,7 @@ import { PaymentService } from '../../dispatch/payments/payment.service';
   selector: 'app-context-nav',
   template: `
 
-  <div fxLayout="column" fxLayout.lt-md="row" id="test">
+  <div fxLayout="column" id="test">
     <div fxFlex="100%" fxFlex.lt-md="50%">
      <div *ngIf="flag" >
         <mat-accordion>
@@ -50,33 +50,33 @@ import { PaymentService } from '../../dispatch/payments/payment.service';
         aria-label="Navigation"
         fxLayout="column"
         fxLayout.lt-md="row">
-        <mat-button-toggle value="invoices/:customerId" (click)='gotoInvoices()' *ngIf="flag">
-          <mat-icon>list</mat-icon>
-          Invoices
+        <mat-button-toggle value="invoices/:customerId" matTooltip="Invoices" (click)='gotoInvoices()' *ngIf="flag" >
+          <mat-icon >list</mat-icon>
+          <div fxShow fxHide.lt-md class="inline">Invoices</div>
         </mat-button-toggle>
-        <mat-button-toggle value="payments/:customerId" (click)='gotoPayments()' *ngIf="flag">
+        <mat-button-toggle value="payments/:customerId" matTooltip="Bills" (click)='gotoPayments()' *ngIf="flag">
           <mat-icon>payment</mat-icon>
-          Bills
+          <div fxShow fxHide.lt-md class="inline">Bills</div>
         </mat-button-toggle>
-        <mat-button-toggle value="customers" routerLink='/customers'>
+        <mat-button-toggle value="customers" routerLink='/customers' matTooltip="Customers">
           <mat-icon>assignment_ind</mat-icon>
-          Customers
+          <div fxShow fxHide.lt-md class="inline">Customers</div>
         </mat-button-toggle>
-        <mat-button-toggle value="prices" routerLink='/prices'>
-          <mat-icon>monetization_on</mat-icon>
-          Prices
+        <mat-button-toggle value="prices" routerLink='/prices' matTooltip="Prices">
+          <mat-icon  >monetization_on</mat-icon>
+          <div fxShow fxHide.lt-md class="inline"> Prices</div>
         </mat-button-toggle>
-        <mat-button-toggle value="users" routerLink='/users'>
+        <mat-button-toggle value="users" routerLink='/users' matTooltip="Users">
           <mat-icon>account_box</mat-icon>
-          Users
+          <div fxShow fxHide.lt-md class="inline">Users</div>
         </mat-button-toggle>
-        <mat-button-toggle value="routes" routerLink='/routes'>
+        <mat-button-toggle value="routes" routerLink='/routes' matTooltip="Routes">
           <mat-icon>directions_car</mat-icon>
-          Routes
+          <div fxShow fxHide.lt-md class="inline">Routes</div>
         </mat-button-toggle>
-        <mat-button-toggle value="driverView" routerLink='/driver'>
+        <mat-button-toggle value="driverView" routerLink='/driver' matTooltip="Driver View">
           <mat-icon>exit_to_app</mat-icon>
-          Driver View
+          <div fxShow fxHide.lt-md class="inline">Driver View</div>
         </mat-button-toggle>
      </mat-button-toggle-group>
   </div>
@@ -94,6 +94,11 @@ import { PaymentService } from '../../dispatch/payments/payment.service';
     width: 100%;
     height: 100%;
   }
+  .inline {
+    display: inline-block;
+    padding-left: 5px;
+  }
+
   `]
 })
 

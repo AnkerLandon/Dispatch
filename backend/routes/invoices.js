@@ -4,6 +4,7 @@ const Request = require("../models/request");
 const Customer = require("../models/customer");
 const Price = require("../models/price");
 const Fee = require("../models/fee");
+const Bill = require("../models/payment");
 
 
 const router = express.Router();
@@ -58,8 +59,42 @@ function calculatePrices(animal, number, custId, otherPrice, otherTaxable,  call
 
 }
 
+function createBill(invoice) {
+  try{
+    console.log('init: ');
+    let bill = new Bill ({
+      accountId: invoice.accountId,
+      invoiceId: invoice._id,
+      createdDate: invoice.date,
+      amountDue: invoice.tax + invoice.pickupFee + invoice.requests[0].price,
+      billType:  "invoice"
+    });
+    console.log('flag 2');
+    bill.save()
+    .then(result => {
+      console.log('bill result: ', result);
+      return;
+    })
+    .catch(err => {
+      console.log('Bill Error', err);
+      return;
+    });
+  }
+  catch(err) {
+    console.log('fuck', err);
+    return;
+  }
+
+}
+
 router.post("", (req, res, next) => {
-  calculatePrices(req.body.animal, req.body.number, req.body.accountId, req.body.price, req.body.taxable, function (err, prices) {
+  calculatePrices(
+    req.body.animal,
+    req.body.number,
+    req.body.accountId,
+    req.body.price,
+    req.body.taxable,
+    function (err, prices) {
     console.log('test price', prices);
     var request = new Request({
       number: req.body.number,
@@ -86,6 +121,8 @@ router.post("", (req, res, next) => {
     invoice.save()
     .then(invResult => {
       console.log('test result', invResult);
+      createBill(invResult);
+      console.log(' bill shiit');
       res.status(201).json({
         message: 'success',
         newInvoice: invoice

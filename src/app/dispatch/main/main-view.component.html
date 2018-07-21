@@ -9,7 +9,7 @@
         <div fxFlex="60%">
           <mat-card  >
             <mat-card-title>{{status}}</mat-card-title>
-            <table mat-table #table [dataSource]="dataSource" matSort class="mat-z8">
+            <table mat-table #table [dataSource]="dataSourceMain" #sortMain="matSort" matSort class="mat-z8">
               <ng-container matColumnDef="edit">
                 <th mat-header-cell *matHeaderCellDef >
                   <div class="onSeam">
@@ -48,10 +48,10 @@
           </mat-card>
         </div>
       <div fxFlex="8px"></div>
-      <div fxFlex="40%" *ngIf="showSub">
+      <div fxFlex="40%" [hidden]="!showSub">
         <mat-card>
           <mat-card-title>{{subStatus}}</mat-card-title>
-          <table mat-table #table [dataSource]="subRecords" matSort class="mat-z8">
+          <table mat-table #table [dataSource]="dataSourceSub" #sortSub="matSort" matSort class="mat-z8">
             <ng-container matColumnDef="edit">
               <th mat-header-cell *matHeaderCellDef >
                 <div class="onSeam">
