@@ -18,3 +18,33 @@ ul {
   padding: 0;
   margin: 0;
 }
+.form {
+  height: auto;
+  margin: 10px;
+  padding-bottom: 25px;
+}
+.right-align {
+  text-align: right;
+  margin: auto;
+  width: 100%;
+}
+
+.item {
+  margin: auto;
+  width: 100%;
+}
+
+.inputs {
+  width: 100%;
+}
+
+#delete {
+  float: right;
+}
+#buttons {
+  width: 100%;
+}
+#error{
+  color: red;
+  font-style: italic;
+}

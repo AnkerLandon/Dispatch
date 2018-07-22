@@ -66,19 +66,24 @@ export class DriveService {
       const record = {
         invoiceId: data.invoiceId,
         requestId: data.requests[i]._id,
-        checked: data.requests[i].complete
+        checked: data.requests[i].complete,
       };
       this.http.put('http://localhost:3000/api/invoice/driver/update/'
-      + record.invoiceId, record)
-      .subscribe((response: any) => {
-        console.log(response.message);
-        /*
-        this.invoice.requests[this.requestIndex] = request;
+        + record.invoiceId, record)
+        .subscribe((response: any) => {
+          console.log(response.message);
+          /*
+          this.invoice.requests[this.requestIndex] = request;
 
-        this.getInvoices(this.currentInvoiceId);
-        */
+          this.getInvoices(this.currentInvoiceId);
+          */
       });
     }
+    this.http.put('http://localhost:3000/api/payment/addPayment/'
+      + data.invoiceId, data.payment)
+      .subscribe((response: any) => {
+
+    });
   }
 
   getInvRouteUpdateListener() {

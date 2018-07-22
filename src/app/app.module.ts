@@ -58,6 +58,7 @@ import { DCRouteComponent } from './dispatch/route/DC-Route.component';
 import { PaymentService } from './dispatch/payments/payment.service';
 import { DCPaymentComponent } from './dispatch/payments/DC-Payment.component';
 import { SubMainViewComponent } from './dispatch/main/subMain-view.component';
+import { DCDriverComponent } from './drive/driver-view/driver-dialog.component';
 
 
 
@@ -70,6 +71,7 @@ import { SubMainViewComponent } from './dispatch/main/subMain-view.component';
     DCInvoiceComponent,
     DCRouteComponent,
     DCPriceComponent,
+    DCDriverComponent
   ],
   declarations: [
     AppComponent,
@@ -86,6 +88,7 @@ import { SubMainViewComponent } from './dispatch/main/subMain-view.component';
     DCUserComponent,
     DCInvoiceComponent,
     DCPriceComponent,
+    DCDriverComponent,
     ContextComponent
   ],
   imports: [

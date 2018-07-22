@@ -41,4 +41,23 @@ router.post("/new", (req, res, next) => {
 
 });
 
+router.put("/addPayment/:id", (req, res, next) => {
+  console.log('payment data', req.body, req.params.id);
+  Payment.updateOne(
+    {invoiceId: req.params.id},
+    { $set: {
+      paymentType: req.body.type,
+      paymentAmount: req.body.amount,
+      checkNumber: req.body.number
+      }
+    }
+  )
+  .then(result => {
+    console.log('result:',result);
+  })
+  .catch(err => {
+    console.log('err', err);
+  });
+});
+
 module.exports = router;

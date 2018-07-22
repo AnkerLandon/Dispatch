@@ -81,12 +81,6 @@ export class MainService {
       this.display = this.invoiceView();
       this.viewUpdate.next([...this.view]);
     });
-    this.invoiceSub = this.invoiceService.getInvoicesUpdateListener()
-    .subscribe((invoices: any[]) => {
-      this.view = invoices;
-      this.display = this.invoiceView();
-      this.viewUpdate.next([...this.view]);
-    });
     this.requestSub = this.invoiceService.getRequestUpdateListener()
     .subscribe((records: any[]) => {
       this.subViewUpdate.next([...records]);
@@ -208,7 +202,10 @@ export class MainService {
       'edit',
       'createdDate',
       'billType',
-      'amountDue'
+      'amountDue',
+      'paymentType',
+      'paymentAmount',
+      'checkNumber'
     ];
   }
   invoiceView() {

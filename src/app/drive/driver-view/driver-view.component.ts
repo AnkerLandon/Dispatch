@@ -5,6 +5,8 @@ import { DriveService } from '../drive.service';
 import { Invoice } from '../../models/invoice-data.model';
 import { Customer } from '../../models/customers-data.model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { MatDialog } from '../../../../node_modules/@angular/material';
+import { DCDriverComponent } from './driver-dialog.component';
 
 @Component({
   selector: 'app-driver-view-',
@@ -20,7 +22,8 @@ export class DriverViewComponent implements OnInit, OnDestroy {
 
   constructor(
     private driveService: DriveService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -50,13 +53,23 @@ export class DriverViewComponent implements OnInit, OnDestroy {
 
   submit(invoiceId: string) {
     const invoice = this.mergedData.find(I => I.invoiceId === invoiceId);
+    this.openPaymentDialog(invoice);
     console.log('submit', invoice);
-    this.driveService.completeRequests(invoice);
+    // this.driveService.completeRequests(invoice);
   }
 
   test() {
     console.log('test:', this.mergedData);
   }
+
+  openPaymentDialog(form: any): void {
+    const dialogRef = this.dialog.open(DCDriverComponent, {
+        maxWidth: '50vw',
+        data:  form,
+        disableClose: true
+      });
+    console.log(dialogRef);
+    }
 
 }
 
