@@ -129,6 +129,7 @@ export class MainService {
   }
 
   openRequestDialog(form: any): void {
+    // form.accountId = this.customerService.getCurrentCustomer()._id;
     const dialogRef = this.dialog.open(DCInvoiceComponent, {
       maxWidth: '50vw',
       data:  form,

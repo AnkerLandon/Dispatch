@@ -66,12 +66,10 @@
     <div class="item" *ngIf="!data.requests && data._id">
         <mat-checkbox
           class="example-margin"
-          [(checked)]="data.complete"
-          (change)="completeSwitch(data.complete)"
+          [(ngModel)]=complete
           placeholder=false
           name='complete'
           type='boolean'
-          required
         >
         Request Complete
       </mat-checkbox>

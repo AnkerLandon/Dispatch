@@ -191,7 +191,10 @@ export class MainViewComponent implements OnInit, OnDestroy {
   subEditSwitch(data) {
     switch (this.subStatus) {
       case 'Requests':
-      this.invoiceService.editRecord(data);
+      console.log('test', data);
+      data.dialog = 'editRequest';
+      data.accountId = this.custId;
+      this.mainService.openInvoiceDialog(data);
       break;
       default: console.log('subEditSwitch Error');
     }

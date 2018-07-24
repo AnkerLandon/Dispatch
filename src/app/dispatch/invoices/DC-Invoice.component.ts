@@ -79,7 +79,7 @@ export class DCInvoiceComponent {
   }
 
   completeSwitch(value: boolean) {
-    if (value) {this.complete = false; } else {this.complete = true; }
+    // if (value) {this.complete = false; } else {this.complete = true; }
   }
 
   private prepFormData(formData: NgForm) {
@@ -87,6 +87,7 @@ export class DCInvoiceComponent {
     if (!formData.value.other) {formData.value.other = ''; }
 
     formData.value.accountId = this.data.accountId;
+    formData.value.complete = this.complete;
 
     console.log('formData', formData.value);
     return formData.value;

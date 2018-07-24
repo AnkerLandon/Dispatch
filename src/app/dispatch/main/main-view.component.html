@@ -55,7 +55,7 @@
             <ng-container matColumnDef="edit">
               <th mat-header-cell *matHeaderCellDef >
                 <div class="onSeam">
-                  <button mat-mini-fab matTooltip="New {{status}}" *ngIf="subStatus === 'Requests'">
+                  <button mat-mini-fab matTooltip="New {{subStatus}}" *ngIf="subStatus === 'Requests'">
                     <mat-icon
                       aria-label="icon-button with an add icon"
                       (click)="subAddSwitch()"
@@ -65,11 +65,11 @@
                 </div>
               </th>
               <td mat-cell *matCellDef="let element">
-                <button mat-icon-button matTooltip="open in new" *ngIf="subStatus === 'Requests'">
+                <button mat-icon-button matTooltip="Edit" *ngIf="subStatus === 'Requests'">
                   <mat-icon
                       aria-label="expand icon"
                       (click)="subEditSwitch(element)"
-                      >launch
+                      >edit
                   </mat-icon>
                 </button>
               </td>

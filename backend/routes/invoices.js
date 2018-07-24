@@ -34,7 +34,7 @@ function calculatePrices(animal, number, custId, otherPrice, otherTaxable,  call
         result.Itax = ((priceResult.tax / 100) * otherPrice).toFixed(2);
       }
       console.log('results', result);
-      callback(null, result);
+      return callback(null, result);
     }
 
     for( let i = 0; i < priceResult.fees.length; i++) {
@@ -85,6 +85,45 @@ function createBill(invoice) {
     return;
   }
 
+}
+
+function addToBill(invoiceId, amount) {
+  Bill.updateOne({invoiceId: invoiceId},
+  {$inc: {amountDue: amount}})
+  .then(result => {
+    console.log('add bill success:', result);
+    return;
+  })
+  .catch(err => {
+    console.log("add bill err:", err);
+    return;
+  })
+}
+
+function editBill(invoiceId) {
+  let total = 0;
+  Invoice.findOne({_id: invoiceId})
+  .then(result => {
+    console.log('edit bill success:', result);
+    for ( i = 0; i < result.requests.length; i++) {
+      total += result.requests[i].price + result.requests[i].tax;
+    }
+    total += result.tax + result.pickupFee;
+    Bill.updateOne({invoiceId: invoiceId},
+    {$set: {amountDue: total}})
+    .then(billresult => {
+      console.log('bill result: ', billresult);
+      return;
+    })
+    .catch(err => {
+      console.log('bill result err', err);
+      return;
+    })
+  })
+  .catch(err => {
+    console.log("edit bill err:", err);
+    return;
+  })
 }
 
 router.post("", (req, res, next) => {
@@ -150,42 +189,61 @@ router.put("/:id",(req, res, next) => {
         number: req.body.number,
         animal: req.body.animal,
         other: req.body.other,
-        complete: false,
+        complete: req.body.complete,
         price: prices.fee,
         tax: prices.Rtax,
         priceId: prices.id
       });
       console.log('add',req.body);
-        Invoice.updateOne(
-        { _id: req.params.id },
-        { $push: { requests: newRequest } })
-        .then(results => {
-          console.log('Total Updated', results);
-          res.status(200).json({ message: "Update successful!" , request: newRequest});
-        })
-        .catch(err => {
-          console.log(err);
-          res.status(500).json({message: err})
-        });
+      addToBill(req.params.id, newRequest.price + newRequest.tax);
+      Invoice.updateOne(
+      { _id: req.params.id },
+      { $push: { requests: newRequest } })
+      .then(results => {
+        console.log('Total Updated', results);
+        res.status(200).json({ message: "Update successful!" , request: newRequest});
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({message: err})
+      });
     });
 
 });
 
 router.put("/request/:id",(req, res, next) => {
   console.log('server', req.body, req.params.id, req.params.index);
-  Invoice.updateOne(
-    {_id: req.params.id, "requests._id": req.body._id },
-    {$set: {"requests.$": req.body}}
-  )
-  .exec()
-  .then(result => {
-    console.log(result);
-    res.status(200).json({message: "update success"})
-  })
-  .catch(err => {
-    console.log(err);
-    res.status(500).json({message: err})
-  });
+  calculatePrices(
+    req.body.animal,
+    req.body.number,
+    req.body.accountId,
+    req.body.price,
+    req.body.taxable,
+    function (err, prices) {
+      var editedRequest = new Request ({
+        number: req.body.number,
+        animal: req.body.animal,
+        other: req.body.other,
+        complete: false,
+        price: prices.fee,
+        tax: prices.Rtax,
+        priceId: prices.id
+      });
+
+      Invoice.updateOne(
+        {_id: req.params.id, "requests._id": req.body._id },
+        {$set: {"requests.$": editedRequest}})
+      .exec()
+      .then(result => {
+        console.log('success',result);
+        editBill(req.params.id);
+        res.status(200).json({message: "update success"})
+      })
+      .catch(err => {
+        console.log('err',err);
+        res.status(500).json({message: err})
+      });
+    });
 });
 
 router.put("/driver/update/:id",(req, res, next) => {

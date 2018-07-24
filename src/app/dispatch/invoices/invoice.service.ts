@@ -55,7 +55,7 @@ getCurrentInvoice() {
   return this.invoice;
 }
 
-editRecord( request: Request) {
+editRecord( request: any) {
   const currentInvoice = this.getCurrentInvoice();
   console.log('edit service', request);
   this.http.put('http://localhost:3000/api/invoice/request/'
