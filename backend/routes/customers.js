@@ -43,6 +43,13 @@ router.get("",(req, res, next) => {
   Customer.find().then(documents => {
     res.status(200).json({documents});
   });
+});
+
+router.get("/:id",(req, res, next) => {
+  Customer.findOne({_id: req.params.id}).then(customer => {
+    console.log('customer:', customer);
+    res.status(200).json(customer);
+  });
 
 });
 

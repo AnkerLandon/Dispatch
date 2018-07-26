@@ -4,6 +4,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { CustomerService } from '../../dispatch/customers/customer.service';
 import { MainService } from '../../dispatch/main/main.service';
 import { PaymentService } from '../../dispatch/payments/payment.service';
+import { Customer } from '../../models/customers-data.model';
 
 
 
@@ -106,12 +107,7 @@ export class ContextComponent implements OnInit  {
 
   flag = false;
   currentLoc;
-  customer: any = {
-    _id: '',
-    name: '',
-    address: '',
-    city: ''
-  };
+  customer: Customer;
   private dataSubbscription: Subscription;
 
   constructor(
@@ -120,29 +116,22 @@ export class ContextComponent implements OnInit  {
     public paymentService: PaymentService,
     public customerService: CustomerService,
     private router: Router
-  ) {}
-
-  ngOnInit() {
-    this.currentLoc = this.route.snapshot.routeConfig.path;
-    console.log('current loc', this.currentLoc);
-    this.dataSubbscription = this.customerService.getCurrentCustomerUpdateListener()
-      .subscribe((records: any) => {
-        this.refresh();
-      });
-
-    if (this.currentLoc === 'invoices/:customerId' || this.currentLoc === 'payments/:customerId') {
-      this.customer = this.customerService.getCurrentCustomer();
-      // this.paymentService.setAccount(this.customer._id);
-      this.flag = true;
-      // this.currentLoc = 'customers';
-    } else {
-      this.flag = false;
-      // this.currentLoc = 'users';
+  ) {
+    if (this.route.snapshot.params.customerId) {
+      this.customerService.getCustomer(this.route.snapshot.params.customerId);
     }
   }
 
-  refresh() {
-    this.customer = this.customerService.getCurrentCustomer();
+  ngOnInit() {
+
+    this.currentLoc = this.route.snapshot.routeConfig.path;
+    console.log('current loc', this.currentLoc);
+    this.dataSubbscription = this.customerService.getCurrentCustomerUpdateListener()
+      .subscribe(newCustomer => {
+        console.log('new cust', newCustomer);
+        this.customer = newCustomer;
+        this.flag = true;
+      });
   }
 
   addCustomerDialog(customerData) {

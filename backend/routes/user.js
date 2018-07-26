@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const checkAuth = require('../Middleware/check-auth-admin');
+const sensitive = require("../sensitive");
 
 
 const mongo = require('mongodb');
@@ -64,7 +65,7 @@ router.post("/login", (req, res, next) => {
       }
       const token = jwt.sign(
         {userName: matchedUser.userName, userId: matchedUser._id, rank: matchedUser.rank},
-        '4!8Dy7fzQL_`[3E%(hs(y.]L+bhNk/2x',
+        sensitive.salt,
         {expiresIn: '1h'});
       res.status(200).json({
         message: "Login Success",

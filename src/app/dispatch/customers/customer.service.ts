@@ -40,12 +40,21 @@ export class CustomerService {
       });
   }
 
+  getCustomer(custId: string) {
+    this.http.get <Customer> ('http://localhost:3000/api/customers/' + custId)
+    .subscribe(myCustomer => {
+      this.customer = myCustomer;
+      this.currentCustomerUpdate.next(this.customer);
+      console.log('customer: ', this.customer);
+    });
+  }
+
   setCurrentCustomer(_id: string) {
     this.customer = this.customers.find(c => c._id === _id);
     this.currentCustomerUpdate.next(this.customer);
   }
 
-  getCustomer(_id: string) {
+  searchCustomer(_id: string) {
     return this.customers.find(c => c._id === _id);
   }
 

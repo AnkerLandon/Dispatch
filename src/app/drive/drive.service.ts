@@ -20,7 +20,7 @@ export class DriveService {
     private routeService: RouteService,
     private customerService: CustomerService,
     private http: HttpClient
-  ) {}
+  ) {this.customerService.getCustomers(); }
 
   getRouteInvoices( route: string) {
     // this.currentInvoiceId = invoiceId;
@@ -35,15 +35,15 @@ export class DriveService {
       }))
       .subscribe(transInvoices => {
         this.invoices = transInvoices;
-        console.log('getty', transInvoices);
+        console.log('getty', this.invoices);
         this.mergeData();
       });
   }
 
-  mergeData() {
+  private mergeData() {
     this.mergedData = [];
     for (let i = 0; i < this.invoices.length; i++) {
-      const custData = this.customerService.getCustomer(this.invoices[i].accountId);
+      const custData = this.customerService.searchCustomer(this.invoices[i].accountId);
       const comboData = {
         custId: custData._id,
         invoiceId: this.invoices[i]._id,
@@ -58,6 +58,7 @@ export class DriveService {
       };
       this.mergedData.push(comboData);
     }
+    console.log('getty2', this.mergedData);
     this.invRouteUpdate.next([...this.mergedData]);
   }
 
@@ -91,7 +92,7 @@ export class DriveService {
   }
 
   getCustomer(myId: string) {
-    const cust = this.customerService.getCustomer(myId);
+    const cust = this.customerService.searchCustomer(myId);
     if ( !this.customers.find(c => c._id === myId)) {
       this.customers.push(cust);
     }

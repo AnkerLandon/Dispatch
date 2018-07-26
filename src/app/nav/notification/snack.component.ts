@@ -8,9 +8,12 @@ import { AppComponent } from '../../app.component';
 @Component({
   selector: 'app-notify-dialog',
   template: `
-    <span class="snack">
-      {{message}}
-    </span>
+    <div mat-dialog-content>
+      <p class="mat-body-1">
+        {{message}}
+      </p>
+    </div>
+
   `,
   styles: [`
   .snack {

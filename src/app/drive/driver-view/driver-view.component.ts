@@ -15,7 +15,7 @@ import { DCDriverComponent } from './driver-dialog.component';
 })
 export class DriverViewComponent implements OnInit, OnDestroy {
   private invRouteSub: Subscription;
-  public mergedData: any[];
+  public mergedData: any[] = [];
   private driverRoute;
   private results: Result[] = [];
 
@@ -24,18 +24,18 @@ export class DriverViewComponent implements OnInit, OnDestroy {
     private driveService: DriveService,
     public route: ActivatedRoute,
     public dialog: MatDialog
-  ) { }
+  ) {
+    this.driverRoute = this.route.snapshot.params.route;
+    this.driveService.getRouteInvoices(this.driverRoute);
+  }
 
   ngOnInit() {
-    this.route.paramMap.subscribe((paramMap: ParamMap) => {
-      this.driverRoute = paramMap.get('route');
-    });
     this.invRouteSub = this.driveService.getInvRouteUpdateListener()
       .subscribe((results: any[]) => {
         this.mergedData = results;
         console.log('merged Data', this.mergedData);
       });
-    this.driveService.getRouteInvoices(this.driverRoute);
+    // this.driveService.getRouteInvoices(this.driverRoute);
   }
 
   ngOnDestroy() {
