@@ -31,6 +31,7 @@ import {Location} from '@angular/common';
       </span>
     </mat-toolbar>
 </div>
+
 `,
   styleUrls: ['./header.component.css']
 })

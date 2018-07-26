@@ -18,6 +18,7 @@ import { DCInvoiceComponent } from '../invoices/DC-Invoice.component';
 export class MainService {
 
   public view: any[];
+  public subView: any[];
   public display: any[];
   public subDisplay: any[];
 
@@ -83,6 +84,7 @@ export class MainService {
     });
     this.requestSub = this.invoiceService.getRequestUpdateListener()
     .subscribe((records: any[]) => {
+      this.subView = records;
       this.subViewUpdate.next([...records]);
       console.log('main request sub', records);
     });

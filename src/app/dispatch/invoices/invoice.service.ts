@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Invoice } from '../../models/invoice-data.model';
 import { Request } from '../../models/invoice-data.model';
+import { NotificationService } from '../../nav/notification/snack.service';
 
 
 @Injectable({providedIn: 'root'})
@@ -16,7 +17,7 @@ export class InvoiceService {
   private invoiceUpdate = new Subject<Invoice[]>();
   private requestUpdate = new Subject<Request[]>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private notifyService: NotificationService) {}
 
 setRequestIndex(request: Request) {
   console.log(this.invoice.requests.indexOf(request));
@@ -28,7 +29,8 @@ getInvoices(invoiceId: string) {
   this.http.get
     <{documents}>
     ('http://localhost:3000/api/invoice/' + invoiceId)
-    .pipe(map((invoiceData) => {
+    .pipe(map((invoiceData: any) => {
+      if (invoiceData.message) {this.notifyService.notify(invoiceData.message); }
       console.log('invocen Data', invoiceData);
       return invoiceData.documents.map(invoice => {
         this.mapInvoice = invoice;
@@ -61,10 +63,11 @@ editRecord( request: any) {
   this.http.put('http://localhost:3000/api/invoice/request/'
     + currentInvoice._id, request)
     .subscribe((response: any) => {
+      this.notifyService.notify(response.message);
       console.log(response.message);
       this.invoice.requests[this.requestIndex] = request;
 
-      this.getInvoices(this.currentInvoiceId);
+      this.setInvoice(currentInvoice._id);
     });
 }
 
@@ -91,10 +94,11 @@ addInvoice(newRequest: any) {
   console.log('service', newRequest);
   this.http.post<{message: string, newInvoice: any }>
     ('http://localhost:3000/api/invoice', newRequest)
-    .subscribe((responceData) => {
+    .subscribe((responceData: any) => {
       console.log('responce', responceData);
       this.invoices.push(responceData.newInvoice);
       this.invoiceUpdate.next([...this.invoices]);
+      this.setInvoice(responceData.newInvoice._id);
     });
 }
 

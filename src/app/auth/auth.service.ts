@@ -3,6 +3,8 @@ import { User } from '../models/user-data.model';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { HeaderComponent } from '../nav/header/header.component';
+import { NotificationService } from '../nav/notification/snack.service';
 
 
 @Injectable({ providedIn: 'root'})
@@ -15,7 +17,10 @@ export class AuthService {
     userName: string } = {status: false, rank: null, userName: null};
   private authStatusListener = new Subject<{status: boolean, rank: string, userName: string}>();
 
-  constructor(private http: HttpClient, private router: Router ) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private notifyService: NotificationService ) {}
 
   getToken() {
     return this.token;
@@ -24,7 +29,6 @@ export class AuthService {
   loginUser(authData) {
     this.http.post('http://localhost:3000/api/user/login', authData)
     .subscribe((response: any) => {
-      console.log(response);
       if (response.token) {
         const expiresInDuration = response.expiresIn;
         this.setAuthTimer(expiresInDuration);
@@ -43,7 +47,7 @@ export class AuthService {
           this.router.navigate(['/driver']);
         }
       }
-    });
+    }, (err) => {this.notifyService.notify(err.error.message); });
   }
 
   autoAuthUser() {

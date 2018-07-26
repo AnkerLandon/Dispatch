@@ -5,6 +5,7 @@ const Customer = require("../models/customer");
 const Price = require("../models/price");
 const Fee = require("../models/fee");
 const Bill = require("../models/payment");
+const checkAuth = require("../Middleware/check-auth-admin")
 
 
 const router = express.Router();
@@ -126,7 +127,7 @@ function editBill(invoiceId) {
   })
 }
 
-router.post("", (req, res, next) => {
+router.post("", checkAuth, (req, res, next) => {
   calculatePrices(
     req.body.animal,
     req.body.number,
@@ -177,7 +178,7 @@ router.post("", (req, res, next) => {
 
 });
 
-router.put("/:id",(req, res, next) => {
+router.put("/:id", checkAuth, (req, res, next) => {
   calculatePrices(
     req.body.animal,
     req.body.number,
@@ -211,7 +212,7 @@ router.put("/:id",(req, res, next) => {
 
 });
 
-router.put("/request/:id",(req, res, next) => {
+router.put("/request/:id", checkAuth, (req, res, next) => {
   console.log('server', req.body, req.params.id, req.params.index);
   calculatePrices(
     req.body.animal,
@@ -241,12 +242,12 @@ router.put("/request/:id",(req, res, next) => {
       })
       .catch(err => {
         console.log('err',err);
-        res.status(500).json({message: err})
+        res.status(500).json({message: "Update Failure"})
       });
     });
 });
 
-router.put("/driver/update/:id",(req, res, next) => {
+router.put("/driver/update/:id", checkAuth,(req, res, next) => {
   console.log('server', req.body, req.params.id, req.params.index);
   Invoice.updateOne(
     {_id: req.params.id, "requests._id": req.body.requestId },
@@ -264,13 +265,17 @@ router.put("/driver/update/:id",(req, res, next) => {
 });
 
 router.get("/:id",(req, res, next) => {
-  Invoice.find({accountId: req.params.id}).then(documents => {
-    res.status(200).json({documents});
-  });
+  Invoice.find({accountId: req.params.id})
+    .then(documents => {
+      res.status(200).json({documents});
+    })
+    .catch(err => {
+      res.status(500).json({err: err, message: 'Id Not Found'});
+    });
 
 });
 
-router.get("/route/:route",(req, res, next) => {
+router.get("/route/:route", checkAuth,(req, res, next) => {
   console.log('get route', req.params.route);
   Invoice.find({
     route: req.params.route,
@@ -285,7 +290,7 @@ router.get("/route/:route",(req, res, next) => {
 
 });
 
-router.delete("/:invId/:reqId", (req, res, next) => {
+router.delete("/:invId/:reqId", checkAuth, (req, res, next) => {
   console.log('server',req.params.invId , req.params.reqId);
   Invoice.updateOne(
     { _id: req.params.invId },
@@ -298,7 +303,7 @@ router.delete("/:invId/:reqId", (req, res, next) => {
 
 });
 
-router.delete("/destroy/:accountId", (req, res, next) => {
+router.delete("/destroy/:accountId", checkAuth,(req, res, next) => {
   Invoice.deleteMany({accountId: req.params.accountId})
   .exec()
     .then(result => {

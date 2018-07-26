@@ -1,13 +1,13 @@
 const express = require("express");
 const Route = require("../models/route")
 const mongoose = require('mongoose');
-
+const checkAuth = require('../Middleware/check-auth-admin');
 
 const mongo = require('mongodb');
 
 const router = express.Router();
 
-router.post("/new", (req, res, next) => {
+router.post("/new", checkAuth,(req, res, next) => {
   console.log('server data', req.body);
   let route = new Route(req.body);
   route.save().then(result => {
@@ -18,14 +18,14 @@ router.post("/new", (req, res, next) => {
   });
 });
 
-router.get("", (req, res, next) => {
+router.get("", checkAuth,(req, res, next) => {
   Route.find().then(documents => {
     res.status(200).json({documents});
   });
 
 });
 
-router.put("", (req, res, next) => {
+router.put("", checkAuth,(req, res, next) => {
   console.log("edit route data", req.body)
   Route.updateOne({_id: req.body._id}, req.body)
   .exec()
@@ -41,7 +41,7 @@ router.put("", (req, res, next) => {
     });
 });
 
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id",checkAuth,(req, res, next) => {
   Route.deleteOne({ _id: req.params.id}).then(result => {
     console.log(result);
     res.status(200).json({ message: "Route deleted!" });

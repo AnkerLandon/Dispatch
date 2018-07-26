@@ -4,8 +4,8 @@ import { Customer } from '../../models/customers-data.model';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { InvoiceService } from '../invoices/invoice.service';
-import { DCCustomerComponent } from './DC-Customer.component';
 import { MatDialog } from '@angular/material';
+import { NotificationService } from '../../nav/notification/snack.service';
 
 @Injectable({providedIn: 'root'})
 export class CustomerService {
@@ -19,7 +19,8 @@ export class CustomerService {
   constructor(
     private http: HttpClient,
     public invoiceService: InvoiceService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private notifyService: NotificationService
   ) { }
 
   getCustomers() {
@@ -75,6 +76,7 @@ export class CustomerService {
     this.http.post
       ('http://localhost:3000/api/customers/new', newCustomer)
       .subscribe((responceData: any) => {
+        this.notifyService.notify(responceData.message);
         const myCust_id = responceData.custId ;
         newCustomer._id = myCust_id;
         newCustomer.planLog = [{plan: newCustomer.currentPlan, start: new Date}];
@@ -86,14 +88,16 @@ export class CustomerService {
   deleteCustomer(customer_id: string) {
     this.invoiceService.deleteInvoices(customer_id);
     this.http.delete('http://localhost:3000/api/customers/' + customer_id)
-      .subscribe((response) => {
+      .subscribe((response: any) => {
+        this.notifyService.notify(response.message);
       this.getCustomers();
       });
   }
 
   editCustomer(editedCustomer: Customer) {
     this.http.put('http://localhost:3000/api/customers/details/' + editedCustomer._id, editedCustomer)
-    .subscribe((response) => {
+    .subscribe((response: any) => {
+      this.notifyService.notify(response.message);
       console.log(response);
       this.getCustomers();
       this.customer = editedCustomer;
@@ -103,11 +107,13 @@ export class CustomerService {
 
   addCustomerPaymentPlan( newPlan: any) {
   this.http.put('http://localhost:3000/api/customers/addpaymentplan/' + newPlan.id, newPlan)
-    .subscribe((response) => {
+    .subscribe((response: any) => {
+      this.notifyService.notify(response.message);
       console.log(response);
     });
     this.http.put('http://localhost:3000/api/customers/addend/' + newPlan.id, null)
-    .subscribe((response) => {
+    .subscribe((response: any) => {
+      this.notifyService.notify(response.message);
       console.log(response);
     });
   }

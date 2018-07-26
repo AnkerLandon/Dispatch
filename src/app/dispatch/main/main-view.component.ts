@@ -118,6 +118,7 @@ export class MainViewComponent implements OnInit, OnDestroy {
         break;
       case 'invoices':
         this.InvoiceDialog('addInvoice');
+        this.showSub = false;
         break;
       case 'prices':
         this.addPriceDialog();

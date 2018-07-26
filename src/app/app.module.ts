@@ -59,6 +59,9 @@ import { PaymentService } from './dispatch/payments/payment.service';
 import { DCPaymentComponent } from './dispatch/payments/DC-Payment.component';
 import { SubMainViewComponent } from './dispatch/main/subMain-view.component';
 import { DCDriverComponent } from './drive/driver-view/driver-dialog.component';
+import { MatSnackBarModule} from '@angular/material/snack-bar';
+import { SnackComponent } from './nav/notification/snack.component';
+import { NotificationService } from './nav/notification/snack.service';
 
 
 
@@ -71,7 +74,8 @@ import { DCDriverComponent } from './drive/driver-view/driver-dialog.component';
     DCInvoiceComponent,
     DCRouteComponent,
     DCPriceComponent,
-    DCDriverComponent
+    DCDriverComponent,
+    SnackComponent
   ],
   declarations: [
     AppComponent,
@@ -79,6 +83,7 @@ import { DCDriverComponent } from './drive/driver-view/driver-dialog.component';
     HeaderComponent,
     MainViewComponent,
     LoginComponent,
+    SnackComponent,
     SubMainViewComponent,
     DriverViewComponent,
     RouteSelectComponent,
@@ -95,6 +100,7 @@ import { DCDriverComponent } from './drive/driver-view/driver-dialog.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    MatSnackBarModule,
     ReactiveFormsModule,
     MatGridListModule,
     MatInputModule,
@@ -126,6 +132,7 @@ import { DCDriverComponent } from './drive/driver-view/driver-dialog.component';
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     CustomerService,
     InvoiceService,
+    NotificationService,
     UserService,
     PaymentService,
     MainService,

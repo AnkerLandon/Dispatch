@@ -26,7 +26,7 @@ const requestSchema = mongoose.Schema({
 
 
 const invoiceSchema = mongoose.Schema({
-  accountId: {type: String, required: true},
+  accountId: {type: mongoose.Schema.Types.ObjectId, ref:"Customer", required: true},
   date: {type: String, required: true },
   requests: [requestSchema],
   pickupFee: {type: Number},

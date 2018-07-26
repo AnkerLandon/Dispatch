@@ -10,7 +10,7 @@ const mongo = require('mongodb');
 const router = express.Router();
 ObjectID = mongo.ObjectID;
 
-router.post("/new", (req, res, next) => {
+router.post("/new", checkAuth,(req, res, next) => {
   console.log('server data', req.body);
   const paymentPlan = new PaymentPlan({
     plan: req.body.currentPlan,
@@ -46,7 +46,7 @@ router.get("",(req, res, next) => {
 
 });
 
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", checkAuth,(req, res, next) => {
   Customer.deleteOne({ _id: req.params.id}).then(result => {
     console.log(result);
     res.status(200).json({ message: "Post deleted!" });
@@ -55,7 +55,7 @@ router.delete("/:id", (req, res, next) => {
 
 
 
-router.put("/details/:id",(req, res, next) => {
+router.put("/details/:id",checkAuth,(req, res, next) => {
   console.log('details edit:', req.body);
   Customer.updateOne({_id: req.params.id}, req.body)
     .exec()
@@ -71,7 +71,7 @@ router.put("/details/:id",(req, res, next) => {
     });
 });
 
-router.put("/addend/:id",(req, res, next) => {
+router.put("/addend/:id",checkAuth,(req, res, next) => {
   Customer
     .updateOne({_id: req.params.id, 'planLog.end': null},
       {$set: {'planLog.$.end': new Date}})
@@ -88,7 +88,7 @@ router.put("/addend/:id",(req, res, next) => {
     });
 });
 
-router.put("/addpaymentplan/:id",(req, res, next) => {
+router.put("/addpaymentplan/:id",checkAuth,(req, res, next) => {
   console.log('payment edit:', req.body);
   const paymentplan = new PaymentPlan ({
     plan: req.body.currentPlan,

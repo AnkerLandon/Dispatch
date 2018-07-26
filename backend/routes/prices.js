@@ -1,18 +1,18 @@
 const express = require("express");
 const mongo = require('mongodb');
 const Price = require("../models/price");
-
+const checkAuth = require('../Middleware/check-auth-admin');
 
 const router = express.Router();
 
-router.get("", (req, res, next) => {
+router.get("", checkAuth,(req, res, next) => {
   Price.find().then(documents => {
     res.status(200).json({documents});
   });
 
 });
 
-router.post("/new", (req, res, next) => {
+router.post("/new", checkAuth,(req, res, next) => {
   console.log(req.body);
   let price = new Price (req.body);
   var d = new Date();

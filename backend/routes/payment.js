@@ -10,7 +10,7 @@ const mongo = require('mongodb');
 const router = express.Router();
 ObjectID = mongo.ObjectID;
 
-router.get("/get/:AId",(req, res, next) => {
+router.get("/get/:AId",checkAuth,(req, res, next) => {
 
   Payment
     .find({accountId: req.params.AId})
@@ -28,7 +28,7 @@ router.get("/get/:AId",(req, res, next) => {
 
 });
 
-router.post("/new", (req, res, next) => {
+router.post("/new", checkAuth,(req, res, next) => {
   console.log('server data', req.body);
   const payment = new Payment(req.body);
 
@@ -41,7 +41,7 @@ router.post("/new", (req, res, next) => {
 
 });
 
-router.put("/addPayment/:id", (req, res, next) => {
+router.put("/addPayment/:id", checkAuth,(req, res, next) => {
   console.log('payment data', req.body, req.params.id);
   Payment.updateOne(
     {invoiceId: req.params.id},

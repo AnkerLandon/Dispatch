@@ -3,13 +3,14 @@ const User = require("../models/user");
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const checkAuth = require('../Middleware/check-auth-admin');
 
 
 const mongo = require('mongodb');
 
 const router = express.Router();
 
-router.post("/new", (req, res, next) => {
+router.post("/new", checkAuth,(req, res, next) => {
   console.log(req.body);
   bcrypt.hash(req.body.password, 10).then(hash => {
     const user = new User({
@@ -40,7 +41,7 @@ router.post("/new", (req, res, next) => {
   });
 });
 
-router.get("", (req, res, next) => {
+router.get("", checkAuth,(req, res, next) => {
   User.find().then(documents => {
     res.status(200).json({documents});
   });
@@ -52,21 +53,21 @@ router.post("/login", (req, res, next) => {
   User.findOne({userName: req.body.userName})
     .then(user => {
       if(!user) {
-        return res.status(401).json({message: "Auth Failed 1", token: null});
+        return res.status(401).json({message: "Incorrect User or Password", token: null});
       }
     matchedUser = user;
     return bcrypt.compare(req.body.password, user.password)
     })
     .then( result => {
       if(!result) {
-        return res.status(401).json({message: "Auth Failed 2", token: null});
+        return res.status(401).json({message: "Incorrect User or Password", token: null});
       }
       const token = jwt.sign(
         {userName: matchedUser.userName, userId: matchedUser._id, rank: matchedUser.rank},
         '4!8Dy7fzQL_`[3E%(hs(y.]L+bhNk/2x',
         {expiresIn: '1h'});
       res.status(200).json({
-        message: "Auth Succsess",
+        message: "Login Success",
         token: token,
         rank: matchedUser.rank,
         userName: matchedUser.userName,
@@ -74,11 +75,11 @@ router.post("/login", (req, res, next) => {
       });
     })
     .catch(err => {
-      return res.status(401).json({message: "Auth Failed 3", token: null});
+      return res.status(401).json({message: "Login failure", token: null});
     });
 });
 
-router.put("/:id", (req, res, next) => {
+router.put("/:id", checkAuth,(req, res, next) => {
   const editedUser = req.body;
 
   if(editedUser.password) {
@@ -108,7 +109,7 @@ router.put("/:id", (req, res, next) => {
   };
 });
 
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", checkAuth,(req, res, next) => {
   User.deleteOne({_id: req.params.id}).then(result => {
     console.log(result);
     res.status(200).json({message: "User Deleted!"});
