@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from '../../../../node_modules/rxjs';
+import { Subscription } from 'rxjs';
 import { NotificationService } from './snack.service';
-import { MatSnackBar } from '../../../../node_modules/@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { AppComponent } from '../../app.component';
 
 

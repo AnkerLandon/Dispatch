@@ -1,4 +1,3 @@
-const sensitive = require("../sensitive");
 const User = require("../models/user");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -57,7 +56,7 @@ exports.loginUser = (req, res, next) => {
       }
       const token = jwt.sign(
         {userName: matchedUser.userName, userId: matchedUser._id, rank: matchedUser.rank},
-        sensitive.salt,
+        process.env.JWT_KEY,
         {expiresIn: '1h'});
       res.status(200).json({
         message: "Login Success",

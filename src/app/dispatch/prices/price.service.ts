@@ -4,6 +4,9 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
+
+const BACKEND_URL = environment.apiUrl + '/price';
 
 
 @Injectable({providedIn: 'root'})
@@ -21,7 +24,7 @@ export class PriceService {
   ) { }
 
   getPrices() {
-    this.http.get<{documents}> ('http://localhost:3000/api/price')
+    this.http.get<{documents}> (BACKEND_URL)
     .pipe(map((priceData) => {
       return priceData.documents.map(price => {
         this.mapPrice = price;
@@ -40,7 +43,7 @@ export class PriceService {
   }
 
   newPrice(newPriceData: Price) {
-    this.http.post('http://localhost:3000/api/price/new', newPriceData)
+    this.http.post(BACKEND_URL + '/new', newPriceData)
     .subscribe((response) => {
       console.log(response);
       this.getPrices();

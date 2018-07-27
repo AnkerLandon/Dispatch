@@ -5,7 +5,9 @@ import { map } from 'rxjs/operators';
 import { Invoice } from '../../models/invoice-data.model';
 import { Request } from '../../models/invoice-data.model';
 import { NotificationService } from '../../nav/notification/snack.service';
+import { environment } from '../../../environments/environment';
 
+const BACKEND_URL = environment.apiUrl + '/invoice';
 
 @Injectable({providedIn: 'root'})
 export class InvoiceService {
@@ -28,7 +30,7 @@ getInvoices(invoiceId: string) {
   this.currentInvoiceId = invoiceId;
   this.http.get
     <{documents}>
-    ('http://localhost:3000/api/invoice/' + invoiceId)
+    (BACKEND_URL + '/' + invoiceId)
     .pipe(map((invoiceData: any) => {
       console.log('invocen Data', invoiceData);
       return invoiceData.documents.map(invoice => {
@@ -59,7 +61,7 @@ getCurrentInvoice() {
 editRecord( request: any) {
   const currentInvoice = this.getCurrentInvoice();
   console.log('edit service', request);
-  this.http.put('http://localhost:3000/api/invoice/request/'
+  this.http.put(BACKEND_URL + '/request/'
     + currentInvoice._id, request)
     .subscribe((response: any) => {
       console.log(response.message);
@@ -80,7 +82,7 @@ getRequestUpdateListener() {
 addRequest(newRequest: any) {
   console.log('addRequest', newRequest);
   const currenInvoice = this.getCurrentInvoice();
-  this.http.put('http://localhost:3000/api/invoice/' + currenInvoice._id, newRequest)
+  this.http.put(BACKEND_URL + '/' + currenInvoice._id, newRequest)
     .subscribe((response: any) => {
       console.log(response);
       this.invoice.requests.push(response.request);
@@ -91,7 +93,7 @@ addRequest(newRequest: any) {
 addInvoice(newRequest: any) {
   console.log('service', newRequest);
   this.http.post<{message: string, newInvoice: any }>
-    ('http://localhost:3000/api/invoice', newRequest)
+    (BACKEND_URL, newRequest)
     .subscribe((responceData: any) => {
       console.log('responce', responceData);
       this.invoices.push(responceData.newInvoice);
@@ -101,7 +103,7 @@ addInvoice(newRequest: any) {
 }
 
 deleteInvoices(accountId: string) {
-  this.http.delete('http://localhost:3000/api/invoice/destroy/' + accountId )
+  this.http.delete(BACKEND_URL + '/destroy/' + accountId )
     .subscribe((result) => {
       console.log(result); /*
        const updatedInvoices = this.invoices.filter(invoices => invoices.accountId !== accountId);
@@ -113,7 +115,7 @@ deleteInvoices(accountId: string) {
 deleteRequest(resId: string) {
   const currenInvoice = this.getCurrentInvoice();
   console.log('request', currenInvoice, resId );
-  this.http.delete('http://localhost:3000/api/invoice/' + currenInvoice._id + '/' + resId)
+  this.http.delete(BACKEND_URL + '/' + currenInvoice._id + '/' + resId)
     .subscribe((result) => {
       console.log(result);
       this.invoice.requests.splice(this.requestIndex, 1);

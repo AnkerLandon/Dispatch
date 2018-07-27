@@ -4,6 +4,9 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { Payment } from '../../models/payment-data.model';
+import { environment } from '../../../environments/environment';
+
+const BACKEND_URL = environment.apiUrl + '/payment';
 
 @Injectable({providedIn: 'root'})
 export class PaymentService {
@@ -34,7 +37,7 @@ export class PaymentService {
   getPayments() {
     this.http.get
       <{documents}>
-      ('http://localhost:3000/api/payment/get/' + this.AId)
+      (BACKEND_URL + '/get/' + this.AId)
       .pipe(map((paymentData) => {
         console.log('test', paymentData);
         return paymentData.documents;
@@ -52,7 +55,7 @@ export class PaymentService {
   newBill(newBill: Payment) {
     console.log('service payment data', newBill);
     this.http.post
-      ('http://localhost:3000/api/payment/new/', newBill)
+      (BACKEND_URL + '/new/', newBill)
       .subscribe((responceData: any) => {/*
         const myCust_id = responceData.custId ;
         newCustomer._id = myCust_id;

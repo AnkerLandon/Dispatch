@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth/auth.service';
-import { Subscription } from '../../node_modules/rxjs';
+import { Subscription } from 'rxjs';
 import { NotificationService } from './nav/notification/snack.service';
-import { MatSnackBar } from '../../node_modules/@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { SnackComponent } from './nav/notification/snack.component';
 
 @Component({

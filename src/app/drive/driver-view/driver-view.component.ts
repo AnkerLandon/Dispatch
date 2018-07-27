@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DriveService } from '../drive.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { MatDialog } from '../../../../node_modules/@angular/material';
+import { MatDialog } from '@angular/material';
 import { DCDriverComponent } from './driver-dialog.component';
 
 @Component({

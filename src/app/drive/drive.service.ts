@@ -6,6 +6,9 @@ import { Invoice } from '../models/invoice-data.model';
 import { Subject } from 'rxjs';
 import { CustomerService } from '../dispatch/customers/customer.service';
 import { Customer } from '../models/customers-data.model';
+import { environment } from '../../environments/environment';
+
+const BACKEND_URL = environment.apiUrl;
 
 @Injectable ({providedIn: 'root'})
 export class DriveService {
@@ -26,7 +29,7 @@ export class DriveService {
     // this.currentInvoiceId = invoiceId;
     this.http.get
       <{documents}>
-      ('http://localhost:3000/api/invoice/route/' + route)
+      (BACKEND_URL + '/invoice/route/' + route)
       .pipe(map((invoiceData) => {
         return invoiceData.documents.map(invoice => {
           this.mapInvoice = invoice;
@@ -69,7 +72,7 @@ export class DriveService {
         requestId: data.requests[i]._id,
         checked: data.requests[i].complete,
       };
-      this.http.put('http://localhost:3000/api/invoice/driver/update/'
+      this.http.put(BACKEND_URL + '/invoice/driver/update/'
         + record.invoiceId, record)
         .subscribe((response: any) => {
           console.log(response.message);
@@ -80,7 +83,7 @@ export class DriveService {
           */
       });
     }
-    this.http.put('http://localhost:3000/api/payment/addPayment/'
+    this.http.put(BACKEND_URL + '/payment/addPayment/'
       + data.invoiceId, data.payment)
       .subscribe((response: any) => {
 

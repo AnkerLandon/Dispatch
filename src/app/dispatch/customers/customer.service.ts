@@ -5,7 +5,9 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { InvoiceService } from '../invoices/invoice.service';
 import { MatDialog } from '@angular/material';
-import { NotificationService } from '../../nav/notification/snack.service';
+import { environment } from '../../../environments/environment';
+
+const BACKEND_URL = environment.apiUrl + '/customers';
 
 @Injectable({providedIn: 'root'})
 export class CustomerService {
@@ -25,7 +27,7 @@ export class CustomerService {
   getCustomers() {
     this.http.get
       <{documents}>
-      ('http://localhost:3000/api/customers')
+      (BACKEND_URL)
       .pipe(map((customerData) => {
         return customerData.documents.map(customer => {
           this.mapCustomer = customer;
@@ -40,7 +42,7 @@ export class CustomerService {
   }
 
   getCustomer(custId: string) {
-    this.http.get <Customer> ('http://localhost:3000/api/customers/' + custId)
+    this.http.get <Customer> (BACKEND_URL + '/' + custId)
     .subscribe(myCustomer => {
       this.customer = myCustomer;
       this.currentCustomerUpdate.next(this.customer);
@@ -82,7 +84,7 @@ export class CustomerService {
   addCustomer(newCustomer: Customer) {
     console.log('service cust data', newCustomer);
     this.http.post
-      ('http://localhost:3000/api/customers/new', newCustomer)
+      (BACKEND_URL + '/new', newCustomer)
       .subscribe((responceData: any) => {
         const myCust_id = responceData.custId ;
         newCustomer._id = myCust_id;
@@ -94,14 +96,14 @@ export class CustomerService {
 
   deleteCustomer(customer_id: string) {
     this.invoiceService.deleteInvoices(customer_id);
-    this.http.delete('http://localhost:3000/api/customers/' + customer_id)
+    this.http.delete(BACKEND_URL + '/' + customer_id)
       .subscribe((response: any) => {
       this.getCustomers();
       });
   }
 
   editCustomer(editedCustomer: Customer) {
-    this.http.put('http://localhost:3000/api/customers/details/' + editedCustomer._id, editedCustomer)
+    this.http.put(BACKEND_URL + '/details/' + editedCustomer._id, editedCustomer)
     .subscribe((response: any) => {
       console.log(response);
       this.getCustomers();
@@ -111,11 +113,11 @@ export class CustomerService {
   }
 
   addCustomerPaymentPlan( newPlan: any) {
-  this.http.put('http://localhost:3000/api/customers/addpaymentplan/' + newPlan.id, newPlan)
+  this.http.put(BACKEND_URL + '/addpaymentplan/' + newPlan.id, newPlan)
     .subscribe((response: any) => {
       console.log(response);
     });
-    this.http.put('http://localhost:3000/api/customers/addend/' + newPlan.id, null)
+    this.http.put(BACKEND_URL + '/addend/' + newPlan.id, null)
     .subscribe((response: any) => {
       console.log(response);
     });

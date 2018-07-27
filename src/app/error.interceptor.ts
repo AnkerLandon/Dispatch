@@ -1,8 +1,8 @@
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse } from '@angular/common/http';
-import { catchError } from '../../node_modules/rxjs/operators';
-import { throwError } from '../../node_modules/rxjs';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 import { NotificationService } from './nav/notification/snack.service';
-import { Injectable } from '../../node_modules/@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {

@@ -3,6 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { User } from '../../models/user-data.model';
+import { environment } from '../../../environments/environment';
+
+const BACKEND_URL = environment.apiUrl + '/user';
 
 
 @Injectable({providedIn: 'root'})
@@ -14,7 +17,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getUsers() {
-    this.http.get<{documents}>('http://localhost:3000/api/user')
+    this.http.get<{documents}>(BACKEND_URL)
       .pipe(map((userData) => {
         return userData.documents.map(user => {
           return {
@@ -44,7 +47,7 @@ export class UserService {
 
   addUser(newUser: User) {
     this.http.post
-      ('http://localhost:3000/api/user/new', newUser)
+      (BACKEND_URL + '/new', newUser)
       .subscribe((responceData: any) => {
         console.log(responceData.message);
         const myUser_id = responceData.id ;
@@ -57,7 +60,7 @@ export class UserService {
 
   editUser(userId: string, editedUserData: User) {
     console.log('userData', editedUserData);
-    this.http.put('http://localhost:3000/api/user/' + userId, editedUserData)
+    this.http.put(BACKEND_URL + '/' + userId, editedUserData)
       .subscribe((response) => {
         console.log(response);
         this.getUsers();
@@ -66,7 +69,7 @@ export class UserService {
   }
 
   deleteUser(userId: string) {
-    this.http.delete('http://localhost:3000/api/user/' + userId)
+    this.http.delete(BACKEND_URL + '/' + userId)
       .subscribe((response) => {
       this.getUsers();
       });

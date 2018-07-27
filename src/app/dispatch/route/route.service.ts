@@ -3,6 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { environment } from '../../../environments/environment';
+
+const BACKEND_URL = environment.apiUrl + '/route';
 
 
 @Injectable({providedIn: 'root'})
@@ -19,8 +22,7 @@ export class RouteService {
   ) { }
 
   getRoutes() {
-    this.http.get<{documents: any[]}>
-      ('http://localhost:3000/api/route')
+    this.http.get<{documents: any[]}>(BACKEND_URL)
       .pipe(map((routeData) => {
         return routeData.documents.map(route => {
           this.mapRoutes = route;
@@ -41,7 +43,7 @@ export class RouteService {
 
   addRoute(routeData: any) {
     this.http.post
-      ('http://localhost:3000/api/route/new', routeData)
+      (BACKEND_URL + '/new', routeData)
       .subscribe((responseData: any) => {
         console.log(responseData);
         this.getRoutes();
@@ -68,7 +70,7 @@ export class RouteService {
   }
 
   editRoute(editedRoute: any) {
-    this.http.put('http://localhost:3000/api/route', editedRoute)
+    this.http.put(BACKEND_URL + '/route', editedRoute)
     .subscribe((responce) => {
       console.log('edited route', responce);
       this.getRoutes();
@@ -76,7 +78,7 @@ export class RouteService {
   }
 
   deleteRoute(route_id: string) {
-    this.http.delete('http://localhost:3000/api/route/' + route_id)
+    this.http.delete(BACKEND_URL + '/' + route_id)
       .subscribe((response) => {
       this.getRoutes();
       });
