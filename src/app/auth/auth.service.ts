@@ -19,8 +19,7 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private router: Router,
-    private notifyService: NotificationService ) {}
+    private router: Router ) {}
 
   getToken() {
     return this.token;
@@ -47,7 +46,7 @@ export class AuthService {
           this.router.navigate(['/driver']);
         }
       }
-    }, (err) => {this.notifyService.notify(err.error.message); });
+    });
   }
 
   autoAuthUser() {

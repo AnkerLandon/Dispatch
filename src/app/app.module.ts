@@ -62,6 +62,7 @@ import { DCDriverComponent } from './drive/driver-view/driver-dialog.component';
 import { MatSnackBarModule} from '@angular/material/snack-bar';
 import { SnackComponent } from './nav/notification/snack.component';
 import { NotificationService } from './nav/notification/snack.service';
+import { ErrorInterceptor } from './error.interceptor';
 
 
 
@@ -130,6 +131,7 @@ import { NotificationService } from './nav/notification/snack.service';
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     CustomerService,
     InvoiceService,
     NotificationService,

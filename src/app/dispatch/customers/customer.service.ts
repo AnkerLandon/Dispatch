@@ -19,8 +19,7 @@ export class CustomerService {
   constructor(
     private http: HttpClient,
     public invoiceService: InvoiceService,
-    public dialog: MatDialog,
-    private notifyService: NotificationService
+    public dialog: MatDialog
   ) { }
 
   getCustomers() {
@@ -85,7 +84,6 @@ export class CustomerService {
     this.http.post
       ('http://localhost:3000/api/customers/new', newCustomer)
       .subscribe((responceData: any) => {
-        this.notifyService.notify(responceData.message);
         const myCust_id = responceData.custId ;
         newCustomer._id = myCust_id;
         newCustomer.planLog = [{plan: newCustomer.currentPlan, start: new Date}];
@@ -98,7 +96,6 @@ export class CustomerService {
     this.invoiceService.deleteInvoices(customer_id);
     this.http.delete('http://localhost:3000/api/customers/' + customer_id)
       .subscribe((response: any) => {
-        this.notifyService.notify(response.message);
       this.getCustomers();
       });
   }
@@ -106,7 +103,6 @@ export class CustomerService {
   editCustomer(editedCustomer: Customer) {
     this.http.put('http://localhost:3000/api/customers/details/' + editedCustomer._id, editedCustomer)
     .subscribe((response: any) => {
-      this.notifyService.notify(response.message);
       console.log(response);
       this.getCustomers();
       this.customer = editedCustomer;
@@ -117,12 +113,10 @@ export class CustomerService {
   addCustomerPaymentPlan( newPlan: any) {
   this.http.put('http://localhost:3000/api/customers/addpaymentplan/' + newPlan.id, newPlan)
     .subscribe((response: any) => {
-      this.notifyService.notify(response.message);
       console.log(response);
     });
     this.http.put('http://localhost:3000/api/customers/addend/' + newPlan.id, null)
     .subscribe((response: any) => {
-      this.notifyService.notify(response.message);
       console.log(response);
     });
   }

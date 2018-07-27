@@ -17,7 +17,7 @@ export class InvoiceService {
   private invoiceUpdate = new Subject<Invoice[]>();
   private requestUpdate = new Subject<Request[]>();
 
-  constructor(private http: HttpClient, private notifyService: NotificationService) {}
+  constructor(private http: HttpClient) {}
 
 setRequestIndex(request: Request) {
   console.log(this.invoice.requests.indexOf(request));
@@ -30,7 +30,6 @@ getInvoices(invoiceId: string) {
     <{documents}>
     ('http://localhost:3000/api/invoice/' + invoiceId)
     .pipe(map((invoiceData: any) => {
-      if (invoiceData.message) {this.notifyService.notify(invoiceData.message); }
       console.log('invocen Data', invoiceData);
       return invoiceData.documents.map(invoice => {
         this.mapInvoice = invoice;
@@ -63,7 +62,6 @@ editRecord( request: any) {
   this.http.put('http://localhost:3000/api/invoice/request/'
     + currentInvoice._id, request)
     .subscribe((response: any) => {
-      this.notifyService.notify(response.message);
       console.log(response.message);
       this.invoice.requests[this.requestIndex] = request;
 

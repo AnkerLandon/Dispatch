@@ -1,9 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { RouteService } from '../../dispatch/route/route.service';
 import { DriveService } from '../drive.service';
-import { Invoice } from '../../models/invoice-data.model';
-import { Customer } from '../../models/customers-data.model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { MatDialog } from '../../../../node_modules/@angular/material';
 import { DCDriverComponent } from './driver-dialog.component';
@@ -17,8 +14,6 @@ export class DriverViewComponent implements OnInit, OnDestroy {
   private invRouteSub: Subscription;
   public mergedData: any[] = [];
   private driverRoute;
-  private results: Result[] = [];
-
 
   constructor(
     private driveService: DriveService,
