@@ -2,7 +2,6 @@ const Customer = require("../models/customer");
 const PaymentPlan = require("../models/paymentPlan");
 
 exports.createCustomer = (req, res, next) => {
-  console.log('server data', req.body);
   const paymentPlan = new PaymentPlan({
     plan: req.body.currentPlan,
     start: new Date,
@@ -30,37 +29,41 @@ exports.createCustomer = (req, res, next) => {
 }
 
 exports.getCustomers = (req, res, next) => {
-  Customer.find().then(documents => {
+  Customer.find()
+  .then(documents => {
     res.status(200).json({documents});
+  })
+  .catch(err => {res.status(500).json({message: 'Customers not found'});
   });
 }
 
 exports.getCustomer = (req, res, next) => {
   Customer.findOne({_id: req.params.id}).then(customer => {
-    console.log('customer:', customer);
     res.status(200).json(customer);
+  })
+  .catch(err => {res.status(500).json({message: 'Customer not found'});
   });
 }
 
 exports.deleteCustomer = (req, res, next) => {
   Customer.deleteOne({ _id: req.params.id}).then(result => {
-    console.log(result);
     res.status(200).json({ message: "Post deleted!" });
+  })
+  .catch(err => {res.status(500).json({message: 'Customer not found'});
   });
 }
 
 exports.editCustomer = (req, res, next) => {
-  console.log('details edit:', req.body);
   Customer.updateOne({_id: req.params.id}, req.body)
     .exec()
     .then(result => {
-      console.log(result);
-      res.status(200).json({message: "Details update success"})
+      res.status(200).json({
+        message: "Details update success"
+      })
     })
     .catch(err => {
-      console.log(err);
       res.status(500).json({
-        error: err
+        message: 'Customer Edit Failed'
       })
     });
 }
@@ -71,19 +74,18 @@ exports.addEndDate = (req, res, next) => {
       {$set: {'planLog.$.end': new Date}})
     .exec()
     .then(result => {
-      console.log(result);
-      res.status(200).json({message: "End date update success"})
+      res.status(200).json({
+        message: "End date update success"
+      })
     })
     .catch(err => {
-      console.log(err);
       res.status(500).json({
-        error: err
+        message: 'Failed to create Payment End Date For Customer'
       })
     });
 }
 
 exports.addPaymentPlan = (req, res, next) => {
-  console.log('payment edit:', req.body);
   const paymentplan = new PaymentPlan ({
     plan: req.body.currentPlan,
     start: new Date,
@@ -93,14 +95,14 @@ exports.addPaymentPlan = (req, res, next) => {
     .updateOne({_id: req.params.id},
       {$push: {planLog: paymentplan}})
     .exec()
-    .then(result => {
-      console.log(result);
-      res.status(200).json({message: "add payment Plan update success"})
+    .then(result => {;
+      res.status(200).json({
+        message: "add payment Plan update success"
+      })
     })
     .catch(err => {
-      console.log(err);
       res.status(500).json({
-        error: err
+        message: 'Failed to Add new Payment Plan to Customer'
       })
     });
 }

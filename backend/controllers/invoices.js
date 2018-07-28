@@ -1,5 +1,8 @@
 const Invoice = require("../models/invoice");
 const Request = require("../models/request");
+const Customer = require("../models/customer");
+const Price = require("../models/price");
+const Bill = require("../models/payment")
 
 
 function calculatePrices(animal, number, custId, otherPrice, otherTaxable,  callback) {
@@ -11,7 +14,6 @@ function calculatePrices(animal, number, custId, otherPrice, otherTaxable,  call
     Price.findOne({}).sort({$natural:-1})
   ])
   .then(([custResult, priceResult]) => {
-    console.log('calc results', custResult, priceResult);
 
     result.id = priceResult._id;
     result.route = custResult.route;
@@ -26,7 +28,6 @@ function calculatePrices(animal, number, custId, otherPrice, otherTaxable,  call
       if (otherTaxable) {
         result.Itax = ((priceResult.tax / 100) * otherPrice).toFixed(2);
       }
-      console.log('results', result);
       return callback(null, result);
     }
 
@@ -42,80 +43,68 @@ function calculatePrices(animal, number, custId, otherPrice, otherTaxable,  call
         }
       }
     }
-    console.log('results', result);
     callback(null, result);
   })
   .catch(err => {
-    console.log('calc error', err);
-    return callback(new Error('fuck'));
+    console.log('calc prices err:', err);
+    return callback(new Error('Price Calculation Error'));
+
   });
 
 }
 
-function createBill(invoice) {
-  try{
-    console.log('init: ');
-    let bill = new Bill ({
-      accountId: invoice.accountId,
-      invoiceId: invoice._id,
-      createdDate: invoice.date,
-      amountDue: invoice.tax + invoice.pickupFee + invoice.requests[0].price,
-      billType:  "invoice"
-    });
-    console.log('flag 2');
-    bill.save()
-    .then(result => {
-      console.log('bill result: ', result);
-      return;
-    })
-    .catch(err => {
-      console.log('Bill Error', err);
-      return;
-    });
-  }
-  catch(err) {
-    console.log('fuck', err);
-    return;
-  }
+function createBill(invoice, callback) {
+  let bill = new Bill ({
+    accountId: invoice.accountId,
+    invoiceId: invoice._id,
+    createdDate: invoice.date,
+    amountDue: invoice.tax + invoice.pickupFee + invoice.requests[0].price,
+    billType:  "invoice"
+  });
+  bill.save()
+  .then(result => {
+    return callback(null, 'bill success');
+  })
+  .catch(err => {
+    return callback(err, 'bill creation failure');
+  });
 
 }
 
-function addToBill(invoiceId, amount) {
+function addToBill(invoiceId, amount, callback) {
   Bill.updateOne({invoiceId: invoiceId},
   {$inc: {amountDue: amount}})
   .then(result => {
-    console.log('add bill success:', result);
-    return;
+    return callback(null, "Add to existing bill success");
   })
   .catch(err => {
-    console.log("add bill err:", err);
-    return;
+    return callback(err, "Add to existing bill Failure");
   })
 }
 
-function editBill(invoiceId) {
+function editBill(invoiceId, callback) {
   let total = 0;
   Invoice.findOne({_id: invoiceId})
   .then(result => {
-    console.log('edit bill success:', result);
     for ( i = 0; i < result.requests.length; i++) {
       total += result.requests[i].price + result.requests[i].tax;
     }
     total += result.tax + result.pickupFee;
+  })
+  .then(result => {
     Bill.updateOne({invoiceId: invoiceId},
     {$set: {amountDue: total}})
     .then(billresult => {
-      console.log('bill result: ', billresult);
-      return;
+      return callback(null, "Bill edit Success");
     })
     .catch(err => {
-      console.log('bill result err', err);
-      return;
+      console.log('Editbill result err:', err);
+      return callback(err, "Bill edit Failure");
     })
   })
   .catch(err => {
     console.log("edit bill err:", err);
-    return;
+    return callback(err, "Bill edit error: unable to find invoice");
   })
 }
 
@@ -151,47 +140,50 @@ exports.createInvoice = (req, res, next) => {
     req.body.price,
     req.body.taxable,
     function (err, prices) {
-    console.log('test price', prices);
-    var request = new Request({
-      number: req.body.number,
-      animal: req.body.animal,
-      other: req.body.other,
-      complete: false,
-      price: prices.fee,
-      tax: prices.Rtax,
-      priceId: prices.id
-    });
-    var d = new Date();
-    var datestring = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
 
-    var invoice = new Invoice({
-      accountId: req.body.accountId,
-      date: datestring,
-      requests: [],
-      pickupFee: prices.plan,
-      tax: prices.Itax,
-      route: prices.route
-    });
-    invoice.requests.push(request);
+      if (err) { return res.status(500).json({message: 'Calculated Price Error'}); }
 
-    invoice.save()
-    .then(invResult => {
-      console.log('test result', invResult);
-      createBill(invResult);
-      console.log(' bill shiit');
-      res.status(201).json({
-        message: 'success',
-        newInvoice: invoice
+      var request = new Request({
+        number: req.body.number,
+        animal: req.body.animal,
+        other: req.body.other,
+        complete: false,
+        price: prices.fee,
+        tax: prices.Rtax,
+        priceId: prices.id
       });
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
+
+      var d = new Date();
+      var datestring = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
+
+      var invoice = new Invoice({
+        accountId: req.body.accountId,
+        date: datestring,
+        requests: [],
+        pickupFee: prices.plan,
+        tax: prices.Itax,
+        route: prices.route
+      });
+
+      invoice.requests.push(request);
+
+      createBill(invoice, function(err, billMessage) {
+        if (err) { return res.status(500).json({message: billMessage}); }
+        invoice.save()
+        .then(invResult => {
+          res.status(201).json({
+            message: billMessage + "Invoice Success",
+            newInvoice: invoice
+          });
+        })
+        .catch(err => {
+          res.status(500).json({
+            error: err,
+            message: billMessage + "Invcoice Creation Failure"
+          });
+        });
       });
     });
-  });
-
-
 }
 
 exports.addRequest = (req, res, next) => {
@@ -202,6 +194,7 @@ exports.addRequest = (req, res, next) => {
     req.body.price,
     req.body.taxable,
     function (err, prices) {
+      if (err) { return res.status(500).json({message: 'Calculated Price Error'}); }
       var newRequest = new Request ({
         number: req.body.number,
         animal: req.body.animal,
@@ -211,24 +204,24 @@ exports.addRequest = (req, res, next) => {
         tax: prices.Rtax,
         priceId: prices.id
       });
-      console.log('add',req.body);
-      addToBill(req.params.id, newRequest.price + newRequest.tax);
-      Invoice.updateOne(
-      { _id: req.params.id },
-      { $push: { requests: newRequest } })
-      .then(results => {
-        console.log('Total Updated', results);
-        res.status(200).json({ message: "Update successful!" , request: newRequest});
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json({message: err})
+
+      addToBill(req.params.id, newRequest.price + newRequest.tax, function(err, ATBMessage) {
+        if (err) { return res.status(500).json({message: ATBMessage}); }
+        Invoice.updateOne(
+        { _id: req.params.id },
+        { $push: { requests: newRequest } })
+        .then(results => {
+          res.status(200).json({ message: ATBMessage + " Add Request Success" , request: newRequest});
+        })
+        .catch(err => {
+          console.log("add request Error: ",err);
+          res.status(500).json({err: err, message: ATBMessage + " Adding Request Failure"})
+        });
       });
     });
 }
 
 exports.editRequest = (req, res, next) => {
-  console.log('server', req.body, req.params.id, req.params.index);
   calculatePrices(
     req.body.animal,
     req.body.number,
@@ -246,36 +239,40 @@ exports.editRequest = (req, res, next) => {
         priceId: prices.id
       });
 
+
       Invoice.updateOne(
         {_id: req.params.id, "requests._id": req.body._id },
         {$set: {"requests.$": editedRequest}})
       .exec()
       .then(result => {
-        console.log('success',result);
-        editBill(req.params.id);
-        res.status(200).json({message: "update success"})
+        if (result.nModified === 1) {
+          editBill(req.params.id, function(err, BillMessage) {
+            if (err) { return res.status(500).json({message: BillMessage}); }
+            res.status(200).json({message: BillMessage + " Request Update Success"})
+          });
+        } else {
+          res.status(500).json({message: 'no changes detected'});
+        }
       })
       .catch(err => {
         console.log('err',err);
-        res.status(500).json({message: "Update Failure"})
+        res.status(500).json({message: BillMessage + " Request Update Failure"})
       });
     });
 }
 
 exports.driverUpdate = (req, res, next) => {
-  console.log('server', req.body, req.params.id, req.params.index);
   Invoice.updateOne(
     {_id: req.params.id, "requests._id": req.body.requestId },
     {$set: {"requests.$.complete": req.body.checked}}
   )
   .exec()
   .then(result => {
-    console.log(result);
-    res.status(200).json({message: "update success"})
+    res.status(200).json({message: "Driver Update Success"})
   })
   .catch(err => {
-    console.log(err);
-    res.status(500).json({message: err})
+    console.log("driver Update err: ",err);
+    res.status(500).json({err: err, message: "Failed To Update Account"})
   });
 }
 

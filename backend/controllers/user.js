@@ -2,15 +2,26 @@ const User = require("../models/user");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+function editPass (password, callback) {
+  bcrypt.hash(password, 10).then(hash => {
+    return callback(null, hash);
+  })
+  .catch(err => {
+    return callback(err, null);
+  })
+}
 
 exports.getUsers = (req, res, next) => {
   User.find().then(documents => {
     res.status(200).json({documents});
+  })
+  .catch(err => {
+    console.log('get Users Error: ', err);
+    res.status(500).json({message: "Error Retrieving Users"});
   });
 }
 
 exports.createUser = (req, res, next) => {
-  console.log(req.body);
   bcrypt.hash(req.body.password, 10).then(hash => {
     const user = new User({
       userName: req.body.userName,
@@ -24,7 +35,6 @@ exports.createUser = (req, res, next) => {
       phone: req.body.phone,
       rank: req.body.rank
     });
-    console.log(user);
     user.save()
       .then(result => {
         res.status(201).json({
@@ -33,9 +43,8 @@ exports.createUser = (req, res, next) => {
         });
       })
       .catch(err => {
-        res.status(500).json({
-          error: err
-        });
+        console.log('Create Users Error: ', err);
+        res.status(500).json({message: "Error Creating User"});
       });
   });
 }
@@ -75,35 +84,34 @@ exports.ChangeUserPass = (req, res, next) => {
   const editedUser = req.body;
 
   if(editedUser.password) {
-    bcrypt.hash(req.body.password, 10).then(hash => {
+    editPass(req.body.password, function(err, hash) {
+      if(err) {
+        return req.status(500).json({message: "password error"});
+      }
       editedUser.password = hash;
-      updateFunk();
+    User.updateOne({_id: req.params.id}, editedUser)
+      .exec()
+      .then(result => {
+        res.status(200).json({message: "update success"})
+      })
+      .catch(err => {
+        console.log("Update User Password Error: ",err);
+        res.status(500).json({
+          error: err,
+          message: "Error Updateing User Password"
+        })
+      });
     })
-  } else {
-    updateFunk();
   }
 
- //updateFunk forces proper order so password hash is created and then updates
-
- function updateFunk() {
-  User.updateOne({_id: req.params.id}, editedUser)
-    .exec()
-    .then(result => {
-      console.log(result);
-      res.status(200).json({message: "update success"})
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({
-        error: err
-      })
-    });
-  };
 }
 
 exports.deleteUser = (req, res, next) => {
   User.deleteOne({_id: req.params.id}).then(result => {
-    console.log(result);
     res.status(200).json({message: "User Deleted!"});
+  })
+  .catch(err => {
+    console.log("delete User error: ",err);
+    rest.status(500).json({message: "error Deleting User"});
   });
 }
