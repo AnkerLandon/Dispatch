@@ -33,7 +33,7 @@ export class RouteSelectComponent implements OnInit, OnDestroy {
         this.routes = results;
         console.log(this.routes);
       });
-    this.routeService.getRoutes();
+    this.routeService.getRoutes(true);
   }
   ngOnDestroy() {
     this.routeSub.unsubscribe();

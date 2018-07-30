@@ -27,7 +27,6 @@ export class LoginComponent {
     private router: Router
   ) {
     const isAuth = this.authService.getAuth();
-    console.log(isAuth.status);
     if (isAuth.status) {
       if (isAuth.rank === 'Dispatch') {
         this.router.navigate(['/customers']);
@@ -37,7 +36,6 @@ export class LoginComponent {
   isLoading = false;
 
   onLogin(loginData: NgForm) {
-    console.log('auth', loginData.value);
     this.authService.loginUser(loginData.value);
   }
 }

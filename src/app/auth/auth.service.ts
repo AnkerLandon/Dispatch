@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { User } from '../models/user-data.model';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
-import { HeaderComponent } from '../nav/header/header.component';
-import { NotificationService } from '../nav/notification/snack.service';
+
 
 
 @Injectable({ providedIn: 'root'})
@@ -39,7 +37,6 @@ export class AuthService {
         const now = new Date();
         const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
         this.saveAuthData(this.token, expirationDate, response.rank, response.userName);
-        console.log('log', this.authentication.rank);
         if (this.authentication.rank === 'Dispatch') {
           this.router.navigate(['/customers']);
         } else {

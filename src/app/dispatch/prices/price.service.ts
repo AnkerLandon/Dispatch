@@ -13,7 +13,6 @@ const BACKEND_URL = environment.apiUrl + '/price';
 export class PriceService {
 
   public prices: Price[] = [];
-  private price: Price;
   private mapPrice: Price;
 
   private priceUpdate = new Subject<any[]>();
@@ -33,7 +32,6 @@ export class PriceService {
     }))
     .subscribe(transPrices => {
       this.prices = transPrices;
-      console.log('prices', this.prices);
       this.priceUpdate.next([...this.prices]);
     });
   }
@@ -45,13 +43,11 @@ export class PriceService {
   newPrice(newPriceData: Price) {
     this.http.post(BACKEND_URL + '/new', newPriceData)
     .subscribe((response) => {
-      console.log(response);
       this.getPrices();
     });
   }
 
   getMostRecentPrice() {
-    console.log('price length', this.prices , this.prices.length);
     return this.prices[this.prices.length - 1];
   }
 

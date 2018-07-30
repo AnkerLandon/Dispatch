@@ -15,7 +15,7 @@ export class DCCustomerComponent {
 
   confirmDelete = false;
   public routes;
-  private routeSub: Subscription;
+  // private routeSub: Subscription;
 
   @Output() newRecord = new EventEmitter();
 
@@ -25,9 +25,7 @@ export class DCCustomerComponent {
     public router: Router,
     private routeService: RouteService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-      console.log(data);
       this.routes = this.routeService.getRouteArray();
-      console.log(this.routes);
     }
 
   onNoClick(): void {
@@ -38,13 +36,11 @@ export class DCCustomerComponent {
       return;
     }
     formData.value.route = formData.value.route.toUpperCase();
-    console.log('new cust data', formData.value);
     this.customerService.addCustomer(formData.value);
     this.dialogRef.close();
   }
 
   editCustomer(formData: NgForm) {
-    console.log(this.data._id, formData.value);
     if (formData.invalid) {
       return;
     }

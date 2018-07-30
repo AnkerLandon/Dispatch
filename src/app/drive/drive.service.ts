@@ -48,6 +48,7 @@ export class DriveService {
     for (let i = 0; i < this.invoices.length; i++) {
       const custData = this.customerService.searchCustomer(this.invoices[i].accountId);
       const comboData = {
+        billId: this.invoices[i].billId,
         custId: custData._id,
         invoiceId: this.invoices[i]._id,
         date: this.invoices[i].date,
@@ -83,8 +84,9 @@ export class DriveService {
           */
       });
     }
+    console.log('bill Id?', data);
     this.http.put(BACKEND_URL + '/payment/addPayment/'
-      + data.invoiceId, data.payment)
+      + data.billId, data.payment)
       .subscribe((response: any) => {
 
     });

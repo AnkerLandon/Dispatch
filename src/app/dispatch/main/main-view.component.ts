@@ -30,9 +30,9 @@ export class MainViewComponent implements OnInit, OnDestroy {
   public subRecords: any[] = [];
   public subColumns: any[] = [];
 
-  displayedColumns = [ 'edit'];
-  dataSourceMain = new MatTableDataSource(this.records);
-  dataSourceSub = new MatTableDataSource(this.records);
+  public displayedColumns = [ 'edit'];
+  public dataSourceMain = new MatTableDataSource(this.records);
+  public dataSourceSub = new MatTableDataSource(this.records);
 
   constructor(
     private router: Router,
@@ -43,9 +43,7 @@ export class MainViewComponent implements OnInit, OnDestroy {
     public priceService: PriceService,
     private paymentService: PaymentService,
     private invoiceService: InvoiceService,
-    public route: ActivatedRoute) {
-      console.log(this.route.snapshot.routeConfig.path);
-    }
+    public route: ActivatedRoute) {}
 
   @ViewChild('sortMain') sortMain: MatSort;
   @ViewChild('sortSub') sortSub: MatSort;
@@ -56,20 +54,17 @@ export class MainViewComponent implements OnInit, OnDestroy {
     this.dataSourceSub.sort = this.sortSub;
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.custId = paramMap.get('customerId');
-      console.log('cust', this.custId);
     });
     this.dataSub = this.mainService.getViewUpdateListener()
       .subscribe((records: any[]) => {
         this.setUp();
         this.dataSourceMain.data = records;
-        console.log(this.displayedColumns, records);
       });
     this.subViewSub = this.mainService.getSubViewUpdateListener()
       .subscribe((records: any[]) => {
         this.dataSourceSub.data = records;
-        console.log('sub view sub', records);
       });
-    console.log('main location', this.route.snapshot.routeConfig.path);
+
     switch (this.route.snapshot.routeConfig.path) {
       case 'customers':
         this.customerService.getCustomers();
@@ -87,7 +82,7 @@ export class MainViewComponent implements OnInit, OnDestroy {
         this.iconExpand = true;
       break;
       case 'routes':
-        this.routeService.getRoutes();
+        this.routeService.getRoutes(true);
         this.status = 'routes';
         this.iconExpand = false;
       break;
@@ -130,7 +125,7 @@ export class MainViewComponent implements OnInit, OnDestroy {
         this.addRouteDialog();
         break;
       case 'payments':
-        this.addPaymentDialog();
+        this.mainService.openPaymentDialog({customerId: this.custId});
         break;
       default:
       console.log('addSwitch Error', this.status);
@@ -156,6 +151,10 @@ export class MainViewComponent implements OnInit, OnDestroy {
         this.invoiceService.setInvoice(data._id);
         this.openSubView(data);
         break;
+      case 'payments':
+      console.log('tset: ', data);
+        this.mainService.openPaymentDialog(data);
+        break;
       default:
       console.log('editSwitch Error');
     }
@@ -180,7 +179,6 @@ export class MainViewComponent implements OnInit, OnDestroy {
   }
 
   subAddSwitch() {
-    console.log(this.subStatus);
     switch (this.subStatus) {
       case 'Requests':
         this.InvoiceDialog('addRequest');
@@ -192,7 +190,6 @@ export class MainViewComponent implements OnInit, OnDestroy {
   subEditSwitch(data) {
     switch (this.subStatus) {
       case 'Requests':
-      console.log('test', data);
       data.dialog = 'editRequest';
       data.accountId = this.custId;
       this.mainService.openInvoiceDialog(data);
@@ -263,10 +260,6 @@ export class MainViewComponent implements OnInit, OnDestroy {
       description: ''
     };
     this.mainService.openRouteDialog(emptyRoute);
-  }
-
-  addPaymentDialog() {
-
   }
 
   editUserDialog(myUser: any) {

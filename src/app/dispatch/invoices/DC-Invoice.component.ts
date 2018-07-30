@@ -1,11 +1,9 @@
 import {Component, Inject, EventEmitter, Output} from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatInputModule } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { NgForm } from '@angular/forms';
 import { InvoiceService } from './invoice.service';
 import { PriceService } from '../prices/price.service';
-import { Price } from '../../models/price-data.model';
-import { CustomerService } from '../customers/customer.service';
 
 
 @Component({
@@ -14,23 +12,11 @@ import { CustomerService } from '../customers/customer.service';
   styleUrls: ['../DC.component.css']
 })
 export class DCInvoiceComponent {
-  animals: string[] = [
-    'cow',
-    'heffer',
-    'calf',
-    'bull',
-    'steer',
-    'pig',
-    'sow',
-    'boar',
-    'horse',
-    'barrel',
-    'other'];
 
-
-  myRequest: any;
-  confirmDelete = false;
-  complete = false;
+  public animals: string[] = [];
+  // private myRequest: any;
+  public confirmDelete = false;
+  public complete = false;
 
   @Output() newRecord = new EventEmitter();
 
@@ -38,9 +24,8 @@ export class DCInvoiceComponent {
     public dialogRef: MatDialogRef<DCInvoiceComponent>,
     public invoiceService: InvoiceService,
     public priceService: PriceService,
-    private customerService: CustomerService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-      console.log('data', data);
+      this.animals = this.invoiceService.getAnimals();
     }
 
   onNoClick(): void {
@@ -77,11 +62,11 @@ export class DCInvoiceComponent {
   checkDelete() {
     this.confirmDelete = true;
   }
-
+/*
   completeSwitch(value: boolean) {
     // if (value) {this.complete = false; } else {this.complete = true; }
   }
-
+*/
   private prepFormData(formData: NgForm) {
 
     if (!formData.value.other) {formData.value.other = ''; }
@@ -89,7 +74,6 @@ export class DCInvoiceComponent {
     formData.value.accountId = this.data.accountId;
     formData.value.complete = this.complete;
 
-    console.log('formData', formData.value);
     return formData.value;
   }
 

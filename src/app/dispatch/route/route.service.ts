@@ -21,7 +21,7 @@ export class RouteService {
     public dialog: MatDialog
   ) { }
 
-  getRoutes() {
+  getRoutes(update: boolean) {
     this.http.get<{documents: any[]}>(BACKEND_URL)
       .pipe(map((routeData) => {
         return routeData.documents.map(route => {
@@ -32,8 +32,7 @@ export class RouteService {
       .subscribe(routeResult => {
         this.routes = routeResult;
         this.getRouteArrayUpdate();
-        console.log('routes get', this.routes);
-        this.routeUpdate.next([...this.routes]);
+        if (update) {this.routeUpdate.next([...this.routes]); }
       });
   }
 
@@ -45,20 +44,17 @@ export class RouteService {
     this.http.post
       (BACKEND_URL + '/new', routeData)
       .subscribe((responseData: any) => {
-        console.log(responseData);
-        this.getRoutes();
+        this.getRoutes(true);
       });
   }
 
   getRouteArrayUpdate() {
-    const test = [];
+    const tempArray = [];
     this.routes.forEach(function (item) {
-      test.push(item.title);
+      tempArray.push(item.title);
     });
-    this.routeArray = test;
-    console.log(this.routeArray);
+    this.routeArray = tempArray;
     this.routeArrayUpdate.next([...this.routeArray]);
-
   }
 
   getRouteArray() {
@@ -72,15 +68,14 @@ export class RouteService {
   editRoute(editedRoute: any) {
     this.http.put(BACKEND_URL + '/route', editedRoute)
     .subscribe((responce) => {
-      console.log('edited route', responce);
-      this.getRoutes();
+      this.getRoutes(true);
     });
   }
 
   deleteRoute(route_id: string) {
     this.http.delete(BACKEND_URL + '/' + route_id)
       .subscribe((response) => {
-      this.getRoutes();
+        this.getRoutes(true);
       });
   }
 

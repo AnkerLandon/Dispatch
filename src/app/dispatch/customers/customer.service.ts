@@ -36,9 +36,12 @@ export class CustomerService {
       }))
       .subscribe(transCustomers => {
         this.customers = transCustomers;
-        console.log('Customer Get');
         this.dataUpdate.next([...this.customers]);
       });
+  }
+
+  getDataUpdateListener() {
+    return this.dataUpdate.asObservable();
   }
 
   getCustomer(custId: string) {
@@ -46,8 +49,11 @@ export class CustomerService {
     .subscribe(myCustomer => {
       this.customer = myCustomer;
       this.currentCustomerUpdate.next(this.customer);
-      console.log('customer: ', this.customer);
     });
+  }
+
+  getCurrentCustomerUpdateListener() {
+    return this.currentCustomerUpdate.asObservable();
   }
 
   setCurrentCustomer(_id: string) {
@@ -68,21 +74,11 @@ export class CustomerService {
   }
 
   isCurrentCustomerCash() {
-    console.log('current customer paymentPlan:', this.customer.currentPlan);
     if (this.customer.currentPlan === 'Cash') { return true; }
     return false;
   }
 
-  getCurrentCustomerUpdateListener() {
-    return this.currentCustomerUpdate.asObservable();
-  }
-
-  getDataUpdateListener() {
-    return this.dataUpdate.asObservable();
-  }
-
   addCustomer(newCustomer: Customer) {
-    console.log('service cust data', newCustomer);
     this.http.post
       (BACKEND_URL + '/new', newCustomer)
       .subscribe((responceData: any) => {
@@ -94,18 +90,9 @@ export class CustomerService {
       });
   }
 
-  deleteCustomer(customer_id: string) {
-    this.invoiceService.deleteInvoices(customer_id);
-    this.http.delete(BACKEND_URL + '/' + customer_id)
-      .subscribe((response: any) => {
-      this.getCustomers();
-      });
-  }
-
   editCustomer(editedCustomer: Customer) {
     this.http.put(BACKEND_URL + '/details/' + editedCustomer._id, editedCustomer)
     .subscribe((response: any) => {
-      console.log(response);
       this.getCustomers();
       this.customer = editedCustomer;
       this.currentCustomerUpdate.next(this.customer);
@@ -115,12 +102,18 @@ export class CustomerService {
   addCustomerPaymentPlan( newPlan: any) {
   this.http.put(BACKEND_URL + '/addpaymentplan/' + newPlan.id, newPlan)
     .subscribe((response: any) => {
-      console.log(response);
     });
     this.http.put(BACKEND_URL + '/addend/' + newPlan.id, null)
     .subscribe((response: any) => {
-      console.log(response);
     });
+  }
+
+  deleteCustomer(customer_id: string) {
+    this.invoiceService.deleteInvoices(customer_id);
+    this.http.delete(BACKEND_URL + '/' + customer_id)
+      .subscribe((response: any) => {
+      this.getCustomers();
+      });
   }
 
 

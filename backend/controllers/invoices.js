@@ -63,7 +63,7 @@ function createBill(invoice, callback) {
   });
   bill.save()
   .then(result => {
-    return callback(null, 'bill success');
+    return callback(null, 'bill success', bill._id);
   })
   .catch(err => {
     return callback(err, 'bill creation failure');
@@ -167,8 +167,11 @@ exports.createInvoice = (req, res, next) => {
 
       invoice.requests.push(request);
 
-      createBill(invoice, function(err, billMessage) {
+      createBill(invoice, function(err, billMessage, billId) {
         if (err) { return res.status(500).json({message: billMessage}); }
+
+        invoice.billId = billId;
+
         invoice.save()
         .then(invResult => {
           res.status(201).json({

@@ -1,100 +1,170 @@
 import { Component, Inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { RouteService } from '../route/route.service';
 import { MatDialogRef, MAT_DIALOG_DATA, MatInputModule} from '@angular/material';
 import { NgForm } from '@angular/forms';
 import { PaymentService } from './payment.service';
+import { Payment } from '../../models/payment-data.model';
 
 @Component({
   selector: 'app-payment-dialog',
   template: `
-  <h1 mat-dialog-title> Customer </h1>
-  <div mat-dialog-content>
 
-    <form  #formData="ngForm">
+  <mat-checkbox
+    *ngIf="customerId"
+    [(ngModel)]=newBill
+    (change)="onChange()"
+    >Add new bill?
+  </mat-checkbox>
 
-      <mat-form-field class="item">
-        <mat-select
-          class="inputs"
-          placeholder='Payment Type'
-          name='paymentType'
-          [ngModel]="data.paymentType"
-          required
-          >
-            <mat-option value="Check">Check</mat-option>
-            <mat-option value="Cash">Cash</mat-option>
-        </mat-select>
-      </mat-form-field>
+  <mat-checkbox
+    *ngIf="!customerId || newBill"
+    [(ngModel)]=paymentReceived
+    (change)="onChange()"
+    >Payment Received?
+  </mat-checkbox>
 
-      <mat-form-field class="item">
-        <input matInput
-          class="inputs"
-          type='string'
-          name='address'
-          placeholder=Address
-          [ngModel]="data.address"
-          required
+  <div class='form'>
+
+  <form  #formData="ngForm">
+    <mat-form-field class="item" *ngIf="newBill">
+      <mat-select
+        class="inputs"
+        name='type'
+        placeholder='Payment Type'
+        [(ngModel)]=billType
+        required
         >
-      </mat-form-field>
+        <mat-option value="invoice">Invoice</mat-option>
+        <mat-option value="subscription">Subscription</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="item" *ngIf="newBill">
+      <div class="item" >
+        <input
+          matInput
+          class="inputs"
+          type='number'
+          name='billAmount'
+          placeholder='Total'
+          [(ngModel)]=billAmount
+        >
+      </div>
+    </mat-form-field>
+
+  <form  #formData="ngForm">
+    <mat-form-field class="item" *ngIf="paymentReceived">
+      <mat-select
+        class="inputs"
+        name='type'
+        placeholder='Payment Type'
+        [(ngModel)]=paymentType
+        required
+        >
+        <mat-option value="cash">Cash</mat-option>
+        <mat-option value="check">Check</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="item" *ngIf="paymentReceived">
+      <div class="item" >
+        <input
+          matInput
+          class="inputs"
+          type='number'
+          name='amount'
+          placeholder='Amount'
+          [(ngModel)]=paymentAmount
+        >
+      </div>
+    </mat-form-field>
+
+    <mat-form-field class="item" *ngIf="paymentType === 'check'">
+      <div class="item" >
+        <input
+          matInput
+          class="inputs"
+          type='number'
+          name='number'
+          placeholder='Check Number'
+          [(ngModel)]=paymentNumber
+        >
+      </div>
+    </mat-form-field>
 
       <div mat-dialog-actions id="buttons">
         <button mat-button (click)="onNoClick()">Cancel</button>
         <button
           mat-button
-          *ngIf="!data._id"
           type="submit"
-          (click)="saveCustomer(formData)"
+          (click)=submit(formData)
           cdkFocusInitial
           >Submit</button>
-        <button
-          mat-button
-          *ngIf="data._id"
-          type="submit"
-          (click)="editCustomer(formData)"
-          cdkFocusInitial
-          >Edit</button>
-        <button
-          mat-button
-          *ngIf="data._id && !confirmDelete"
-          id="delete"
-          color="warn"
-          (click)="checkDelete()"
-          >Delete
-        </button>
-        <button
-          mat-button
-          *ngIf="confirmDelete"
-          id="delete"
-          color="warn"
-          (click)="deleteCustomer(formData)"
-          >Delete cannot be undone
-        </button>
       </div>
-    </form>
 
-  </div>
+  </form>
 
   `,
   styleUrls: ['../DC.component.css']
 })
 export class DCPaymentComponent {
 
+  public paymentReceived: false;
+  public paymentType: '';
+  public paymentAmount: null;
+  public paymentNumber: null;
+
+  public customerId: string;
+  public newBill: false;
+  public billType: '';
+  public billAmount: 0;
+
   constructor(
     public dialogRef: MatDialogRef<DCPaymentComponent>,
-
+    public route: ActivatedRoute,
     public router: Router,
-    private routeService: RouteService,
     private paymentService: PaymentService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-      console.log(data);
+      if (data.customerId) {
+        this.customerId = data.customerId;
+      }
     }
 
-    savePayment(formData: NgForm) {
-      if (formData.invalid) {
-        return;
+    onNoClick(): void {
+      this.dialogRef.close();
+    }
+
+    onChange() {
+    }
+
+    submit(formData) {
+      // if (!this.paymentReceived) {this.paymentReceived = false; }
+
+      if (this.paymentReceived && this.newBill || this.newBill) {
+        const bill: Payment = {
+          accountId: this.customerId,
+          invoiceId: null,
+          billType: this.billType,
+          amountDue: this.billAmount,
+          paymentType: this.paymentType,
+          paymentAmount: this.paymentAmount,
+          checkNumber: this.paymentNumber
+        };
+        this.paymentService.newBill(bill);
+      } else if (this.paymentReceived) {
+        const payment = {
+          received: this.paymentReceived,
+          type: this.paymentType,
+          amount: this.paymentAmount,
+          number: this.paymentNumber
+        };
+
+        this.data.payment = payment;
+        console.log('submit data:', this.data, formData.value);
+        this.paymentService.addPayment(this.data);
+
       }
-      console.log('new payment data', formData.value);
-      this.paymentService.addPayment();
       this.dialogRef.close();
     }
 

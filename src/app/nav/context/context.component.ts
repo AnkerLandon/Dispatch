@@ -125,10 +125,8 @@ export class ContextComponent implements OnInit  {
   ngOnInit() {
 
     this.currentLoc = this.route.snapshot.routeConfig.path;
-    console.log('current loc', this.currentLoc);
     this.dataSubbscription = this.customerService.getCurrentCustomerUpdateListener()
       .subscribe(newCustomer => {
-        console.log('new cust', newCustomer);
         this.customer = newCustomer;
         this.flag = true;
       });

@@ -75,8 +75,8 @@ import { RouteService } from './route.service';
 })
 export class DCRouteComponent {
 
-  confirmDelete = false;
-  editable = false;
+  public confirmDelete = false;
+  public editable = false;
 
   @Output() newRecord = new EventEmitter();
 
@@ -85,7 +85,6 @@ export class DCRouteComponent {
     public routeService: RouteService,
     public router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-      console.log(data);
       if (this.data._id) {this.editable = true; }
     }
 
@@ -97,7 +96,6 @@ export class DCRouteComponent {
       return;
     }
     formData.value.title = formData.value.title.toUpperCase();
-    console.log('new route data', formData.value);
     this.routeService.addRoute(formData.value);
     this.dialogRef.close();
   }

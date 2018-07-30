@@ -27,6 +27,7 @@ const requestSchema = mongoose.Schema({
 
 const invoiceSchema = mongoose.Schema({
   accountId: {type: mongoose.Schema.Types.ObjectId, ref:"Customer", required: true},
+  billId: {type: mongoose.Schema.Types.ObjectId, ref:"Payment"},
   date: {type: String, required: true },
   requests: [requestSchema],
   pickupFee: {type: Number},

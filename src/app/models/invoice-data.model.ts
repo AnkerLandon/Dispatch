@@ -1,6 +1,7 @@
 export interface Invoice {
   _id?: string;
   accountId: string;
+  billId?: string;
   date?: string;
   requests: Request[];
   pickupFee?: number;

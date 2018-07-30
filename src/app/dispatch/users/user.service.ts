@@ -10,9 +10,9 @@ const BACKEND_URL = environment.apiUrl + '/user';
 
 @Injectable({providedIn: 'root'})
 export class UserService {
+
   private users: User[] = [];
   private userUpdate = new Subject<User[]>();
-
 
   constructor(private http: HttpClient) {}
 
@@ -49,7 +49,6 @@ export class UserService {
     this.http.post
       (BACKEND_URL + '/new', newUser)
       .subscribe((responceData: any) => {
-        console.log(responceData.message);
         const myUser_id = responceData.id ;
         newUser._id = myUser_id;
         this.users.push(newUser);
@@ -59,10 +58,8 @@ export class UserService {
   }
 
   editUser(userId: string, editedUserData: User) {
-    console.log('userData', editedUserData);
     this.http.put(BACKEND_URL + '/' + userId, editedUserData)
       .subscribe((response) => {
-        console.log(response);
         this.getUsers();
 
       });
@@ -74,8 +71,5 @@ export class UserService {
       this.getUsers();
       });
   }
-
-
-
 
 }

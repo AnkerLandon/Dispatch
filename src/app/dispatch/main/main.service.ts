@@ -13,6 +13,7 @@ import { DCRouteComponent } from '../route/DC-Route.component';
 import { PaymentService } from '../payments/payment.service';
 import { InvoiceService } from '../invoices/invoice.service';
 import { DCInvoiceComponent } from '../invoices/DC-Invoice.component';
+import { DCPaymentComponent } from '../payments/DC-Payment.component';
 
 @Injectable({providedIn: 'root'})
 export class MainService {
@@ -44,7 +45,7 @@ export class MainService {
     public dialog: MatDialog,
 
   ) {
-    console.log('flag 2');
+    this.routeService.getRoutes(false);
     this.customerSub = this.customerService.getDataUpdateListener()
       .subscribe((records: any[]) => {
         this.view = records;
@@ -86,7 +87,6 @@ export class MainService {
     .subscribe((records: any[]) => {
       this.subView = records;
       this.subViewUpdate.next([...records]);
-      console.log('main request sub', records);
     });
   }
 
@@ -131,8 +131,15 @@ export class MainService {
   }
 
   openRequestDialog(form: any): void {
-    // form.accountId = this.customerService.getCurrentCustomer()._id;
     const dialogRef = this.dialog.open(DCInvoiceComponent, {
+      maxWidth: '50vw',
+      data:  form,
+      disableClose: true
+    });
+  }
+
+  openPaymentDialog(form: any): void {
+    const dialogRef = this.dialog.open(DCPaymentComponent, {
       maxWidth: '50vw',
       data:  form,
       disableClose: true
