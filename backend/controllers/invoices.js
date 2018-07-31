@@ -119,16 +119,14 @@ exports.getInvoices = (req, res, next) => {
 }
 
 exports.getRouteInvoices = (req, res, next) => {
-  console.log('get route', req.params.route);
   Invoice.find({
     route: req.params.route,
     'requests.complete': false
   }).then(documents => {
-    console.log('num', documents.length);
     res.status(200).json({documents});
   }).catch(err => {
-    console.log(err);
-    res.status(500).json({message: err})
+    console.log("get Route Invoices Err: ",err);
+    res.status(500).json({err: err, message: "Error Retreiving Invoices for Route"})
   });
 }
 
@@ -258,7 +256,7 @@ exports.editRequest = (req, res, next) => {
         }
       })
       .catch(err => {
-        console.log('err',err);
+        console.log('Request Update Err: ',err);
         res.status(500).json({message: BillMessage + " Request Update Failure"})
       });
     });
@@ -280,13 +278,11 @@ exports.driverUpdate = (req, res, next) => {
 }
 
 exports.deleteInvoice = (req, res, next) => {
-  console.log('server',req.params.invId , req.params.reqId);
   Invoice.updateOne(
     { _id: req.params.invId },
     { $pull: { requests : { _id : req.params.reqId} } },
     { safe: true },
     function removeConnectionsCB(err, obj) {
-     console.log(obj);
       res.status(200).json({message: "deleted request"});
     });
 }
@@ -295,13 +291,13 @@ exports.deleteAllInvoicesForCustomer = (req, res, next) => {
   Invoice.deleteMany({accountId: req.params.accountId})
   .exec()
     .then(result => {
-      console.log(result);
       res.status(200).json({message: "deleted all invoices pertaining to customer"})
     })
     .catch(err => {
-      console.log(err);
+      console.log("Error Deleting All Invoices");
       res.status(500).json({
-        error: err
+        error: err,
+        message: "Could not Delete All Invoices for Customer"
       })
     });
 

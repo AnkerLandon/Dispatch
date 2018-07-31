@@ -161,7 +161,6 @@ export class DCPaymentComponent {
         };
 
         this.data.payment = payment;
-        console.log('submit data:', this.data, formData.value);
         this.paymentService.addPayment(this.data);
 
       }

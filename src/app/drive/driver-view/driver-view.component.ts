@@ -28,7 +28,6 @@ export class DriverViewComponent implements OnInit, OnDestroy {
     this.invRouteSub = this.driveService.getInvRouteUpdateListener()
       .subscribe((results: any[]) => {
         this.mergedData = results;
-        console.log('merged Data', this.mergedData);
       });
     // this.driveService.getRouteInvoices(this.driverRoute);
   }
@@ -38,23 +37,13 @@ export class DriverViewComponent implements OnInit, OnDestroy {
   }
 
   onChange( invoiceId: string, requestId: string, checked: any, index: number) {
-    console.log('test', invoiceId, requestId, checked);
     const changed = this.mergedData.find(d => d.invoiceId === invoiceId);
     changed.requests[index].complete = checked;
-    console.log('result', changed);
-
-
   }
 
   submit(invoiceId: string) {
     const invoice = this.mergedData.find(I => I.invoiceId === invoiceId);
     this.openPaymentDialog(invoice);
-    console.log('submit', invoice);
-    // this.driveService.completeRequests(invoice);
-  }
-
-  test() {
-    console.log('test:', this.mergedData);
   }
 
   openPaymentDialog(form: any): void {
@@ -63,7 +52,6 @@ export class DriverViewComponent implements OnInit, OnDestroy {
         data:  form,
         disableClose: true
       });
-    console.log(dialogRef);
     }
 
 }

@@ -38,7 +38,6 @@ export class DriveService {
       }))
       .subscribe(transInvoices => {
         this.invoices = transInvoices;
-        console.log('getty', this.invoices);
         this.mergeData();
       });
   }
@@ -62,7 +61,6 @@ export class DriveService {
       };
       this.mergedData.push(comboData);
     }
-    console.log('getty2', this.mergedData);
     this.invRouteUpdate.next([...this.mergedData]);
   }
 
@@ -76,7 +74,6 @@ export class DriveService {
       this.http.put(BACKEND_URL + '/invoice/driver/update/'
         + record.invoiceId, record)
         .subscribe((response: any) => {
-          console.log(response.message);
           /*
           this.invoice.requests[this.requestIndex] = request;
 
@@ -84,7 +81,6 @@ export class DriveService {
           */
       });
     }
-    console.log('bill Id?', data);
     this.http.put(BACKEND_URL + '/payment/addPayment/'
       + data.billId, data.payment)
       .subscribe((response: any) => {

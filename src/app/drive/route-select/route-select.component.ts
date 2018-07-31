@@ -31,7 +31,6 @@ export class RouteSelectComponent implements OnInit, OnDestroy {
     this.routeSub = this.routeService.getRouteArrayUpdateListener()
       .subscribe((results: any[]) => {
         this.routes = results;
-        console.log(this.routes);
       });
     this.routeService.getRoutes(true);
   }
