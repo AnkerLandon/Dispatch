@@ -44,6 +44,7 @@ export class DriveService {
 
   private mergeData() {
     this.mergedData = [];
+    console.log('test', this.invoices);
     for (let i = 0; i < this.invoices.length; i++) {
       const custData = this.customerService.searchCustomer(this.invoices[i].accountId);
       const comboData = {

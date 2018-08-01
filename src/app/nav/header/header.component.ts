@@ -12,12 +12,11 @@ import {Location} from '@angular/common';
       <button
           mat-icon-button class="topnav"
           (click)="backClicked()"
-          fxHide.gt-md
          >
         <mat-icon>arrow_back_ios</mat-icon>
       </button>
       <div fxHide.lt-md opened="false" ></div>
-      <h1 class="Dispatch">Dispatch App</h1>
+      <h1 class="Dispatch" fxHide.lt-md>Dispatch App</h1>
       <span class="spacer"></span>
       <span>
         <ul *ngIf="userAuthentication.status">

@@ -159,8 +159,6 @@ export class MainService {
       'edit',
       'companyName',
       'name',
-      'city',
-      'township',
       'route',
       'currentPlan'
     ];
@@ -170,11 +168,8 @@ export class MainService {
     return [
       'edit',
       'userName',
-      'firstName',
-      'lastName',
       'address',
       'city',
-      'phone',
       'rank'
     ];
   }
@@ -221,10 +216,7 @@ export class MainService {
   invoiceView() {
     return [
       'edit',
-      'date',
-      'pickupFee',
-      'tax',
-      'total'
+      'date'
     ];
   }
   requestView() {
@@ -233,9 +225,7 @@ export class MainService {
       'number',
       'animal',
       'other',
-      'complete',
-      'price',
-      'tax'
+      'complete'
     ];
   }
 }

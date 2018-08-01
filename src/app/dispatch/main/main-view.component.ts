@@ -152,7 +152,6 @@ export class MainViewComponent implements OnInit, OnDestroy {
         this.openSubView(data);
         break;
       case 'payments':
-      console.log('tset: ', data);
         this.mainService.openPaymentDialog(data);
         break;
       default:

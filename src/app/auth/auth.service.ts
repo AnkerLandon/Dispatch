@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
-
+const BACKEND_URL = environment.apiUrl + '/user';
 
 @Injectable({ providedIn: 'root'})
 export class AuthService {
@@ -24,7 +25,7 @@ export class AuthService {
   }
 
   loginUser(authData) {
-    this.http.post('http://localhost:3000/api/user/login', authData)
+    this.http.post(BACKEND_URL + '/login', authData)
     .subscribe((response: any) => {
       if (response.token) {
         const expiresInDuration = response.expiresIn;

@@ -70,10 +70,10 @@ import { DriveService } from '../drive.service';
 })
 export class DCDriverComponent {
 
-  public paymentReceived: false;
-  public paymentType: 'none';
-  public paymentAmount: 0;
-  public paymentNumber: null;
+  public paymentReceived = false;
+  public paymentType = '';
+  public paymentAmount = 0;
+  public paymentNumber = null;
 
   constructor(
     public dialogRef: MatDialogRef<DCDriverComponent>,

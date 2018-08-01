@@ -13,14 +13,12 @@ import { Payment } from '../../models/payment-data.model';
   <mat-checkbox
     *ngIf="customerId"
     [(ngModel)]=newBill
-    (change)="onChange()"
     >Add new bill?
   </mat-checkbox>
 
   <mat-checkbox
     *ngIf="!customerId || newBill"
     [(ngModel)]=paymentReceived
-    (change)="onChange()"
     >Payment Received?
   </mat-checkbox>
 
@@ -53,7 +51,7 @@ import { Payment } from '../../models/payment-data.model';
       </div>
     </mat-form-field>
 
-  <form  #formData="ngForm">
+  <form  #formData="ngForm" >
     <mat-form-field class="item" *ngIf="paymentReceived">
       <mat-select
         class="inputs"
@@ -80,7 +78,7 @@ import { Payment } from '../../models/payment-data.model';
       </div>
     </mat-form-field>
 
-    <mat-form-field class="item" *ngIf="paymentType === 'check'">
+    <mat-form-field class="item" *ngIf="paymentType == 'check'">
       <div class="item" >
         <input
           matInput
@@ -110,15 +108,15 @@ import { Payment } from '../../models/payment-data.model';
 })
 export class DCPaymentComponent {
 
-  public paymentReceived: false;
-  public paymentType: '';
-  public paymentAmount: null;
-  public paymentNumber: null;
+  public paymentReceived = false;
+  public paymentType = '';
+  public paymentAmount = null;
+  public paymentNumber = null;
 
   public customerId: string;
-  public newBill: false;
-  public billType: '';
-  public billAmount: 0;
+  public newBill = false;
+  public billType = '';
+  public billAmount = 0;
 
   constructor(
     public dialogRef: MatDialogRef<DCPaymentComponent>,
@@ -133,9 +131,6 @@ export class DCPaymentComponent {
 
     onNoClick(): void {
       this.dialogRef.close();
-    }
-
-    onChange() {
     }
 
     submit(formData) {
