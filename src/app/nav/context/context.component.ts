@@ -55,7 +55,7 @@ import { Customer } from '../../models/customers-data.model';
           <mat-icon >list</mat-icon>
           <div fxShow fxHide.lt-md class="inline">Invoices</div>
         </mat-button-toggle>
-        <mat-button-toggle value="payments/:customerId" matTooltip="Bills" (click)='gotoPayments()' *ngIf="flag">
+        <mat-button-toggle value="bills/:customerId" matTooltip="Bills" (click)='gotoPayments()' *ngIf="flag">
           <mat-icon>payment</mat-icon>
           <div fxShow fxHide.lt-md class="inline">Bills</div>
         </mat-button-toggle>
@@ -138,7 +138,7 @@ export class ContextComponent implements OnInit  {
 
   gotoPayments() {
     this.paymentService.setAccount(this.customer._id);
-    this.router.navigate(['/payments/' + this.customer._id]);
+    this.router.navigate(['/bills/' + this.customer._id]);
   }
   gotoInvoices() {
     this.router.navigate(['/invoices/' + this.customer._id]);

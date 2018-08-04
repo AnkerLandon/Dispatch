@@ -44,9 +44,16 @@ export class DriveService {
 
   private mergeData() {
     this.mergedData = [];
-    console.log('test', this.invoices);
+    let total = 0;
     for (let i = 0; i < this.invoices.length; i++) {
       const custData = this.customerService.searchCustomer(this.invoices[i].accountId);
+      for (let j = 0; j < this.invoices[i].requests.length; j++) {
+        total += this.invoices[i].requests[j].price;
+        total += this.invoices[i].requests[j].tax;
+      }
+      total += this.invoices[i].pickupFee;
+      total += this.invoices[i].tax;
+
       const comboData = {
         billId: this.invoices[i].billId,
         custId: custData._id,
@@ -58,9 +65,11 @@ export class DriveService {
         companyName: custData.companyName,
         address: custData.address,
         city: custData.city,
-        township: custData.township
+        township: custData.township,
+        total: total
       };
       this.mergedData.push(comboData);
+      total = 0;
     }
     this.invRouteUpdate.next([...this.mergedData]);
   }
@@ -85,7 +94,6 @@ export class DriveService {
     this.http.put(BACKEND_URL + '/payment/addPayment/'
       + data.billId, data.payment)
       .subscribe((response: any) => {
-
     });
   }
 

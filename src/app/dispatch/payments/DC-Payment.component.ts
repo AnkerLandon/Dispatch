@@ -4,7 +4,7 @@ import { RouteService } from '../route/route.service';
 import { MatDialogRef, MAT_DIALOG_DATA, MatInputModule} from '@angular/material';
 import { NgForm } from '@angular/forms';
 import { PaymentService } from './payment.service';
-import { Payment } from '../../models/payment-data.model';
+import { Bill, Payment } from '../../models/payment-data.model';
 
 @Component({
   selector: 'app-payment-dialog',
@@ -22,14 +22,14 @@ import { Payment } from '../../models/payment-data.model';
     >Payment Received?
   </mat-checkbox>
 
-  <div class='form'>
+  <div mat-dialog-content class='form'>
 
   <form  #formData="ngForm">
     <mat-form-field class="item" *ngIf="newBill">
       <mat-select
         class="inputs"
         name='type'
-        placeholder='Payment Type'
+        placeholder='Bill Type'
         [(ngModel)]=billType
         required
         >
@@ -86,10 +86,15 @@ import { Payment } from '../../models/payment-data.model';
           type='number'
           name='number'
           placeholder='Check Number'
-          [(ngModel)]=paymentNumber
+          [(ngModel)]=checkNumber
         >
       </div>
     </mat-form-field>
+
+    <div *ngIf="totals.due">
+      <p class="pain"> Total: {{totals.due}} </p>
+      <p class="pain"> Remaining: {{totals.due - totals.paid}} </p>
+    </div>
 
       <div mat-dialog-actions id="buttons">
         <button mat-button (click)="onNoClick()">Cancel</button>
@@ -111,12 +116,14 @@ export class DCPaymentComponent {
   public paymentReceived = false;
   public paymentType = '';
   public paymentAmount = null;
-  public paymentNumber = null;
+  public checkNumber = null;
 
-  public customerId: string;
+  public customerId = '';
+  public totals = {due: null, paid: null};
+
   public newBill = false;
   public billType = '';
-  public billAmount = 0;
+  public billAmount = null;
 
   constructor(
     public dialogRef: MatDialogRef<DCPaymentComponent>,
@@ -124,9 +131,25 @@ export class DCPaymentComponent {
     public router: Router,
     private paymentService: PaymentService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-      if (data.customerId) {
-        this.customerId = data.customerId;
+
+      switch (data.type) {
+        case 'new':
+          this.customerId = data.customerId;
+        break;
+        case 'add':
+        this.totals = this.paymentService.getTotals();
+        break;
+        case 'edit':
+          this.totals = this.paymentService.getTotals();
+          this.paymentType = data.paymentType;
+          this.paymentAmount = data.paymentAmount;
+          this.checkNumber = data.checkNumber;
+          this.paymentReceived = true;
+        break;
+        default:
+        console.log('Payment Dialog Error');
       }
+
     }
 
     onNoClick(): void {
@@ -134,25 +157,39 @@ export class DCPaymentComponent {
     }
 
     submit(formData) {
-      // if (!this.paymentReceived) {this.paymentReceived = false; }
 
-      if (this.paymentReceived && this.newBill || this.newBill) {
-        const bill: Payment = {
+      if (this.data.type === 'edit') {
+
+        const payment: Payment = {
+          paymentType: this.paymentType,
+          paymentAmount: this.paymentAmount,
+          checkNumber: this.checkNumber
+        };
+        this.paymentService.editPayment(this.data.billId, this.data._id, payment);
+        this.dialogRef.close();
+      } else if (this.paymentReceived && this.newBill || this.newBill) {
+        const bill: Bill = {
           accountId: this.customerId,
           invoiceId: null,
           billType: this.billType,
           amountDue: this.billAmount,
-          paymentType: this.paymentType,
-          paymentAmount: this.paymentAmount,
-          checkNumber: this.paymentNumber
+          payments: []
         };
+        if (this.paymentAmount) {
+          const payment: Payment = {
+            paymentType: this.paymentType,
+            paymentAmount: this.paymentAmount,
+            checkNumber: this.checkNumber
+          };
+          bill.payments.push(payment);
+        }
+
         this.paymentService.newBill(bill);
       } else if (this.paymentReceived) {
-        const payment = {
-          received: this.paymentReceived,
-          type: this.paymentType,
-          amount: this.paymentAmount,
-          number: this.paymentNumber
+        const payment: Payment = {
+          paymentType: this.paymentType,
+          paymentAmount: this.paymentAmount,
+          checkNumber: this.checkNumber
         };
 
         this.data.payment = payment;

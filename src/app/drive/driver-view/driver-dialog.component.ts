@@ -54,6 +54,10 @@ import { DriveService } from '../drive.service';
       </div>
     </mat-form-field>
 
+    <div>
+      <p class="pain"> Invoice Total: {{data.total}} </p>
+    </div>
+
       <div mat-dialog-actions id="buttons">
         <button mat-button (click)="onNoClick()">Cancel</button>
         <button
@@ -72,16 +76,16 @@ export class DCDriverComponent {
 
   public paymentReceived = false;
   public paymentType = '';
-  public paymentAmount = 0;
+  public paymentAmount = null;
   public paymentNumber = null;
+
+  public totals = {due: null, paid: null};
 
   constructor(
     public dialogRef: MatDialogRef<DCDriverComponent>,
     private driverService: DriveService,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-      console.log(data);
-    }
+  ) {console.log(data); }
 
     onNoClick(): void {
       this.dialogRef.close();
@@ -93,10 +97,9 @@ export class DCDriverComponent {
     submit(formData) {
       if (!this.paymentReceived) {this.paymentReceived = false; }
       const payment = {
-        received: this.paymentReceived,
-        type: this.paymentType,
-        amount: this.paymentAmount,
-        number: this.paymentNumber
+        paymentType: this.paymentType,
+        paymentAmount: this.paymentAmount,
+        checkNumber: this.paymentNumber
       };
       this.data.payment = payment;
       console.log('submit data:', this.data, formData.value);

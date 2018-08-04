@@ -10,4 +10,6 @@ router.post("/new", checkAuth, PaymentController.createPayment);
 
 router.put("/addPayment/:id", checkAuth, PaymentController.addPaymentInfo);
 
+router.put("/edit/:BId/:PId", checkAuth, PaymentController.editPayment);
+
 module.exports = router;

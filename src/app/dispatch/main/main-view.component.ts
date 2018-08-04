@@ -29,6 +29,7 @@ export class MainViewComponent implements OnInit, OnDestroy {
   public showSub = false;
   public subRecords: any[] = [];
   public subColumns: any[] = [];
+  private subParentId: string;
 
   public displayedColumns = [ 'edit'];
   public dataSourceMain = new MatTableDataSource(this.records);
@@ -86,10 +87,10 @@ export class MainViewComponent implements OnInit, OnDestroy {
         this.status = 'routes';
         this.iconExpand = false;
       break;
-      case 'payments/:customerId':
-        this.paymentService.getPayments();
-        this.status = 'payments';
-        this.iconExpand = false;
+      case 'bills/:customerId':
+        this.paymentService.getBills();
+        this.status = 'Bills';
+        this.iconExpand = true;
       break;
       case 'invoices/:customerId':
         this.invoiceService.getInvoices(this.custId);
@@ -124,8 +125,9 @@ export class MainViewComponent implements OnInit, OnDestroy {
       case 'routes':
         this.addRouteDialog();
         break;
-      case 'payments':
-        this.mainService.openPaymentDialog({customerId: this.custId});
+      case 'Bills':
+        this.mainService.openPaymentDialog('new', {customerId: this.custId});
+        this.showSub = false;
         break;
       default:
       console.log('addSwitch Error', this.status);
@@ -151,8 +153,9 @@ export class MainViewComponent implements OnInit, OnDestroy {
         this.invoiceService.setInvoice(data._id);
         this.openSubView(data);
         break;
-      case 'payments':
-        this.mainService.openPaymentDialog(data);
+      case 'Bills':
+        this.paymentService.setBill(data._id);
+        this.openSubView(data);
         break;
       default:
       console.log('editSwitch Error');
@@ -167,6 +170,11 @@ export class MainViewComponent implements OnInit, OnDestroy {
         this.dataSourceSub.data = data.fees;
         this.subColumns = this.mainService.subPriceView();
       break;
+      case 'Bills':
+        this.subStatus = 'Payments';
+        this.dataSourceSub.data = data.payments;
+        this.subColumns = this.mainService.subPaymentView();
+      break;
       case 'invoices':
         this.subStatus = 'Requests';
         this.dataSourceSub.data = data.requests;
@@ -174,6 +182,7 @@ export class MainViewComponent implements OnInit, OnDestroy {
       break;
       default: console.log('openSubView error');
     }
+    this.subParentId = data._id;
     this.showSub = true;
   }
 
@@ -182,6 +191,9 @@ export class MainViewComponent implements OnInit, OnDestroy {
       case 'Requests':
         this.InvoiceDialog('addRequest');
       break;
+      case 'Payments':
+      this.mainService.openPaymentDialog('add', {customerId: ''});
+      break;
       default: console.log('subAddswitch error');
     }
   }
@@ -189,9 +201,13 @@ export class MainViewComponent implements OnInit, OnDestroy {
   subEditSwitch(data) {
     switch (this.subStatus) {
       case 'Requests':
-      data.dialog = 'editRequest';
-      data.accountId = this.custId;
-      this.mainService.openInvoiceDialog(data);
+        data.dialog = 'editRequest';
+        data.accountId = this.custId;
+        this.mainService.openInvoiceDialog(data);
+      break;
+      case 'Payments':
+        data.billId = this.subParentId;
+        this.mainService.openPaymentDialog('edit', data);
       break;
       default: console.log('subEditSwitch Error');
     }

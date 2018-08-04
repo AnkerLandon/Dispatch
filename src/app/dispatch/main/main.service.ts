@@ -27,9 +27,10 @@ export class MainService {
   private userSub: Subscription;
   private priceSub: Subscription;
   private routeSub: Subscription;
-  private paymentSub: Subscription;
+  private billSub: Subscription;
   private invoiceSub: Subscription;
   private requestSub: Subscription;
+  private paymentSub: Subscription;
 
   private viewUpdate = new Subject<any[]>();
   private subViewUpdate = new Subject<any[]>();
@@ -71,10 +72,10 @@ export class MainService {
       this.display = this.routeView();
       this.viewUpdate.next([...this.view]);
     });
-    this.paymentSub = this.paymentService.getPaymentUpdateListener()
-    .subscribe((payments: any[]) => {
-      this.view = payments;
-      this.display = this.paymentView();
+    this.billSub = this.paymentService.getBillUpdateListener()
+    .subscribe((bills: any[]) => {
+      this.view = bills;
+      this.display = this.billView();
       this.viewUpdate.next([...this.view]);
     });
     this.invoiceSub = this.invoiceService.getInvoicesUpdateListener()
@@ -87,6 +88,11 @@ export class MainService {
     .subscribe((records: any[]) => {
       this.subView = records;
       this.subViewUpdate.next([...records]);
+    });
+    this.paymentSub = this.paymentService.getPaymentUpdateListener()
+    .subscribe((payments: any[]) => {
+      this.subView = payments;
+      this.subViewUpdate.next([...this.subView]);
     });
   }
 
@@ -138,7 +144,8 @@ export class MainService {
     });
   }
 
-  openPaymentDialog(form: any): void {
+  openPaymentDialog(type: string, form: any): void {
+    form.type = type;
     const dialogRef = this.dialog.open(DCPaymentComponent, {
       maxWidth: '50vw',
       data:  form,
@@ -202,17 +209,24 @@ export class MainService {
     ];
   }
 
-  paymentView() {
+  billView() {
     return [
       'edit',
       'createdDate',
       'billType',
-      'amountDue',
+      'amountDue'
+    ];
+  }
+
+  subPaymentView() {
+    return [
+      'edit',
       'paymentType',
       'paymentAmount',
       'checkNumber'
     ];
   }
+
   invoiceView() {
     return [
       'edit',

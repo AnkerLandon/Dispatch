@@ -2,7 +2,7 @@ const Invoice = require("../models/invoice");
 const Request = require("../models/request");
 const Customer = require("../models/customer");
 const Price = require("../models/price");
-const Bill = require("../models/payment")
+const Bill = require("../models/bill")
 
 
 function calculatePrices(animal, number, custId, otherPrice, otherTaxable,  callback) {
